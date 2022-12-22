@@ -1,0 +1,267 @@
+import React, { useEffect, useState } from "react";
+import { PageComponent } from "../../components/page-component";
+import { EducationTableHeaders } from "../../constants/table-headers";
+import { useEducation } from "../../context/EducationContext";
+import { Program } from "../../src/API";
+import SearchBarComponent from "../../components/search-bar-component";
+import { useRouter } from "next/router";
+import SecondaryButton from "../../components/secondary-button";
+import { Formik, Form, Field } from "formik";
+import * as yup from "yup";
+import toast, { Toaster } from "react-hot-toast";
+
+interface Props {
+  universityName: string;
+}
+export default function education() {
+  const { universityList, addNewUniversity, programsList } = useEducation();
+  const { push } = useRouter();
+
+  const [searchValue, setSearchValue] = useState("");
+  const [resultList, setResultList] = useState<any>([]);
+
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+
+  const initialValues = {
+    universityName: "",
+  };
+
+  useEffect(() => {
+    setResultList(universityList);
+    return () => {};
+  }, [universityList]);
+
+  function resetList() {
+    setResultList(universityList);
+  }
+
+  //filter through uni and program list
+  function search() {
+    let searchUniResult = universityList?.filter((value) => {
+      let sameUniName = value.name
+        ?.toLowerCase()
+        .includes(searchValue.toLowerCase());
+      let haveProgramWithName = value.Programs?.items?.filter((prog) =>
+        prog?.name?.toLowerCase().includes(searchValue.toLowerCase())
+      );
+      let isThereAnyPrograms = (haveProgramWithName ?? []).length > 0;
+
+      if (sameUniName || isThereAnyPrograms) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+
+    if (searchUniResult) {
+      setResultList(searchUniResult);
+    }
+  }
+
+  // list all universities in db
+  // function listAllUniversities() {
+  //   let uniList = universityList?.map((uni) => {
+  //     return uni;
+  //   });
+
+  //   return uniList?.map<TableData>((uni) => {
+  //     let programsList = uni.Programs?.items;
+  //     setUniversityProgramList(programsList);
+  //     return {
+  //       id: uni.id,
+  //       data: [uni.name, uni.Programs?.items],
+  //       // data: `${uni.name}`,
+  //     };
+  //   });
+  // }
+
+  // view university details based on id given
+  // async function viewDetails(event: any) {
+  //   let programsList = await getProgramsFromUniID(event);
+  //   setUniversityProgramList(programsList);
+  //   return push(`education/universities/${event}`);
+  // }
+
+  // allow admins to add, edit university and related program info here
+  return (
+    <PageComponent title={"Education"}>
+      <Toaster />
+      <div className=" mb-8">
+        <div className=" text-2xl font-semibold">Education</div>
+        <div className=" text-base font-medium text-gray-500">
+          View a list of universities.
+        </div>
+      </div>
+
+      {/* search bar */}
+      <div className=" my-8 p-4 w-full h-32 border border-nccGray-100 rounded-xl bg-nccGray-100 flex justify-between items-center gap-4">
+        <div className=" w-full">
+          <SearchBarComponent
+            searchChange={(value) => {
+              setSearchValue(value);
+
+              if (value === "") {
+                resetList();
+              }
+            }}
+            onSubmit={(value: string) => {
+              setSearchValue(value);
+              search();
+            }}
+          />
+        </div>
+        <div className=" flex justify-between gap-4">
+          <div
+            className="min-w-[8rem] px-4 py-2 border-2 border-anzac-400 rounded-xl bg-anzac-400 text-white text-xs font-bold hover:cursor-pointer"
+            onClick={() => setIsSubmitted(!isSubmitted)}
+          >
+            Add University
+          </div>
+          <SecondaryButton
+            name={"Add Programs"}
+            buttonClick={() => {
+              push("/education/programs/addProgram");
+            }}
+          ></SecondaryButton>
+        </div>
+      </div>
+
+      <div className={` modal ${isSubmitted && "modal-open"}`}>
+        <div className="modal-box relative">
+          <label
+            onClick={() => setIsSubmitted(!isSubmitted)}
+            className="btn btn-sm btn-circle absolute right-2 top-2"
+          >
+            ✕
+          </label>
+          <div className=" p-4 mb-4">
+            <div className="text-lg font-bold">Add New University</div>
+            <div>
+              <Formik
+                initialValues={initialValues}
+                validationSchema={yup.object({
+                  universityName: yup
+                    .string()
+                    .required("Invalid university name"),
+                })}
+                onSubmit={async (values, actions) => {
+                  let uniFound = universityList
+                    ?.filter((value) => value._deleted !== true)
+                    .find(
+                      (value) =>
+                        value.name?.toLowerCase() ===
+                        values.universityName.toLowerCase()
+                    );
+
+                  if (uniFound) {
+                    toast.error(
+                      "A university already exists with the same name"
+                    );
+                  } else {
+                    setIsSubmitted(true);
+                    toast.promise(
+                      addNewUniversity(values.universityName).catch((error) => {
+                        throw error;
+                      }),
+                      {
+                        loading: "Loading...",
+                        success: () => {
+                          setIsSubmitted(false);
+                          return `University successfully added`;
+                        },
+                        error: (error) => {
+                          return `${error?.message}`;
+                        },
+                      }
+                    );
+                  }
+                }}
+              >
+                {({
+                  values,
+                  errors,
+                  touched,
+                  handleChange,
+                  handleBlur,
+                  isSubmitting,
+                  isValid,
+                }) => (
+                  <Form className="flex flex-col gap-3 p-4">
+                    <div className="flex flex-col">
+                      <label className="label">University Name</label>
+                      <Field
+                        name="universityName"
+                        type="text"
+                        placeholder="University Name"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        className={`input input-bordered input-primary ${
+                          errors.universityName && "input-error"
+                        }`}
+                      />
+                      <label className="label-text-alt text-error">
+                        {errors.universityName &&
+                          touched.universityName &&
+                          errors.universityName}
+                      </label>
+                    </div>
+                    <button
+                      type="submit"
+                      className={`btn btn-primary ${isSubmitting && "loading"}`}
+                      disabled={isSubmitting || !isValid}
+                    >
+                      Submit
+                    </button>
+                  </Form>
+                )}
+              </Formik>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Education Table */}
+      <div>
+        <div className="overflow-x-auto w-full h-screen ">
+          <table className="table w-full">
+            <thead className=" ">
+              <tr>
+                {EducationTableHeaders.map((title, index) => (
+                  <th className=" bg-nccGray-100" key={index}>
+                    {title}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {resultList?.map((datum: any, index: number) => (
+                <tr key={index}>
+                  <td key={datum.id}>
+                    <div className=" flex justify-between">{`${datum.name}`}</div>
+                  </td>
+                  <td key={index}>
+                    {datum.Programs?.items.map((program: Program) => (
+                      <div
+                        key={program?.id}
+                        className="badge badge-accent text-primary-content mr-2"
+                      >
+                        {program?.name}
+                      </div>
+                    ))}
+
+                    {datum.Programs?.items.length === 0 && (
+                      <div className="badge badge-error text-error-content">
+                        No Programs
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+            <tfoot></tfoot>
+          </table>
+        </div>
+      </div>
+    </PageComponent>
+  );
+}
