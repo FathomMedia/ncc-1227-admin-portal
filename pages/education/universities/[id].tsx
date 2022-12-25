@@ -12,7 +12,6 @@ export default function UniversityInfo() {
       <PageComponent title={"UniversityInfo"}>
         <div>{id}</div>
       </PageComponent>
-      z
     </div>
   );
 }

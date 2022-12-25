@@ -14,13 +14,67 @@ interface Props {
   universityName: string;
 }
 export default function education() {
-  const { universityList, addNewUniversity, programsList } = useEducation();
+  const { universityList, addNewUniversity } = useEducation();
   const { push } = useRouter();
 
   const [searchValue, setSearchValue] = useState("");
   const [resultList, setResultList] = useState<any>([]);
 
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+
+  // Table Data Pagination
+  const elementPerPage = 10;
+  const [numberOfPages, setNumberOfPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [disableForward, setDisableForward] = useState(false);
+  const [disableBackward, setDisableBackward] = useState(true);
+  const [shownData, setShownData] = useState<any>([]);
+
+  useEffect(() => {
+    setNumberOfPages(Math.ceil((universityList?.length ?? 0) / elementPerPage));
+
+    return () => {};
+  }, [universityList]);
+
+  useEffect(() => {
+    setDisableBackward(true);
+    setDisableForward(true);
+
+    if (currentPage > 1) {
+      setDisableBackward(false);
+    }
+
+    if (currentPage < numberOfPages) {
+      setDisableForward(false);
+    }
+
+    return () => {};
+  }, [currentPage, numberOfPages]);
+
+  useEffect(() => {
+    paginate();
+
+    return () => {};
+  }, [universityList, currentPage]);
+
+  function goNextPage() {
+    setCurrentPage(currentPage + 1);
+  }
+
+  function goPrevPage() {
+    setCurrentPage(currentPage - 1);
+  }
+
+  function paginate() {
+    setShownData(
+      universityList?.slice(
+        (currentPage - 1) * elementPerPage,
+        currentPage * elementPerPage
+      )
+    );
+  }
+
+  // Table Data Pagination
 
   const initialValues = {
     universityName: "",
@@ -222,8 +276,8 @@ export default function education() {
 
       {/* Education Table */}
       <div>
-        <div className="overflow-x-auto w-full h-screen ">
-          <table className="table w-full">
+        <div className="overflow-x-auto w-full h-screen mx-4">
+          <table className="table table-fixed w-full">
             <thead className=" ">
               <tr>
                 {EducationTableHeaders.map((title, index) => (
@@ -234,7 +288,7 @@ export default function education() {
               </tr>
             </thead>
             <tbody>
-              {resultList?.map((datum: any, index: number) => (
+              {shownData?.map((datum: any, index: number) => (
                 <tr key={index}>
                   <td key={datum.id}>
                     <div className=" flex justify-between">{`${datum.name}`}</div>
@@ -258,8 +312,32 @@ export default function education() {
                 </tr>
               ))}
             </tbody>
-            <tfoot></tfoot>
           </table>
+          {/* fake pagination */}
+          <div className=" flex justify-center mt-8">
+            <div className="btn-group">
+              <button
+                className="btn btn-accent text-anzac-500"
+                onClick={goPrevPage}
+                disabled={disableBackward}
+              >
+                «
+              </button>
+              <button
+                disabled
+                className="btn hover:cursor-auto disabled:btn-accent"
+              >
+                {currentPage}
+              </button>
+              <button
+                className="btn btn-accent  text-anzac-500"
+                onClick={goNextPage}
+                disabled={disableForward}
+              >
+                »
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </PageComponent>
