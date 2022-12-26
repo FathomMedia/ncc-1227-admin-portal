@@ -134,7 +134,7 @@ export default function AddProgram() {
                       }`}
                       value={values.universityID}
                     >
-                      <option selected disabled value={undefined}>
+                      <option disabled value={undefined}>
                         Select
                       </option>
                       {universityList?.map((uni) => (

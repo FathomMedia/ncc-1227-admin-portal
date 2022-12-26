@@ -8,9 +8,6 @@ import { Application } from "../../src/API";
 import ApplicationViewComponent from "../../components/application-view-component";
 import ViewApplication from "../../components/application-view-component";
 
-// You should use getServerSideProps when:
-// - Only if you need to pre-render a page whose data must be fetched at request time
-
 interface Props {
   application: Application;
 }

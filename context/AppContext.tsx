@@ -1,5 +1,5 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
-import { API, graphqlOperation } from "aws-amplify";
+import { API } from "aws-amplify";
 import {
   createContext,
   FC,
@@ -8,12 +8,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import {
-  GetAdminQueryVariables,
-  ListAdminLogsQueryVariables,
-  ListAdminsQuery,
-  ListAdminsQueryVariables,
-} from "../src/API";
+import { ListAdminsQuery, ListAdminsQueryVariables } from "../src/API";
 import { listAdmins } from "../src/graphql/queries";
 
 // interface for all the values & functions

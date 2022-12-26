@@ -47,14 +47,17 @@ type AdminLog @model @auth(rules: [{ allow: public }]) {
   id: ID!
   applicationID: ID!
   adminCPR: String!
+  admin: Admin @belongsTo(fields: ["adminCPR"])
   dateTime: AWSDateTime
   snapshot: String
+  reason: String
 }
 
 type StudentLog @model @auth(rules: [{ allow: public }]) {
   id: ID!
   applicationID: ID!
   studentCPR: String!
+  student: Student @belongsTo(fields: ["studentCPR"])
   dateTime: AWSDateTime
   snapshot: String
   reason: String
@@ -70,7 +73,6 @@ type Admin @model @auth(rules: [{ allow: public }]) {
 enum Status {
   APPROVED
   REJECTED
-  CANCELED
   REVIEW
   WITHDRAWN
   ELIGIBLE
@@ -117,5 +119,6 @@ type Student @model @auth(rules: [{ allow: public }]) {
   address: String
   applications: [Application] @hasMany(indexName: "byCPR", fields: ["cpr"])
   ParentInfo: ParentInfo @hasOne(fields: ["parentInfoID"])
+  StudentLogs: [StudentLog] @hasMany
   parentInfoID: ID
 }

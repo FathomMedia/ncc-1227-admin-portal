@@ -460,8 +460,19 @@ export const getAdminLog = /* GraphQL */ `
       id
       applicationID
       adminCPR
+      admin {
+        cpr
+        fullName
+        email
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
       dateTime
       snapshot
+      reason
       createdAt
       updatedAt
       _version
@@ -485,6 +496,7 @@ export const listAdminLogs = /* GraphQL */ `
         adminCPR
         dateTime
         snapshot
+        reason
         createdAt
         updatedAt
         _version
@@ -517,6 +529,7 @@ export const syncAdminLogs = /* GraphQL */ `
         adminCPR
         dateTime
         snapshot
+        reason
         createdAt
         updatedAt
         _version
@@ -536,6 +549,27 @@ export const getStudentLog = /* GraphQL */ `
       id
       applicationID
       studentCPR
+      student {
+        cpr
+        fullName
+        email
+        phone
+        gender
+        schoolName
+        specialization
+        placeOfBirth
+        studentOrderAmongSiblings
+        householdIncome
+        preferredLanguage
+        graduationDate
+        address
+        parentInfoID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
       dateTime
       snapshot
       reason
@@ -545,6 +579,7 @@ export const getStudentLog = /* GraphQL */ `
       _deleted
       _lastChangedAt
       applicationStudentLogsId
+      studentStudentLogsCpr
     }
   }
 `;
@@ -568,6 +603,7 @@ export const listStudentLogs = /* GraphQL */ `
         _deleted
         _lastChangedAt
         applicationStudentLogsId
+        studentStudentLogsCpr
       }
       nextToken
       startedAt
@@ -600,6 +636,7 @@ export const syncStudentLogs = /* GraphQL */ `
         _deleted
         _lastChangedAt
         applicationStudentLogsId
+        studentStudentLogsCpr
       }
       nextToken
       startedAt
@@ -811,6 +848,10 @@ export const getStudent = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+      }
+      StudentLogs {
+        nextToken
+        startedAt
       }
       parentInfoID
       createdAt

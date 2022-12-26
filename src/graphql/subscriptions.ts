@@ -473,8 +473,19 @@ export const onCreateAdminLog = /* GraphQL */ `
       id
       applicationID
       adminCPR
+      admin {
+        cpr
+        fullName
+        email
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
       dateTime
       snapshot
+      reason
       createdAt
       updatedAt
       _version
@@ -491,8 +502,19 @@ export const onUpdateAdminLog = /* GraphQL */ `
       id
       applicationID
       adminCPR
+      admin {
+        cpr
+        fullName
+        email
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
       dateTime
       snapshot
+      reason
       createdAt
       updatedAt
       _version
@@ -509,8 +531,19 @@ export const onDeleteAdminLog = /* GraphQL */ `
       id
       applicationID
       adminCPR
+      admin {
+        cpr
+        fullName
+        email
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
       dateTime
       snapshot
+      reason
       createdAt
       updatedAt
       _version
@@ -529,6 +562,27 @@ export const onCreateStudentLog = /* GraphQL */ `
       id
       applicationID
       studentCPR
+      student {
+        cpr
+        fullName
+        email
+        phone
+        gender
+        schoolName
+        specialization
+        placeOfBirth
+        studentOrderAmongSiblings
+        householdIncome
+        preferredLanguage
+        graduationDate
+        address
+        parentInfoID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
       dateTime
       snapshot
       reason
@@ -538,6 +592,7 @@ export const onCreateStudentLog = /* GraphQL */ `
       _deleted
       _lastChangedAt
       applicationStudentLogsId
+      studentStudentLogsCpr
     }
   }
 `;
@@ -549,6 +604,27 @@ export const onUpdateStudentLog = /* GraphQL */ `
       id
       applicationID
       studentCPR
+      student {
+        cpr
+        fullName
+        email
+        phone
+        gender
+        schoolName
+        specialization
+        placeOfBirth
+        studentOrderAmongSiblings
+        householdIncome
+        preferredLanguage
+        graduationDate
+        address
+        parentInfoID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
       dateTime
       snapshot
       reason
@@ -558,6 +634,7 @@ export const onUpdateStudentLog = /* GraphQL */ `
       _deleted
       _lastChangedAt
       applicationStudentLogsId
+      studentStudentLogsCpr
     }
   }
 `;
@@ -569,6 +646,27 @@ export const onDeleteStudentLog = /* GraphQL */ `
       id
       applicationID
       studentCPR
+      student {
+        cpr
+        fullName
+        email
+        phone
+        gender
+        schoolName
+        specialization
+        placeOfBirth
+        studentOrderAmongSiblings
+        householdIncome
+        preferredLanguage
+        graduationDate
+        address
+        parentInfoID
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
       dateTime
       snapshot
       reason
@@ -578,6 +676,7 @@ export const onDeleteStudentLog = /* GraphQL */ `
       _deleted
       _lastChangedAt
       applicationStudentLogsId
+      studentStudentLogsCpr
     }
   }
 `;
@@ -749,6 +848,10 @@ export const onCreateStudent = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
+      StudentLogs {
+        nextToken
+        startedAt
+      }
       parentInfoID
       createdAt
       updatedAt
@@ -797,6 +900,10 @@ export const onUpdateStudent = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
+      StudentLogs {
+        nextToken
+        startedAt
+      }
       parentInfoID
       createdAt
       updatedAt
@@ -844,6 +951,10 @@ export const onDeleteStudent = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+      }
+      StudentLogs {
+        nextToken
+        startedAt
       }
       parentInfoID
       createdAt

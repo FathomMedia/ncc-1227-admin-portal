@@ -5,15 +5,9 @@ import { schema } from './schema';
 const Status = {
   "APPROVED": "APPROVED",
   "REJECTED": "REJECTED",
-  "CANCELED": "CANCELED",
   "REVIEW": "REVIEW",
   "WITHDRAWN": "WITHDRAWN",
   "ELIGIBLE": "ELIGIBLE"
-};
-
-const Language = {
-  "ARABIC": "ARABIC",
-  "ENGLISH": "ENGLISH"
 };
 
 const Gender = {
@@ -21,20 +15,25 @@ const Gender = {
   "MALE": "MALE"
 };
 
-const { Attachment, Application, AdminLog, StudentLog, ProgramChoice, Program, University, Admin, ParentInfo, Student } = initSchema(schema);
+const Language = {
+  "ARABIC": "ARABIC",
+  "ENGLISH": "ENGLISH"
+};
+
+const { Attachment, Application, AdminLog, Admin, StudentLog, Student, ParentInfo, ProgramChoice, Program, University } = initSchema(schema);
 
 export {
   Attachment,
   Application,
   AdminLog,
+  Admin,
   StudentLog,
+  Student,
+  ParentInfo,
   ProgramChoice,
   Program,
   University,
-  Admin,
-  ParentInfo,
-  Student,
   Status,
-  Language,
-  Gender
+  Gender,
+  Language
 };

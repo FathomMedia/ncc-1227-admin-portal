@@ -9,6 +9,7 @@ import SecondaryButton from "../../components/secondary-button";
 import { Formik, Form, Field } from "formik";
 import * as yup from "yup";
 import toast, { Toaster } from "react-hot-toast";
+import { TableData } from "../../components/table-component";
 
 interface Props {
   universityName: string;
@@ -55,7 +56,7 @@ export default function education() {
     paginate();
 
     return () => {};
-  }, [universityList, currentPage]);
+  }, [universityList, currentPage, resultList]);
 
   function goNextPage() {
     setCurrentPage(currentPage + 1);
@@ -67,7 +68,7 @@ export default function education() {
 
   function paginate() {
     setShownData(
-      universityList?.slice(
+      resultList?.slice(
         (currentPage - 1) * elementPerPage,
         currentPage * elementPerPage
       )
@@ -159,6 +160,7 @@ export default function education() {
               }
             }}
             onSubmit={(value: string) => {
+              console.log("Searching..", value);
               setSearchValue(value);
               search();
             }}

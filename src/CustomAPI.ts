@@ -1,0 +1,389 @@
+import { GraphQLResult } from "@aws-amplify/api-graphql";
+import { API, graphqlOperation, Storage } from "aws-amplify";
+import {
+  Admin,
+  AdminLog,
+  Application,
+  CreateAdminLogMutation,
+  CreateAdminLogMutationVariables,
+  CreateApplicationMutation,
+  CreateApplicationMutationVariables,
+  CreateAttachmentMutation,
+  CreateAttachmentMutationVariables,
+  CreateProgramChoiceMutation,
+  CreateProgramChoiceMutationVariables,
+  CreateStudentLogMutation,
+  CreateStudentLogMutationVariables,
+  Program,
+  UpdateApplicationMutation,
+  UpdateApplicationMutationVariables,
+  UpdateAttachmentMutation,
+  UpdateAttachmentMutationVariables,
+  UpdateProgramChoiceMutation,
+  UpdateProgramChoiceMutationVariables,
+} from "./API";
+import {
+  createAttachment,
+  updateAttachment,
+  createApplication,
+  updateApplication,
+  createProgramChoice,
+  updateProgramChoice,
+  createStudentLog,
+  createAdminLog,
+} from "./graphql/mutations";
+
+/* -------------------------------------------------------------------------- */
+/*                                    ENUMS                                   */
+/* -------------------------------------------------------------------------- */
+export enum DocType {
+  CPR,
+  ACCEPTANCE,
+  TRANSCRIPT,
+  SIGNED_CONTRACT,
+}
+
+export interface DownloadLinks {
+  cprDoc?: string | null;
+  acceptanceLetterDoc?: string | null;
+  transcriptDoc?: string | null;
+  signedContractDoc?: string | null;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                             CUSTOM API QUERIES                             */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * It takes an application ID as a parameter and returns the application data as a promise
+ * @param {string} id - string
+ * @returns A promise of an application
+ */
+export async function getApplicationData(
+  id: string
+): Promise<Application | undefined> {
+  let q = `query MyQuery {
+        getApplication(id: "${id}") {
+                id
+                _version
+                _deleted
+                gpa
+                createdAt
+                attachmentID
+                applicationAttachmentId
+                _lastChangedAt
+                studentCPR
+                status
+                updatedAt
+                attachment {
+                  id
+                  transcriptDoc
+                  signedContractDoc
+                  cprDoc
+                  acceptanceLetterDoc
+                  _version
+                  _deleted
+                  _lastChangedAt
+                  createdAt
+                  updatedAt
+                }
+                programs {
+                  items {
+                    id
+                    choiceOrder
+                    applicationID
+                    applicationProgramsId
+                    programApplicationsId
+                    programID
+                    program {
+                      id
+                      name
+                      requirements
+                      availability
+                      university {
+                        id
+                        name
+                      }
+                      _version
+                      _deleted
+                    }
+                    _version
+                    _deleted
+                  }
+                }
+                studentLogs {
+                  items {
+                    id
+                    dateTime
+                    studentCPR
+                    snapshot
+                    reason
+                    applicationStudentLogsId
+                    applicationID
+                    _version
+                  }
+                }
+              }
+      }
+      `;
+
+  const res = (await API.graphql(graphqlOperation(q))) as GraphQLResult<any>;
+
+  if (res.data === undefined || res.data === null) {
+    return undefined;
+  }
+
+  let application = res.data?.getApplication as Application;
+
+  return application;
+}
+
+/**
+ * It queries the GraphQL API for all the programs in the database, and returns them as an array of
+ * Program objects
+ * @returns A list of all programs
+ */
+export async function listAllPrograms() {
+  let q = `
+    query ListAllPrograms {
+      listPrograms {
+        items {
+          id
+          name
+          requirements
+          universityID
+          universityProgramsId
+          updatedAt
+          createdAt
+          availability
+          _version
+          _lastChangedAt
+          _deleted
+          university {
+            id
+            _deleted
+            _version
+            name
+          }
+        }
+      }
+    }
+    `;
+
+  let res = (await API.graphql(graphqlOperation(q))) as GraphQLResult<any>; // your fetch function here
+  let programs = res.data?.listPrograms.items as Program[];
+  return programs;
+}
+
+/**
+ * It takes in a mutation variable object, and returns a promise that resolves to a GraphQL result
+ * object
+ * @param {CreateAttachmentMutationVariables} mutationVars - CreateAttachmentMutationVariables
+ * @returns The data from the mutation.
+ */
+export async function createAttachmentInDB(
+  mutationVars: CreateAttachmentMutationVariables
+): Promise<CreateAttachmentMutation | undefined> {
+  let res = (await API.graphql({
+    query: createAttachment,
+    variables: mutationVars,
+  })) as GraphQLResult<CreateAttachmentMutation>;
+
+  return res.data;
+}
+
+/**
+ * It takes in a mutation variable object, and returns a promise that resolves to the mutation result
+ * @param {UpdateAttachmentMutationVariables} mutationVars - UpdateAttachmentMutationVariables
+ * @returns The return type is a promise that resolves to an object of type UpdateAttachmentMutation.
+ */
+export async function updateAttachmentInDB(
+  mutationVars: UpdateAttachmentMutationVariables
+): Promise<UpdateAttachmentMutation | undefined> {
+  let res = (await API.graphql({
+    query: updateAttachment,
+    variables: mutationVars,
+  })) as GraphQLResult<UpdateAttachmentMutation>;
+
+  return res.data;
+}
+
+/**
+ * It takes in a mutation variable object, and returns a promise that resolves to a mutation object
+ * @param {CreateApplicationMutationVariables} mutationVars - CreateApplicationMutationVariables
+ * @returns The data from the mutation.
+ */
+export async function createApplicationInDB(
+  mutationVars: CreateApplicationMutationVariables
+): Promise<CreateApplicationMutation | undefined> {
+  let res = (await API.graphql({
+    query: createApplication,
+    variables: mutationVars,
+  })) as GraphQLResult<CreateApplicationMutation>;
+
+  return res.data;
+}
+
+/**
+ * It takes in a set of variables, and returns the result of the mutation
+ * @param {UpdateApplicationMutationVariables} mutationVars - UpdateApplicationMutationVariables
+ * @returns The data from the mutation.
+ */
+export async function updateApplicationInDB(
+  mutationVars: UpdateApplicationMutationVariables
+): Promise<UpdateApplicationMutation | undefined> {
+  let res = (await API.graphql({
+    query: updateApplication,
+    variables: mutationVars,
+  })) as GraphQLResult<UpdateApplicationMutation>;
+
+  return res.data;
+}
+
+/**
+ * It takes in a variable of type CreateProgramChoiceMutationVariables and returns a promise of type
+ * CreateProgramChoiceMutation or undefined
+ * @param {CreateProgramChoiceMutationVariables} mutationVars - CreateProgramChoiceMutationVariables
+ * @returns The data from the mutation.
+ */
+export async function createProgramChoiceInDB(
+  mutationVars: CreateProgramChoiceMutationVariables
+): Promise<CreateProgramChoiceMutation | undefined> {
+  let res = (await API.graphql({
+    query: createProgramChoice,
+    variables: mutationVars,
+  })) as GraphQLResult<CreateProgramChoiceMutation>;
+
+  return res.data;
+}
+
+/**
+ * It takes in a `mutationVars` object, and returns a promise that resolves to the
+ * `UpdateProgramChoiceMutation` object
+ * @param {UpdateProgramChoiceMutationVariables} mutationVars - UpdateProgramChoiceMutationVariables
+ * @returns The data from the mutation
+ */
+export async function updateProgramChoiceInDB(
+  mutationVars: UpdateProgramChoiceMutationVariables
+): Promise<UpdateProgramChoiceMutation | undefined> {
+  let res = (await API.graphql({
+    query: updateProgramChoice,
+    variables: mutationVars,
+  })) as GraphQLResult<UpdateProgramChoiceMutation>;
+
+  return res.data;
+}
+
+/**
+ * It takes in a mutation variable object, and returns a promise that resolves to the mutation result
+ * @param {CreateStudentLogMutationVariables} mutationVars - CreateStudentLogMutationVariables
+ * @returns The data from the mutation
+ */
+export async function createStudentLogInDB(
+  mutationVars: CreateStudentLogMutationVariables
+): Promise<CreateStudentLogMutation | undefined> {
+  let res = (await API.graphql({
+    query: createStudentLog,
+    variables: mutationVars,
+  })) as GraphQLResult<CreateStudentLogMutation>;
+
+  return res.data;
+}
+
+/**
+ * It takes a file and a document type, and uploads the file to the AWS S3 bucket, and returns the
+ * key of the file
+ * @param {File} file - File - The file to be uploaded
+ * @param {DocType} type - DocType - this is an enum that I have defined in my code.
+ * @returns The key of the file uploaded to the storage bucket.
+ */
+export async function uploadFile(file: File, type: DocType, cpr: string) {
+  try {
+    let res = await Storage.put(
+      `Student${cpr}/${cpr}#${DocType[type]}#${new Date().getDate()}`,
+      file,
+      {
+        contentType: file.type,
+      }
+    );
+    return res.key;
+  } catch (error) {
+    console.log("Error uploading file: ", error);
+    return null;
+  }
+}
+
+export async function createAdminLogInDB(
+  mutationVars: CreateAdminLogMutationVariables
+): Promise<CreateAdminLogMutation | undefined> {
+  let res = (await API.graphql({
+    query: createAdminLog,
+    variables: mutationVars,
+  })) as GraphQLResult<CreateAdminLogMutation>;
+
+  return res.data;
+}
+
+export async function getApplicationLogHistory(
+  id: string
+): Promise<AdminLog[]> {
+  let q = `
+  query GetApplicationLogHistory {
+    getApplication(id: "${id}") {
+      adminLogs {
+        items {
+          adminCPR
+          adminAdminLogsCpr
+          applicationAdminLogsId
+          _deleted
+          _lastChangedAt
+          _version
+          applicationID
+          createdAt
+          dateTime
+          id
+          reason
+          snapshot
+          updatedAt
+          admin {
+            fullName
+          }
+        }
+      }
+    }
+  }
+      `;
+
+  const res = (await API.graphql(graphqlOperation(q))) as GraphQLResult<any>;
+
+  if (res.data === undefined || res.data === null) {
+    return [];
+  }
+
+  let adminLogs = res.data.getApplication.adminLogs.items as AdminLog[];
+
+  return adminLogs;
+}
+
+export async function getAdminByCPR(id: string): Promise<Admin | undefined> {
+  let q = `
+  query GetAdminByCPR {
+    getAdmin(cpr: "${id}") {
+      cpr
+      _version
+      email
+      fullName
+    }
+  }
+      `;
+
+  const res = (await API.graphql(graphqlOperation(q))) as GraphQLResult<any>;
+
+  if (res.data === undefined || res.data === null) {
+    return undefined;
+  }
+
+  let admin = res.data as Admin;
+
+  return admin;
+}

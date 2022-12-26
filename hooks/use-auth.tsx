@@ -118,7 +118,6 @@ function useProvideAuth() {
 
           setIsSignedIn(true);
           setUser(cognitoUser);
-
           if (cognitoUser !== undefined) {
             if (cognitoUser.challengeName === "NEW_PASSWORD_REQUIRED") {
               push("../changePassword");
@@ -174,3 +173,5 @@ function useProvideAuth() {
     isChangePasswordRequired,
   };
 }
+
+// export async function getAdminUser(params: type) {}

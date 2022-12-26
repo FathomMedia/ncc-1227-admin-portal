@@ -12,13 +12,14 @@ import Image from "next/image";
 import { useAuth } from "../hooks/use-auth";
 
 export default function NavbarComponent() {
-  const { signOut, isSignedIn } = useAuth();
+  const { signOut, isSignedIn, user } = useAuth();
   return (
     <div className=" flex flex-col justify-between p-4 bg-nccGray-50 py-24 ">
       <div className="flex flex-col gap-4">
         <div className=" mb-8">
           <img src="/logo.svg" alt="logo" />
         </div>
+        <div className=" flex justify-center mb-8">{user?.getUsername()}</div>
         <NavBarButton
           name={"Dashboard"}
           icon={
