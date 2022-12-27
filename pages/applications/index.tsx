@@ -1,4 +1,5 @@
-import { Field, Formik } from "formik";
+import { Button } from "@aws-amplify/ui-react";
+import { Field, Form, Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -9,12 +10,16 @@ import { PageComponent } from "../../components/page-component";
 import PrimaryButton from "../../components/primary-button";
 import SearchBarComponent from "../../components/search-bar-component";
 import { StudentsTableHeaders } from "../../constants/table-headers";
+import { useEducation } from "../../context/EducationContext";
 import { useStudent } from "../../context/StudentContext";
 import { Status } from "../../src/API";
 
 export default function Applications() {
   const { applications, students } = useStudent();
+  const { universityList, programsList } = useEducation();
   const { push } = useRouter();
+
+  const [searchValue, setSearchValue] = useState("");
 
   // Table Data Pagination
   const elementPerPage = 10;
@@ -72,8 +77,26 @@ export default function Applications() {
   }
   // Table Data Pagination
 
+  //search for admin user
+  function search() {
+    let searchResult = applications?.filter(
+      (application) =>
+        findStudentName(application.studentCPR)
+          ?.toLowerCase()
+          .includes(searchValue.toLowerCase()) ||
+        application.studentCPR.toLowerCase().includes(searchValue.toLowerCase())
+    );
+
+    setShownData(searchResult);
+
+    console.log("Searching: ", searchResult);
+  }
+
   // ! TODO - reset all filters
-  function resetFilters() {}
+  function resetFilters() {
+    setSearchValue("");
+    paginate();
+  }
 
   return (
     <PageComponent title={"Applications"}>
@@ -85,93 +108,125 @@ export default function Applications() {
         </div>
       </div>
 
-      {/* add formik functionality */}
-      <Formik
-        initialValues={{
-          applicationStatus: "",
-          university: "",
-          program: "",
-        }}
-        onSubmit={(values, actions) => {
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            actions.setSubmitting(false);
-          }, 1000);
-        }}
-      >
-        {/* applications search bar */}
-        <div className=" my-8 p-4 w-full h-32 border border-nccGray-100 rounded-xl bg-nccGray-100 flex justify-between items-center gap-4">
-          <div className=" ">
-            <div>
-              <div className=" text-sm font-semibold text-gray-500">
-                Search for applicants
-              </div>
-              <SearchBarComponent
-                searchChange={(value) => {}}
-                onSubmit={(value: string) => {}}
-              />
-            </div>
-          </div>
-          <div>
-            <div className=" text-sm font-semibold text-gray-500">Status</div>
-            <div>
-              <Field
-                className=" border rounded-xl"
-                as="select"
-                name="applicationStatus"
-              >
-                <option disabled value={undefined}>
-                  Select
-                </option>
-                <option value="ELIGIBLE">ELIGIBLE</option>
-                <option value="APPROVED">APPROVED</option>
-                <option value="REJECTED">REJECTED</option>
-                <option value="WITHDRAWN">WITHDRAWN</option>
-                <option value="REVIEW">REVIEW</option>
-              </Field>
-            </div>
-          </div>
-          <div>
+      {/* applications search bar */}
+      <div className=" my-8 p-4 w-full h-32 border border-nccGray-100 rounded-xl bg-nccGray-100 flex items-center ">
+        <div className=" flex gap-4 w-full ">
+          <div className=" grow py-4">
             <div className=" text-sm font-semibold text-gray-500">
-              University
+              Search for applicants
             </div>
-            <div>
-              {/* todo - add all universities as options*/}
-              <Field
-                className=" border rounded-xl"
-                as="select"
-                name="university"
-              >
-                <option disabled value={undefined}>
-                  Select
-                </option>
-              </Field>
-            </div>
-          </div>
-          <div>
-            <div className=" text-sm font-semibold text-gray-500">Program</div>
-            <div>
-              {/* todo - add all programs as options */}
-              <Field className=" border rounded-xl" as="select" name="program">
-                <option disabled value={undefined}>
-                  Select
-                </option>
-              </Field>
-            </div>
-          </div>
-          <div className=" flex justify-between gap-4 items-center">
-            <Link href={""} className=" link link-primary min-w-fit">
-              Reset filters
-            </Link>
-            <PrimaryButton
-              name={"Apply Filters"}
-              buttonClick={function (): void {
-                throw new Error("Function not implemented.");
+            <SearchBarComponent
+              searchChange={(value) => {
+                console.log(value);
+                setSearchValue(value);
               }}
-            ></PrimaryButton>
+              onSubmit={(value: string) => {
+                setSearchValue(value);
+                search();
+              }}
+            />
           </div>
+
+          <Formik
+            initialValues={{
+              applicationStatus: undefined,
+              university: undefined,
+              program: undefined,
+            }}
+            onSubmit={(values, actions) => {
+              console.log("values", values);
+            }}
+          >
+            {({
+              values,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              isSubmitting,
+              isValid,
+            }) => (
+              <Form className="flex flex-col gap-3 p-4">
+                <div className=" flex gap-4">
+                  <div>
+                    <div className=" text-sm font-semibold text-gray-500 mb-1">
+                      Status
+                    </div>
+                    <div>
+                      <Field
+                        className=" border rounded-xl"
+                        as="select"
+                        name="applicationStatus"
+                      >
+                        <option value={undefined}>All</option>
+                        <option value="ELIGIBLE">ELIGIBLE</option>
+                        <option value="APPROVED">APPROVED</option>
+                        <option value="REJECTED">REJECTED</option>
+                        <option value="WITHDRAWN">WITHDRAWN</option>
+                        <option value="REVIEW">REVIEW</option>
+                      </Field>
+                    </div>
+                  </div>
+                  <div>
+                    <div className=" text-sm font-semibold text-gray-500 mb-1">
+                      University
+                    </div>
+                    <div>
+                      <Field
+                        className=" border rounded-xl"
+                        as="select"
+                        name="university"
+                      >
+                        <option value={undefined}>All</option>
+                        {universityList?.map((uni) => (
+                          <option key={`${uni.id}`} value={`${uni.name}`}>
+                            {uni.name}
+                          </option>
+                        ))}
+                      </Field>
+                    </div>
+                  </div>
+                  <div>
+                    <div className=" text-sm font-semibold text-gray-500 mb-1">
+                      Program
+                    </div>
+                    <div>
+                      <Field
+                        className=" border rounded-xl"
+                        as="select"
+                        name="program"
+                      >
+                        <option value={undefined}>All</option>
+                        {programsList?.map((program, index) => (
+                          <option key={index} value={`${program.name}`}>
+                            {program.name}
+                          </option>
+                        ))}
+                      </Field>
+                    </div>
+                  </div>
+                  <div className=" flex justify-between gap-4 items-center">
+                    <Link
+                      href={""}
+                      onClick={resetFilters}
+                      className=" link link-primary min-w-fit"
+                    >
+                      Reset filters
+                    </Link>
+
+                    <button
+                      type="submit"
+                      className={`min-w-[8rem] px-4 py-2 border-2 border-anzac-400 rounded-xl bg-anzac-400 text-white text-xs font-bold hover:cursor-pointer`}
+                    >
+                      Apply Filters
+                    </button>
+                  </div>
+                </div>
+              </Form>
+            )}
+          </Formik>
         </div>
-      </Formik>
+      </div>
 
       {/* applications table with pagination*/}
       <div>

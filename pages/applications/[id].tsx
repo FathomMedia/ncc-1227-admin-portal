@@ -48,6 +48,7 @@ const ApplicationInfo: FC<Props> = (props) => {
             transcriptDoc: props.application.attachment?.transcriptDoc,
             signedContractDoc: props.application.attachment?.signedContractDoc,
           }}
+          readOnly={false}
         ></ViewApplication>
       </PageComponent>
     </div>

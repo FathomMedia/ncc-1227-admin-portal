@@ -2,15 +2,16 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import applications from "..";
 import { PageComponent } from "../../../components/page-component";
-import { Admin, AdminLog } from "../../../src/API";
-import {
-  getAdminByCPR,
-  getApplicationLogHistory,
-} from "../../../src/CustomAPI";
+import { AdminLog } from "../../../src/API";
+import { getApplicationLogHistory } from "../../../src/CustomAPI";
 
 import { GetServerSideProps } from "next";
 import { useAuth } from "../../../hooks/use-auth";
 import { withSSRContext } from "aws-amplify";
+import { BsFillEyeFill } from "react-icons/bs";
+import { HiDotsVertical } from "react-icons/hi";
+import { Formik, Form, Field } from "formik";
+import toast from "react-hot-toast";
 
 interface Props {
   applicationHistory: AdminLog[];
@@ -18,7 +19,6 @@ interface Props {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { id } = ctx.query;
-  const { Auth } = withSSRContext(ctx);
 
   let applicationHistory = await getApplicationLogHistory(`${id}`);
 
@@ -32,6 +32,7 @@ export default function ApplicationLog({ applicationHistory }: Props) {
   const { id } = router.query;
 
   const [logHistory, setLogHistory] = useState<(AdminLog | null)[]>([]);
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
   // Table Data Pagination
   const elementPerPage = 10;
@@ -95,6 +96,28 @@ export default function ApplicationLog({ applicationHistory }: Props) {
             </div>
           </div>
 
+          {/* modal dialogue - adds university to db */}
+          <div className={` modal ${isSubmitted && "modal-open"}`}>
+            <div className="modal-box relative">
+              <label
+                onClick={() => setIsSubmitted(!isSubmitted)}
+                className="btn btn-sm btn-circle absolute right-2 top-2"
+              >
+                ✕
+              </label>
+              <div className=" p-4 mb-4">
+                <div className="text-lg font-bold">Application Snapshot</div>
+                <div>
+                  <div>
+                    {applicationHistory.map((log) => (
+                      <div>{log.snapshot}</div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* application table */}
           <div>
             <div className="overflow-x-auto w-full h-screen">
@@ -105,6 +128,7 @@ export default function ApplicationLog({ applicationHistory }: Props) {
                     <th>CPR</th>
                     <th>Date</th>
                     <th>Reason</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -112,8 +136,29 @@ export default function ApplicationLog({ applicationHistory }: Props) {
                     <tr key={log.id}>
                       <td>{log.admin?.fullName}</td>
                       <td>{log.adminCPR}</td>
-                      <td>{log.createdAt}</td>
+                      <td>{`${Intl.DateTimeFormat("en", {
+                        timeStyle: "short",
+                        dateStyle: "medium",
+                      }).format(new Date(log.createdAt))}`}</td>
                       <td>{log.reason}</td>
+                      <td>
+                        <div className=" flex justify-end">
+                          <button className="btn btn-ghost btn-xs relative group">
+                            <HiDotsVertical />
+                            <div className=" hidden absolute right-6 top-5 bg-white shadow-lg p-1 rounded-lg group-focus:flex flex-col min-w-min">
+                              <div
+                                className="btn btn-ghost btn-xs hover:bg-anzac-100 hover:cursor-pointer hover:text-anzac-500 flex justify-start w-24 gap-2"
+                                onClick={() => {
+                                  setIsSubmitted(true);
+                                }}
+                              >
+                                <BsFillEyeFill />
+                                View
+                              </div>
+                            </div>
+                          </button>
+                        </div>
+                      </td>
                     </tr>
                   ))}
                 </tbody>

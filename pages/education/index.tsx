@@ -182,6 +182,7 @@ export default function education() {
         </div>
       </div>
 
+      {/* modal dialogue - adds university to db */}
       <div className={` modal ${isSubmitted && "modal-open"}`}>
         <div className="modal-box relative">
           <label

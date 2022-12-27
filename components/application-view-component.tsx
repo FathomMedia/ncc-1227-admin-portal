@@ -13,6 +13,7 @@ import { createAdminLogInDB, updateApplicationInDB } from "../src/CustomAPI";
 import toast from "react-hot-toast";
 import { useAuth } from "../hooks/use-auth";
 import { useRouter } from "next/router";
+import GetStorageLinkComponent from "./get-storage-link-component";
 
 interface Props {
   application: Application;
@@ -22,19 +23,26 @@ interface Props {
     transcriptDoc?: string | null;
     signedContractDoc?: string | null;
   };
+  readOnly: boolean;
 }
 
 interface IApplicationForm {
   applicationStatus: Status | undefined;
   reason: string | undefined;
+  readOnly: false;
 }
 
 const initialValues: IApplicationForm = {
   applicationStatus: Status.REVIEW,
   reason: undefined,
+  readOnly: false,
 };
 
-export default function ViewApplication({ application, downloadLinks }: Props) {
+export default function ViewApplication({
+  application,
+  downloadLinks,
+  readOnly,
+}: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const { user } = useAuth();
   const { push } = useRouter();
@@ -42,12 +50,14 @@ export default function ViewApplication({ application, downloadLinks }: Props) {
   return (
     <div className="overflow-x-auto mx-auto">
       <div className=" m-4 flex justify-end">
-        <PrimaryButton
-          name={!isEditing ? "Edit" : "Close"}
-          buttonClick={function (): void {
-            setIsEditing(!isEditing);
-          }}
-        ></PrimaryButton>
+        {!readOnly && (
+          <PrimaryButton
+            name={!isEditing ? "Edit" : "Close"}
+            buttonClick={function (): void {
+              setIsEditing(!isEditing);
+            }}
+          ></PrimaryButton>
+        )}
       </div>
 
       <Formik
@@ -87,7 +97,6 @@ export default function ViewApplication({ application, downloadLinks }: Props) {
               await createAdminLogInDB(createAdminLogVariables);
               push("/applications");
             });
-          console.log(res);
 
           actions.setSubmitting(false);
         }}
@@ -176,65 +185,41 @@ export default function ViewApplication({ application, downloadLinks }: Props) {
                 <tr>
                   <td>CPR Document</td>
                   <td>
-                    {downloadLinks.cprDoc ? (
-                      <Link
-                        className="link link-primary"
-                        href={downloadLinks.cprDoc}
-                        target="_blank"
-                      >
-                        View CPR
-                      </Link>
-                    ) : (
-                      "Document Not Available"
-                    )}
+                    {
+                      <GetStorageLinkComponent
+                        storageKey={downloadLinks.cprDoc}
+                      ></GetStorageLinkComponent>
+                    }
                   </td>
                 </tr>
                 <tr>
                   <td>Acceptance Letter Document</td>
                   <td>
-                    {downloadLinks.acceptanceLetterDoc ? (
-                      <Link
-                        className="link link-primary"
-                        href={downloadLinks.acceptanceLetterDoc}
-                        target="_blank"
-                      >
-                        View Acceptance Letter
-                      </Link>
-                    ) : (
-                      "Document Not Available"
-                    )}
+                    {
+                      <GetStorageLinkComponent
+                        storageKey={downloadLinks.acceptanceLetterDoc}
+                      ></GetStorageLinkComponent>
+                    }
                   </td>
                 </tr>
                 <tr>
                   <td>Transcript Document</td>
                   <td>
-                    {downloadLinks.transcriptDoc ? (
-                      <Link
-                        className="link link-primary"
-                        href={downloadLinks.transcriptDoc}
-                        target="_blank"
-                      >
-                        View Transcript
-                      </Link>
-                    ) : (
-                      "Document Not Available"
-                    )}
+                    {
+                      <GetStorageLinkComponent
+                        storageKey={downloadLinks.transcriptDoc}
+                      ></GetStorageLinkComponent>
+                    }
                   </td>
                 </tr>
                 <tr>
                   <td>Signed Contract Document</td>
                   <td>
-                    {downloadLinks.signedContractDoc ? (
-                      <Link
-                        className="link link-primary"
-                        href={downloadLinks.signedContractDoc}
-                        target="_blank"
-                      >
-                        View Signed Contract
-                      </Link>
-                    ) : (
-                      <span className="text-error">Document Not Available</span>
-                    )}
+                    {
+                      <GetStorageLinkComponent
+                        storageKey={downloadLinks.signedContractDoc}
+                      ></GetStorageLinkComponent>
+                    }
                   </td>
                 </tr>
                 <tr>

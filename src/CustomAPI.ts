@@ -1,5 +1,6 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { API, graphqlOperation, Storage } from "aws-amplify";
+import { idText } from "typescript";
 import {
   Admin,
   AdminLog,
@@ -15,6 +16,7 @@ import {
   CreateStudentLogMutation,
   CreateStudentLogMutationVariables,
   Program,
+  University,
   UpdateApplicationMutation,
   UpdateApplicationMutationVariables,
   UpdateAttachmentMutation,
@@ -386,4 +388,77 @@ export async function getAdminByCPR(id: string): Promise<Admin | undefined> {
   let admin = res.data as Admin;
 
   return admin;
+}
+
+export async function listAllAdminsLogs() {
+  let q = `
+  query ListAllAdminsLogs {
+    listAdminLogs {
+      items {
+        _deleted
+        _lastChangedAt
+        _version
+        admin {
+          cpr
+          email
+          fullName
+        }
+        adminAdminLogsCpr
+        adminCPR
+        applicationAdminLogsId
+        applicationID
+        createdAt
+        dateTime
+        id
+        reason
+        snapshot
+        updatedAt
+      }
+    }
+  }  
+    `;
+
+  let res = (await API.graphql(graphqlOperation(q))) as GraphQLResult<any>; // your fetch function here
+  let adminsLogs = res.data?.listAdminLogs.items as AdminLog[];
+  return adminsLogs;
+}
+
+export async function getAdminLogByID(
+  id: string
+): Promise<AdminLog | undefined> {
+  let q = `
+  query GetAdminLogByID {
+    getAdminLog(id: "${id}") {
+      _deleted
+      _version
+      adminAdminLogsCpr
+      adminCPR
+      applicationAdminLogsId
+      applicationID
+      createdAt
+      dateTime
+      id
+      reason
+      snapshot
+      updatedAt
+      admin {
+        _deleted
+        cpr
+        createdAt
+        email
+        fullName
+      }
+    }
+  }  
+      `;
+
+  const res = (await API.graphql(graphqlOperation(q))) as GraphQLResult<any>;
+
+  if (res.data === undefined || res.data === null) {
+    return undefined;
+  }
+
+  let adminLog = res.data.getAdminLog as AdminLog;
+
+  return adminLog;
 }
