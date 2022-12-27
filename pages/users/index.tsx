@@ -7,27 +7,31 @@ import SecondaryButton from "../../components/secondary-button";
 import UsersCardInfo from "../../components/users-card-info";
 import { useAppContext } from "../../context/AppContext";
 import { useRouter } from "next/navigation";
+import { Admin } from "../../src/API";
 
 export default function Users() {
   const admins = useAppContext();
-  let tempList = admins.admins?.listAdmins?.items ?? [];
+
   const router = useRouter();
 
   const [searchValue, setSearchValue] = useState("");
-  const [resultList, setResultList] = useState<typeof tempList>(tempList);
+  const [adminList, setAdminList] = useState<Admin[]>([]);
+  const [resultList, setResultList] = useState<Admin[]>([]);
 
   useEffect(() => {
-    setResultList(tempList);
+    let temp = admins.admins?.listAdmins?.items as Admin[];
+    setResultList(temp);
+    setAdminList(temp);
     return () => {};
-  }, [tempList]);
+  }, [admins]);
 
   function resetList() {
-    setResultList(tempList);
+    setResultList(adminList);
   }
 
   //search for admin user
   function search() {
-    let searchResult = tempList?.filter(
+    let searchResult = adminList?.filter(
       (value) =>
         value?.fullName?.toLowerCase().includes(searchValue.toLowerCase()) ||
         value?.cpr?.toLowerCase().includes(searchValue.toLowerCase())

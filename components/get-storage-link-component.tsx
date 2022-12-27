@@ -16,9 +16,6 @@ export default function GetStorageLinkComponent({ storageKey }: Props) {
       let link = await Storage.get(key);
       return link;
     }
-
-    console.log("storageKey", storageKey);
-
     storageKey &&
       getLink(storageKey).then((value) => {
         setLink(value);

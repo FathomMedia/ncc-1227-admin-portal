@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Toaster } from "react-hot-toast";
 import { useRouter } from "next/router";
 
-export default function adminLogs() {
+export default function AdminLogs() {
   const [adminsLogs, setAdminsLogs] = useState<AdminLog[]>([]);
 
   const { push } = useRouter();
@@ -20,7 +20,6 @@ export default function adminLogs() {
   async function getAdminsLogsList() {
     let res = await listAllAdminsLogs();
     setAdminsLogs(res);
-    console.log(res);
     return res;
   }
 

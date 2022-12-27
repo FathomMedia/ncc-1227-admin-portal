@@ -7,7 +7,6 @@ import { Toaster } from "react-hot-toast";
 import { BsFillEyeFill } from "react-icons/bs";
 import { HiDotsVertical, HiOutlineClipboardList } from "react-icons/hi";
 import { PageComponent } from "../../components/page-component";
-import PrimaryButton from "../../components/primary-button";
 import SearchBarComponent from "../../components/search-bar-component";
 import { StudentsTableHeaders } from "../../constants/table-headers";
 import { useEducation } from "../../context/EducationContext";
@@ -33,7 +32,7 @@ export default function Applications() {
     setNumberOfPages(Math.ceil((applications?.length ?? 0) / elementPerPage));
 
     return () => {};
-  }, [[applications]]);
+  }, [applications?.length]);
 
   useEffect(() => {
     setDisableBackward(true);
@@ -51,6 +50,14 @@ export default function Applications() {
   }, [currentPage, numberOfPages]);
 
   useEffect(() => {
+    function paginate() {
+      setShownData(
+        applications?.slice(
+          (currentPage - 1) * elementPerPage,
+          currentPage * elementPerPage
+        )
+      );
+    }
     paginate();
     return () => {};
   }, [applications, currentPage]);
@@ -61,15 +68,6 @@ export default function Applications() {
 
   function goPrevPage() {
     setCurrentPage(currentPage - 1);
-  }
-
-  function paginate() {
-    setShownData(
-      applications?.slice(
-        (currentPage - 1) * elementPerPage,
-        currentPage * elementPerPage
-      )
-    );
   }
 
   function findStudentName(id: string) {
@@ -88,14 +86,12 @@ export default function Applications() {
     );
 
     setShownData(searchResult);
-
-    console.log("Searching: ", searchResult);
   }
 
   // ! TODO - reset all filters
   function resetFilters() {
+    setShownData(applications);
     setSearchValue("");
-    paginate();
   }
 
   return (
@@ -242,7 +238,7 @@ export default function Applications() {
               </tr>
             </thead>
             <tbody>
-              {applications?.map((datum, index) => (
+              {shownData?.map((datum: any, index: number) => (
                 <tr key={index}>
                   <th key={datum?.id}>
                     <label>
@@ -282,12 +278,14 @@ export default function Applications() {
                   </td>
                   <td>
                     <div className=" flex flex-col gap-4">
-                      {datum.programs?.items.map((value, index) => (
-                        <div
-                          key={index}
-                          className=" "
-                        >{`${value?.program?.name} - ${value?.program?.university?.name}`}</div>
-                      ))}
+                      {datum.programs?.items.map(
+                        (value: any, index: number) => (
+                          <div
+                            key={index}
+                            className=" "
+                          >{`${value?.program?.name} - ${value?.program?.university?.name}`}</div>
+                        )
+                      )}
                     </div>
                   </td>
                   <td>

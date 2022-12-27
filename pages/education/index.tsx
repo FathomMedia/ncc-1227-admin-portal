@@ -14,7 +14,8 @@ import { TableData } from "../../components/table-component";
 interface Props {
   universityName: string;
 }
-export default function education() {
+
+export default function Education() {
   const { universityList, addNewUniversity } = useEducation();
   const { push } = useRouter();
 
@@ -24,7 +25,7 @@ export default function education() {
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
   // Table Data Pagination
-  const elementPerPage = 10;
+  const elementPerPage = 3;
   const [numberOfPages, setNumberOfPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [disableForward, setDisableForward] = useState(false);
@@ -32,10 +33,10 @@ export default function education() {
   const [shownData, setShownData] = useState<any>([]);
 
   useEffect(() => {
-    setNumberOfPages(Math.ceil((universityList?.length ?? 0) / elementPerPage));
+    setNumberOfPages(Math.ceil((resultList?.length ?? 0) / elementPerPage));
 
     return () => {};
-  }, [universityList]);
+  }, [resultList]);
 
   useEffect(() => {
     setDisableBackward(true);
@@ -53,10 +54,19 @@ export default function education() {
   }, [currentPage, numberOfPages]);
 
   useEffect(() => {
+    function paginate() {
+      setShownData(
+        resultList?.slice(
+          (currentPage - 1) * elementPerPage,
+          currentPage * elementPerPage
+        )
+      );
+    }
+
     paginate();
 
     return () => {};
-  }, [universityList, currentPage, resultList]);
+  }, [currentPage, resultList]);
 
   function goNextPage() {
     setCurrentPage(currentPage + 1);
@@ -66,25 +76,15 @@ export default function education() {
     setCurrentPage(currentPage - 1);
   }
 
-  function paginate() {
-    setShownData(
-      resultList?.slice(
-        (currentPage - 1) * elementPerPage,
-        currentPage * elementPerPage
-      )
-    );
-  }
-
+  useEffect(() => {
+    setResultList(universityList);
+    return () => {};
+  }, [universityList]);
   // Table Data Pagination
 
   const initialValues = {
     universityName: "",
   };
-
-  useEffect(() => {
-    setResultList(universityList);
-    return () => {};
-  }, [universityList]);
 
   function resetList() {
     setResultList(universityList);

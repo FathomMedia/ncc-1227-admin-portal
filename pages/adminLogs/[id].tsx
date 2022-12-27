@@ -15,7 +15,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { id } = ctx.query;
 
   let adminLog = await getAdminLogByID(`${id}`);
-  console.log(adminLog);
   return {
     props: { adminLog: adminLog },
   };
@@ -33,7 +32,8 @@ export default function AdminLogHistoryInfo({ adminLog }: Props) {
     }
 
     return () => {};
-  }, []);
+  }, [adminLog.snapshot]);
+
   return (
     <PageComponent title={"AdminLogHistory"}>
       <Toaster />

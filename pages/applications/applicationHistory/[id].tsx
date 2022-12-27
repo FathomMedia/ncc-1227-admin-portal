@@ -2,16 +2,13 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import applications from "..";
 import { PageComponent } from "../../../components/page-component";
-import { AdminLog } from "../../../src/API";
+import { AdminLog, Application } from "../../../src/API";
 import { getApplicationLogHistory } from "../../../src/CustomAPI";
 
 import { GetServerSideProps } from "next";
-import { useAuth } from "../../../hooks/use-auth";
-import { withSSRContext } from "aws-amplify";
 import { BsFillEyeFill } from "react-icons/bs";
 import { HiDotsVertical } from "react-icons/hi";
-import { Formik, Form, Field } from "formik";
-import toast from "react-hot-toast";
+import ViewApplication from "../../../components/application-view-component";
 
 interface Props {
   applicationHistory: AdminLog[];
@@ -45,7 +42,7 @@ export default function ApplicationLog({ applicationHistory }: Props) {
   useEffect(() => {
     setNumberOfPages(Math.ceil((applications?.length ?? 0) / elementPerPage));
     return () => {};
-  }, [[applications]]);
+  }, []);
 
   useEffect(() => {
     setDisableBackward(true);
@@ -63,9 +60,18 @@ export default function ApplicationLog({ applicationHistory }: Props) {
   }, [currentPage, numberOfPages]);
 
   useEffect(() => {
+    function paginate() {
+      setShownData(
+        logHistory?.slice(
+          (currentPage - 1) * elementPerPage,
+          currentPage * elementPerPage
+        )
+      );
+    }
+
     paginate();
     return () => {};
-  }, [applications, currentPage]);
+  }, [currentPage, logHistory]);
 
   function goNextPage() {
     setCurrentPage(currentPage + 1);
@@ -75,15 +81,11 @@ export default function ApplicationLog({ applicationHistory }: Props) {
     setCurrentPage(currentPage - 1);
   }
 
-  function paginate() {
-    setShownData(
-      logHistory?.slice(
-        (currentPage - 1) * elementPerPage,
-        currentPage * elementPerPage
-      )
-    );
-  }
   // Table Data Pagination
+
+  function parseApplication(applicationSnapshot: string) {
+    return JSON.parse(applicationSnapshot) as Application;
+  }
 
   return (
     <div>
@@ -98,7 +100,7 @@ export default function ApplicationLog({ applicationHistory }: Props) {
 
           {/* modal dialogue - adds university to db */}
           <div className={` modal ${isSubmitted && "modal-open"}`}>
-            <div className="modal-box relative">
+            <div className="modal-box relative max-w-3xl">
               <label
                 onClick={() => setIsSubmitted(!isSubmitted)}
                 className="btn btn-sm btn-circle absolute right-2 top-2"
@@ -109,9 +111,22 @@ export default function ApplicationLog({ applicationHistory }: Props) {
                 <div className="text-lg font-bold">Application Snapshot</div>
                 <div>
                   <div>
-                    {applicationHistory.map((log) => (
-                      <div>{log.snapshot}</div>
-                    ))}
+                    {applicationHistory.map(
+                      (log) =>
+                        log.snapshot && (
+                          <ViewApplication
+                            key={log.id}
+                            application={parseApplication(log.snapshot)}
+                            downloadLinks={{
+                              cprDoc: undefined,
+                              acceptanceLetterDoc: undefined,
+                              transcriptDoc: undefined,
+                              signedContractDoc: undefined,
+                            }}
+                            readOnly={true}
+                          ></ViewApplication>
+                        )
+                    )}
                   </div>
                 </div>
               </div>

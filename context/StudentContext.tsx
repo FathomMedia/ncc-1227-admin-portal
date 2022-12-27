@@ -65,8 +65,8 @@ function useProviderStudent() {
       return () => {};
     },
 
-    // Rerun whenever anything here changes
-    [students, applications]
+    // Re-run whenever anything here changes
+    []
   );
 
   async function getStudents(): Promise<Student[] | undefined> {
