@@ -16,6 +16,7 @@ type Application @model @auth(rules: [{ allow: public }]) {
   studentLogs: [StudentLog] @hasMany
   attachment: Attachment @hasOne
   programs: [ProgramChoice] @hasMany
+  student: Student @belongsTo(fields: ["studentCPR"])
 }
 
 type ProgramChoice @model @auth(rules: [{ allow: public }]) {

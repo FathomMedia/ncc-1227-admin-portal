@@ -71,6 +71,7 @@ type EagerApplication = {
   readonly studentLogs?: (StudentLog | null)[] | null;
   readonly attachment?: Attachment | null;
   readonly programs?: (ProgramChoice | null)[] | null;
+  readonly student?: Student | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly applicationAttachmentId?: string | null;
@@ -90,6 +91,7 @@ type LazyApplication = {
   readonly studentLogs: AsyncCollection<StudentLog>;
   readonly attachment: AsyncItem<Attachment | undefined>;
   readonly programs: AsyncCollection<ProgramChoice>;
+  readonly student: AsyncItem<Student | undefined>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly applicationAttachmentId?: string | null;

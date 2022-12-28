@@ -242,7 +242,11 @@ export default function Applications() {
                 <tr key={index}>
                   <th key={datum?.id}>
                     <label>
-                      <input type="checkbox" className="checkbox" />
+                      <input
+                        type="checkbox"
+                        className="checkbox"
+                        title="selectApplications"
+                      />
                     </label>
                   </th>
                   <td>

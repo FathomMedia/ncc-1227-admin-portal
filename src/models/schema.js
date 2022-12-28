@@ -186,6 +186,21 @@ export const schema = {
                         ]
                     }
                 },
+                "student": {
+                    "name": "student",
+                    "isArray": false,
+                    "type": {
+                        "model": "Student"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "studentCPR"
+                        ]
+                    }
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -695,7 +710,7 @@ export const schema = {
                     "association": {
                         "connectionType": "HAS_MANY",
                         "associatedWith": [
-                            "studentCPR"
+                            "student"
                         ]
                     }
                 },
@@ -1273,5 +1288,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.3.2",
-    "version": "3163789beeb8ff07739edb4c9f1f8608"
+    "version": "71622aaf286c12e7a5c0424e4da21b39"
 };
