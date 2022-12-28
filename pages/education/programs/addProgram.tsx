@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { PageComponent } from "../../../components/page-component";
 import * as yup from "yup";
 import { useEducation } from "../../../context/EducationContext";
-import { useRouter } from "next/navigation";
+import { useRouter } from "";
 
 interface Props {
   programName: string;

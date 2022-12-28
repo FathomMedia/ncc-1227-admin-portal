@@ -16,7 +16,7 @@ interface Props {
 }
 
 export default function Education() {
-  const { universityList, addNewUniversity } = useEducation();
+  const { universityList, addNewUniversity, syncUniList } = useEducation();
   const { push } = useRouter();
 
   const [searchValue, setSearchValue] = useState("");
@@ -25,7 +25,7 @@ export default function Education() {
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
   // Table Data Pagination
-  const elementPerPage = 3;
+  const elementPerPage = 10;
   const [numberOfPages, setNumberOfPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [disableForward, setDisableForward] = useState(false);
@@ -216,21 +216,34 @@ export default function Education() {
                     );
                   } else {
                     setIsSubmitted(true);
-                    toast.promise(
-                      addNewUniversity(values.universityName).catch((error) => {
-                        throw error;
-                      }),
-                      {
-                        loading: "Loading...",
-                        success: () => {
-                          setIsSubmitted(false);
-                          return `University successfully added`;
-                        },
-                        error: (error) => {
-                          return `${error?.message}`;
-                        },
-                      }
-                    );
+                    toast
+                      .promise(
+                        addNewUniversity(values.universityName).catch(
+                          (error) => {
+                            throw error;
+                          }
+                        ),
+                        {
+                          loading: "Loading...",
+                          success: () => {
+                            return `University successfully added`;
+                          },
+                          error: (error) => {
+                            return `${error?.message}`;
+                          },
+                        }
+                      )
+                      .then(async (val) => {
+                        await syncUniList();
+
+                        return val;
+                      })
+                      .catch((err) => {
+                        console.log(err);
+                      })
+                      .finally(() => {
+                        setIsSubmitted(false);
+                      });
                   }
                 }}
               >

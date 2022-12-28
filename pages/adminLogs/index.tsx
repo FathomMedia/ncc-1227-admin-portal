@@ -42,27 +42,33 @@ export default function AdminLogs() {
           </tr>
         </thead>
         <tbody>
-          {adminsLogs.map((log) => (
-            <tr key={log.id}>
-              <td>{log.admin?.fullName}</td>
-              <td>{log.adminCPR}</td>
-              <td>{`${Intl.DateTimeFormat("en", {
-                timeStyle: "short",
-                dateStyle: "medium",
-              }).format(new Date(log.createdAt))}`}</td>
-              <td>
-                <Link
-                  className=" link link-primary"
-                  href={""}
-                  onClick={() => {
-                    push(`/adminLogs/${log.id}`);
-                  }}
-                >
-                  View
-                </Link>
-              </td>
-            </tr>
-          ))}
+          {adminsLogs
+            .sort(
+              (a, b) =>
+                new Date(`${b.dateTime}`).getTime() -
+                new Date(`${a.dateTime}`).getTime()
+            )
+            .map((log) => (
+              <tr key={log.id}>
+                <td>{log.admin?.fullName}</td>
+                <td>{log.adminCPR}</td>
+                <td>{`${Intl.DateTimeFormat("en", {
+                  timeStyle: "short",
+                  dateStyle: "medium",
+                }).format(new Date(`${log.dateTime}`))}`}</td>
+                <td>
+                  <Link
+                    className=" link link-primary"
+                    href={""}
+                    onClick={() => {
+                      push(`/adminLogs/${log.id}`);
+                    }}
+                  >
+                    View
+                  </Link>
+                </td>
+              </tr>
+            ))}
         </tbody>
         <tfoot></tfoot>
       </table>

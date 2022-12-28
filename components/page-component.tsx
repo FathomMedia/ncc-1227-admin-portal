@@ -16,7 +16,12 @@ export const PageComponent: FC<PropsWithChildren<Props>> = (props) => {
       <Toaster />
 
       <div className="drawer drawer-mobile min-w-[277px]">
-        <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
+        <input
+          id="my-drawer-2"
+          type="checkbox"
+          className="drawer-toggle"
+          title="pageComponent"
+        />
         <div className="drawer-content ">
           <label
             htmlFor="my-drawer-2"

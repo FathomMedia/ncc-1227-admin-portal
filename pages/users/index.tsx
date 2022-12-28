@@ -1,4 +1,3 @@
-import { Router } from "next/router";
 import React, { useEffect, useState } from "react";
 import { PageComponent } from "../../components/page-component";
 import PrimaryButton from "../../components/primary-button";
@@ -6,13 +5,13 @@ import SearchBarComponent from "../../components/search-bar-component";
 import SecondaryButton from "../../components/secondary-button";
 import UsersCardInfo from "../../components/users-card-info";
 import { useAppContext } from "../../context/AppContext";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { Admin } from "../../src/API";
 
 export default function Users() {
   const admins = useAppContext();
 
-  const router = useRouter();
+  const { push } = useRouter();
 
   const [searchValue, setSearchValue] = useState("");
   const [adminList, setAdminList] = useState<Admin[]>([]);
@@ -76,7 +75,7 @@ export default function Users() {
               ></PrimaryButton>
               <SecondaryButton
                 name={"+ Add User"}
-                buttonClick={() => router.push("/users/addUsers")}
+                buttonClick={() => push("/users/addUsers")}
               ></SecondaryButton>
             </div>
           </div>

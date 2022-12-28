@@ -178,6 +178,39 @@ export async function getApplicationByIdAPI(
           updatedAt
         }
       }
+      student {
+        ParentInfo {
+          address
+          fatherCPR
+          fatherFullName
+          guardianCPR
+          guardianFullName
+          motherCPR
+          id
+          motherFullName
+          numberOfFamilyMembers
+          primaryMobile
+          relation
+          secondaryMobile
+          updatedAt
+        }
+        _deleted
+        _version
+        address
+        cpr
+        fullName
+        gender
+        createdAt
+        email
+        graduationDate
+        householdIncome
+        phone
+        placeOfBirth
+        preferredLanguage
+        schoolName
+        specialization
+        studentOrderAmongSiblings
+      }
       updatedAt
       createdAt
     }

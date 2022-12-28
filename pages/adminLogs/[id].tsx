@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
 import { PageComponent } from "../../components/page-component";
 import { Toaster } from "react-hot-toast";
-import { getAdminLogByID } from "../../src/CustomAPI";
 import { AdminLog, Application } from "../../src/API";
 import { useRouter } from "next/router";
 import PrimaryButton from "../../components/primary-button";
 import ViewApplication from "../../components/application-view-component";
+import { getAdminLogsByLogID } from "../../src/CustomAPI";
 
 interface Props {
   adminLog: AdminLog;
@@ -14,7 +14,7 @@ interface Props {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { id } = ctx.query;
 
-  let adminLog = await getAdminLogByID(`${id}`);
+  let adminLog = await getAdminLogsByLogID(`${id}`);
   return {
     props: { adminLog: adminLog },
   };

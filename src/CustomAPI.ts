@@ -125,6 +125,26 @@ export async function getApplicationData(
                     _version
                   }
                 }
+                adminLogs {
+                  items {
+                    adminCPR
+                    adminAdminLogsCpr
+                    applicationAdminLogsId
+                    _deleted
+                    _lastChangedAt
+                    _version
+                    applicationID
+                    createdAt
+                    dateTime
+                    id
+                    reason
+                    snapshot
+                    updatedAt
+                    admin {
+                      fullName
+                    }
+                  }
+                }
               }
       }
       `;
@@ -423,33 +443,32 @@ export async function listAllAdminsLogs() {
   return adminsLogs;
 }
 
-export async function getAdminLogByID(
+export async function getAdminLogsByLogID(
   id: string
 ): Promise<AdminLog | undefined> {
   let q = `
-  query GetAdminLogByID {
+  query GetAdminLogById {
     getAdminLog(id: "${id}") {
       _deleted
+      _lastChangedAt
       _version
+      admin {
+        cpr
+        email
+        fullName
+        _deleted
+      }
       adminAdminLogsCpr
       adminCPR
       applicationAdminLogsId
       applicationID
-      createdAt
       dateTime
       id
       reason
       snapshot
       updatedAt
-      admin {
-        _deleted
-        cpr
-        createdAt
-        email
-        fullName
-      }
     }
-  }  
+  }
       `;
 
   const res = (await API.graphql(graphqlOperation(q))) as GraphQLResult<any>;

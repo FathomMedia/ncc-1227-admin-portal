@@ -1,9 +1,11 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import applications from "..";
 import { PageComponent } from "../../../components/page-component";
 import { AdminLog, Application } from "../../../src/API";
-import { getApplicationLogHistory } from "../../../src/CustomAPI";
+import {
+  getAdminLogsByLogID,
+  getApplicationData,
+} from "../../../src/CustomAPI";
 
 import { GetServerSideProps } from "next";
 import { BsFillEyeFill } from "react-icons/bs";
@@ -11,24 +13,29 @@ import { HiDotsVertical } from "react-icons/hi";
 import ViewApplication from "../../../components/application-view-component";
 
 interface Props {
+  application: Application;
   applicationHistory: AdminLog[];
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { id } = ctx.query;
 
-  let applicationHistory = await getApplicationLogHistory(`${id}`);
+  let application = await getApplicationData(`${id}`);
+  let applicationHistory = application?.adminLogs?.items;
 
   return {
-    props: { applicationHistory: applicationHistory },
+    props: { applicationHistory: applicationHistory, application: application },
   };
 };
 
-export default function ApplicationLog({ applicationHistory }: Props) {
+export default function ApplicationLog({
+  applicationHistory,
+  application,
+}: Props) {
   const router = useRouter();
   const { id } = router.query;
 
-  const [logHistory, setLogHistory] = useState<(AdminLog | null)[]>([]);
+  const [logHistory, setLogHistory] = useState<AdminLog | undefined>(undefined);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
   // Table Data Pagination
@@ -40,9 +47,11 @@ export default function ApplicationLog({ applicationHistory }: Props) {
   const [shownData, setShownData] = useState<any>([]);
 
   useEffect(() => {
-    setNumberOfPages(Math.ceil((applications?.length ?? 0) / elementPerPage));
+    setNumberOfPages(
+      Math.ceil((applicationHistory?.length ?? 0) / elementPerPage)
+    );
     return () => {};
-  }, []);
+  }, [applicationHistory.length]);
 
   useEffect(() => {
     setDisableBackward(true);
@@ -62,7 +71,7 @@ export default function ApplicationLog({ applicationHistory }: Props) {
   useEffect(() => {
     function paginate() {
       setShownData(
-        logHistory?.slice(
+        applicationHistory?.slice(
           (currentPage - 1) * elementPerPage,
           currentPage * elementPerPage
         )
@@ -71,7 +80,7 @@ export default function ApplicationLog({ applicationHistory }: Props) {
 
     paginate();
     return () => {};
-  }, [currentPage, logHistory]);
+  }, [currentPage, applicationHistory]);
 
   function goNextPage() {
     setCurrentPage(currentPage + 1);
@@ -80,7 +89,6 @@ export default function ApplicationLog({ applicationHistory }: Props) {
   function goPrevPage() {
     setCurrentPage(currentPage - 1);
   }
-
   // Table Data Pagination
 
   function parseApplication(applicationSnapshot: string) {
@@ -111,21 +119,19 @@ export default function ApplicationLog({ applicationHistory }: Props) {
                 <div className="text-lg font-bold">Application Snapshot</div>
                 <div>
                   <div>
-                    {applicationHistory.map(
-                      (log) =>
-                        log.snapshot && (
-                          <ViewApplication
-                            key={log.id}
-                            application={parseApplication(log.snapshot)}
-                            downloadLinks={{
-                              cprDoc: undefined,
-                              acceptanceLetterDoc: undefined,
-                              transcriptDoc: undefined,
-                              signedContractDoc: undefined,
-                            }}
-                            readOnly={true}
-                          ></ViewApplication>
-                        )
+                    {logHistory && (
+                      <ViewApplication
+                        application={parseApplication(`${logHistory.snapshot}`)}
+                        downloadLinks={{
+                          cprDoc: application.attachment?.cprDoc,
+                          acceptanceLetterDoc:
+                            application.attachment?.acceptanceLetterDoc,
+                          transcriptDoc: application.attachment?.transcriptDoc,
+                          signedContractDoc:
+                            application.attachment?.signedContractDoc,
+                        }}
+                        readOnly={true}
+                      ></ViewApplication>
                     )}
                   </div>
                 </div>
@@ -163,8 +169,13 @@ export default function ApplicationLog({ applicationHistory }: Props) {
                             <div className=" hidden absolute right-6 top-5 bg-white shadow-lg p-1 rounded-lg group-focus:flex flex-col min-w-min">
                               <div
                                 className="btn btn-ghost btn-xs hover:bg-anzac-100 hover:cursor-pointer hover:text-anzac-500 flex justify-start w-24 gap-2"
-                                onClick={() => {
-                                  setIsSubmitted(true);
+                                onClick={async () => {
+                                  await getAdminLogsByLogID(log.id).then(
+                                    (value) => {
+                                      setLogHistory(value);
+                                      setIsSubmitted(true);
+                                    }
+                                  );
                                 }}
                               >
                                 <BsFillEyeFill />

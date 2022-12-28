@@ -22,6 +22,7 @@ interface IUseEducationContext {
     availability: number,
     requirements: string
   ) => Promise<Program | undefined>;
+  syncUniList: () => Promise<void>;
 }
 
 const defaultState: IUseEducationContext = {
@@ -31,6 +32,7 @@ const defaultState: IUseEducationContext = {
   addNewUniversity: async () => undefined,
   getProgramsFromUniID: async () => undefined,
   addProgramToUni: async () => undefined,
+  syncUniList: async () => {},
 };
 
 const EducationContext = createContext<IUseEducationContext>(defaultState);
@@ -72,6 +74,10 @@ function useProviderEducation() {
     // Rerun whenever anything here changes
     []
   );
+
+  async function syncUniList() {
+    await getUniList();
+  }
 
   async function getUniList(): Promise<University[] | undefined> {
     let q = `
@@ -262,5 +268,6 @@ function useProviderEducation() {
     getProgramsFromUniID,
     addProgramToUni,
     programsList,
+    syncUniList,
   };
 }

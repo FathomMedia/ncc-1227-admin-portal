@@ -111,7 +111,7 @@ export default function ViewApplication({
           isValid,
         }) => (
           <Form>
-            <table className="table w-full mb-4">
+            <table className="table w-full mb-4 table-fixed">
               <thead>
                 <tr>
                   <th>Application Field</th>
@@ -153,6 +153,18 @@ export default function ViewApplication({
                       </Field>
                     )}
                   </td>
+                </tr>
+                <tr>
+                  <td>Household Income</td>
+                  <td>{application.student?.householdIncome}</td>
+                </tr>
+                <tr>
+                  <td>Graduation Date</td>
+                  <td>{application.student?.graduationDate}</td>
+                </tr>
+                <tr>
+                  <td>School Specialization</td>
+                  <td>{application.student?.specialization}</td>
                 </tr>
                 <tr>
                   <td>GPA</td>
@@ -258,7 +270,9 @@ export default function ViewApplication({
                 <div className=" flex justify-end m-4">
                   <button
                     type="submit"
-                    className={`btn btn-primary ${isSubmitting && "loading"}`}
+                    className={`btn btn-primary text-white ${
+                      isSubmitting && "loading"
+                    }`}
                     disabled={isSubmitting || !isValid}
                   >
                     Save Changes
