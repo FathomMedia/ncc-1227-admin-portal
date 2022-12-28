@@ -12,12 +12,24 @@ import { useEducation } from "../../context/EducationContext";
 import { useStudent } from "../../context/StudentContext";
 import { Status } from "../../src/API";
 
+interface InitialFilterValues {
+  search: string;
+  applicationStatus: string;
+  university: string;
+  program: string;
+}
+
 export default function Applications() {
+  const initialFilterValues: InitialFilterValues = {
+    search: "",
+    applicationStatus: "",
+    university: "",
+    program: "",
+  };
+
   const { applications, students } = useStudent();
   const { universityList, programsList } = useEducation();
   const { push } = useRouter();
-
-  const [searchValue, setSearchValue] = useState("");
 
   // Table Data Pagination
   const elementPerPage = 10;
@@ -74,62 +86,73 @@ export default function Applications() {
   }
   // Table Data Pagination
 
-  //search for admin user
-  function search() {
-    let searchResult = applications?.filter(
-      (application) =>
-        findStudentName(application.studentCPR)
+  function filter(values: InitialFilterValues) {
+    let filteredApplications = applications?.filter(
+      (element) =>
+        (findStudentName(element.studentCPR)
           ?.toLowerCase()
-          .includes(searchValue.toLowerCase()) ||
-        application.studentCPR.toLowerCase().includes(searchValue.toLowerCase())
+          .includes(values.search.toLowerCase()) ||
+          element.studentCPR
+            .toLowerCase()
+            .includes(values.search.toLowerCase())) &&
+        (values.applicationStatus
+          ? element.status === values.applicationStatus
+          : true) &&
+        (values.program
+          ? element.programs?.items.find(
+              (p) => p?.program?.name === values.program
+            )
+          : true) &&
+        (values.university
+          ? element.programs?.items.find(
+              (p) => p?.program?.university?.name === values.university
+            )
+          : true)
     );
 
-    setShownData(searchResult);
+    setShownData(filteredApplications);
   }
 
   // ! TODO - reset all filters
   function resetFilters() {
     setShownData(applications);
-    setSearchValue("");
   }
 
   return (
     <PageComponent title={"Applications"}>
       <Toaster />
-      <div className=" mb-8">
-        <div className=" text-2xl font-semibold">Applications</div>
-        <div className=" text-base font-medium text-gray-500">
+      <div className="mb-8 ">
+        <div className="text-2xl font-semibold ">Applications</div>
+        <div className="text-base font-medium text-gray-500 ">
           View all student applications.
         </div>
       </div>
 
       {/* applications search bar */}
-      <div className=" my-8 p-4 w-full h-32 border border-nccGray-100 rounded-xl bg-nccGray-100 flex items-center ">
-        <div className=" flex gap-4 w-full ">
-          <div className=" grow py-4">
-            <div className=" text-sm font-semibold text-gray-500">
-              Search for applicants
-            </div>
-            <SearchBarComponent
-              searchChange={(value) => {
-                console.log(value);
-                setSearchValue(value);
-              }}
-              onSubmit={(value: string) => {
-                setSearchValue(value);
-                search();
-              }}
-            />
+      <div className="flex items-center w-full p-4 my-8 border border-nccGray-100 rounded-xl bg-nccGray-100">
+        {/* <div className="min-w-fit">
+          <div className="text-sm font-semibold text-gray-500 ">
+            Search for applicants
           </div>
-
-          <Formik
-            initialValues={{
-              applicationStatus: undefined,
-              university: undefined,
-              program: undefined,
+          <SearchBarComponent
+            searchChange={(value) => {
+              console.log(value);
+              setSearchValue(value);
             }}
+            onSubmit={(value: string) => {
+              setSearchValue(value);
+              search();
+            }}
+          />
+        </div> */}
+
+        <div className="flex w-full gap-4 ">
+          <Formik
+            initialValues={initialFilterValues}
             onSubmit={(values, actions) => {
               console.log("values", values);
+
+              filter(values);
             }}
           >
             {({
@@ -140,81 +163,120 @@ export default function Applications() {
               handleBlur,
               isSubmitting,
               isValid,
+              handleReset,
+              resetForm,
             }) => (
-              <Form className="flex flex-col gap-3 p-4">
-                <div className=" flex gap-4">
-                  <div>
-                    <div className=" text-sm font-semibold text-gray-500 mb-1">
-                      Status
-                    </div>
-                    <div>
-                      <Field
-                        className=" border rounded-xl"
-                        as="select"
-                        name="applicationStatus"
-                      >
-                        <option value={undefined}>All</option>
-                        <option value="ELIGIBLE">ELIGIBLE</option>
-                        <option value="APPROVED">APPROVED</option>
-                        <option value="REJECTED">REJECTED</option>
-                        <option value="WITHDRAWN">WITHDRAWN</option>
-                        <option value="REVIEW">REVIEW</option>
-                      </Field>
-                    </div>
+              <Form className="flex flex-wrap items-end gap-3 p-4">
+                {/* Search Bar */}
+                <div>
+                  <div className="text-sm font-semibold text-gray-500 ">
+                    Search for applicants
                   </div>
                   <div>
-                    <div className=" text-sm font-semibold text-gray-500 mb-1">
-                      University
-                    </div>
-                    <div>
-                      <Field
-                        className=" border rounded-xl"
-                        as="select"
-                        name="university"
-                      >
-                        <option value={undefined}>All</option>
-                        {universityList?.map((uni) => (
-                          <option key={`${uni.id}`} value={`${uni.name}`}>
-                            {uni.name}
-                          </option>
-                        ))}
-                      </Field>
-                    </div>
+                    <Field
+                      className="input input-bordered"
+                      type="text"
+                      name="search"
+                      placeHolder="Search..."
+                      onChange={handleChange}
+                      value={values.search}
+                    ></Field>
                   </div>
-                  <div>
-                    <div className=" text-sm font-semibold text-gray-500 mb-1">
-                      Program
-                    </div>
-                    <div>
-                      <Field
-                        className=" border rounded-xl"
-                        as="select"
-                        name="program"
-                      >
-                        <option value={undefined}>All</option>
-                        {programsList?.map((program, index) => (
-                          <option key={index} value={`${program.name}`}>
-                            {program.name}
-                          </option>
-                        ))}
-                      </Field>
-                    </div>
-                  </div>
-                  <div className=" flex justify-between gap-4 items-center">
-                    <Link
-                      href={""}
-                      onClick={resetFilters}
-                      className=" link link-primary min-w-fit"
-                    >
-                      Reset filters
-                    </Link>
+                </div>
 
-                    <button
-                      type="submit"
-                      className={`min-w-[8rem] px-4 py-2 border-2 border-anzac-400 rounded-xl bg-anzac-400 text-white text-xs font-bold hover:cursor-pointer`}
+                {/* Status filter */}
+                <div>
+                  <div className="text-sm font-semibold text-gray-500 ">
+                    Status
+                  </div>
+                  <div>
+                    <Field
+                      className="input input-bordered"
+                      as="select"
+                      name="applicationStatus"
+                      onChange={handleChange}
+                      value={values.applicationStatus}
                     >
-                      Apply Filters
-                    </button>
+                      <option value={""}>All</option>
+
+                      {Object.keys(Status).map((status) => (
+                        <option value={status} key={status}>
+                          {status.replace("_", " ")}
+                        </option>
+                      ))}
+                      {/* <option value={Status.ELIGIBLE}>ELIGIBLE</option>
+                      <option value={Status.APPROVED}>APPROVED</option>
+                      <option value={Status.REJECTED}>REJECTED</option>
+                      <option value={Status.WITHDRAWN}>WITHDRAWN</option>
+                      <option value={Status.REVIEW}>REVIEW</option>
+                      <option value={Status.NOT_COMPLETED}>
+                        NOT COMPLETED
+                      </option> */}
+                    </Field>
+                  </div>
+                </div>
+
+                {/* University filter */}
+                <div>
+                  <div className="text-sm font-semibold text-gray-500 ">
+                    University
+                  </div>
+                  <div>
+                    <Field
+                      className="input input-bordered"
+                      as="select"
+                      name="university"
+                      onChange={handleChange}
+                      value={values.university}
+                    >
+                      <option value={""}>All</option>
+                      {universityList?.map((uni) => (
+                        <option key={`${uni.id}`} value={`${uni.name}`}>
+                          {uni.name}
+                        </option>
+                      ))}
+                    </Field>
+                  </div>
+                </div>
+
+                {/* Program filter */}
+                <div>
+                  <div className="text-sm font-semibold text-gray-500 ">
+                    Program
+                  </div>
+                  <div>
+                    <Field
+                      className="input input-bordered"
+                      as="select"
+                      name="program"
+                      onChange={handleChange}
+                      value={values.program}
+                    >
+                      <option value={""}>All</option>
+                      {programsList?.map((program, index) => (
+                        <option key={index} value={`${program.name}`}>
+                          {program.name}
+                        </option>
+                      ))}
+                    </Field>
+                  </div>
+                </div>
+
+                <div className="flex items-end justify-between gap-4 ">
+                  <button
+                    type="submit"
+                    className={`min-w-[8rem] px-4 py-2 border-2 border-anzac-400 btn btn-primary btn-md bg-anzac-400 text-white text-xs font-bold hover:cursor-pointer`}
+                  >
+                    Apply Filters
+                  </button>
+                  <div
+                    onClick={() => {
+                      handleReset();
+                      resetFilters();
+                    }}
+                    className=" btn btn-ghost min-w-fit"
+                  >
+                    Reset filters
                   </div>
                 </div>
               </Form>
@@ -225,9 +287,9 @@ export default function Applications() {
 
       {/* applications table with pagination*/}
       <div>
-        <div className="overflow-x-auto w-full h-screen">
+        <div className="w-full h-screen overflow-x-auto">
           <table className="table w-full ">
-            <thead className=" border rounded-xl border-nccGray-100">
+            <thead className="border rounded-xl border-nccGray-100">
               <tr>
                 {StudentsTableHeaders.map((title, index) => (
                   <th className=" bg-nccGray-100" key={index}>
@@ -249,11 +311,11 @@ export default function Applications() {
                     </label>
                   </th>
                   <td>
-                    <div className=" flex flex-col justify-between">
-                      <div className=" text-sm font-semibold">{`${findStudentName(
+                    <div className="flex flex-col justify-between ">
+                      <div className="text-sm font-semibold ">{`${findStudentName(
                         datum.studentCPR
                       )}`}</div>
-                      <div className=" text-sm ">{`${datum.studentCPR}`}</div>
+                      <div className="text-sm ">{`${datum.studentCPR}`}</div>
                     </div>
                   </td>
                   <td>
@@ -280,31 +342,31 @@ export default function Applications() {
                     >{`${datum.status}`}</div>
                   </td>
                   <td>
-                    <div className=" flex flex-col gap-4">
+                    <div className="flex flex-col gap-4 ">
                       {datum.programs?.items.map(
                         (value: any, index: number) => (
                           <div
                             key={index}
-                            className=" "
+                            className=""
                           >{`${value?.program?.name} - ${value?.program?.university?.name}`}</div>
                         )
                       )}
                     </div>
                   </td>
                   <td>
-                    <div className=" flex justify-between">{`${Intl.DateTimeFormat(
+                    <div className="flex justify-between ">{`${Intl.DateTimeFormat(
                       "en",
                       { timeStyle: "short", dateStyle: "medium" }
                     ).format(new Date(datum.createdAt))}`}</div>
                   </td>
 
                   <td>
-                    <div className=" flex justify-end">
-                      <button className="btn btn-ghost btn-xs relative group">
+                    <div className="flex justify-end ">
+                      <button className="relative btn btn-ghost btn-xs group">
                         <HiDotsVertical />
-                        <div className=" hidden absolute right-6 top-5 bg-white shadow-lg p-1 rounded-lg group-focus:flex flex-col min-w-min">
+                        <div className="absolute flex-col hidden p-1 bg-white rounded-lg shadow-lg right-6 top-5 group-focus:flex min-w-min">
                           <div
-                            className="btn btn-ghost btn-xs hover:bg-anzac-100 hover:cursor-pointer hover:text-anzac-500 flex justify-start w-24 gap-2"
+                            className="flex justify-start w-24 gap-2 btn btn-ghost btn-xs hover:bg-anzac-100 hover:cursor-pointer hover:text-anzac-500"
                             onClick={() => {
                               push(`/applications/${datum.id}`);
                             }}
@@ -313,7 +375,7 @@ export default function Applications() {
                             View
                           </div>
                           <div
-                            className="btn btn-ghost btn-xs hover:bg-anzac-100 hover:cursor-pointer hover:text-anzac-500 flex justify-start w-24 gap-2"
+                            className="flex justify-start w-24 gap-2 btn btn-ghost btn-xs hover:bg-anzac-100 hover:cursor-pointer hover:text-anzac-500"
                             onClick={() => {
                               push(
                                 `/applications/applicationHistory/${datum.id}`
@@ -333,7 +395,7 @@ export default function Applications() {
             <tfoot></tfoot>
           </table>
           {/* fake pagination */}
-          <div className=" flex justify-center mt-8">
+          <div className="flex justify-center mt-8 ">
             <div className="btn-group">
               <button
                 className="btn btn-accent text-anzac-500"
@@ -349,7 +411,7 @@ export default function Applications() {
                 {currentPage}
               </button>
               <button
-                className="btn btn-accent  text-anzac-500"
+                className="btn btn-accent text-anzac-500"
                 onClick={goNextPage}
                 disabled={disableForward}
               >
