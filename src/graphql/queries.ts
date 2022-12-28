@@ -169,41 +169,6 @@ export const syncApplications = /* GraphQL */ `
     }
   }
 `;
-export const applicationsByStudentCPRAndGpa = /* GraphQL */ `
-  query ApplicationsByStudentCPRAndGpa(
-    $studentCPR: String!
-    $gpa: ModelIntKeyConditionInput
-    $sortDirection: ModelSortDirection
-    $filter: ModelApplicationFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    applicationsByStudentCPRAndGpa(
-      studentCPR: $studentCPR
-      gpa: $gpa
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        gpa
-        status
-        attachmentID
-        studentCPR
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
-        applicationAttachmentId
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
 export const getProgramChoice = /* GraphQL */ `
   query GetProgramChoice($id: ID!) {
     getProgramChoice(id: $id) {
@@ -216,6 +181,7 @@ export const getProgramChoice = /* GraphQL */ `
         requirements
         availability
         universityID
+        isDeactivated
         createdAt
         updatedAt
         _version
@@ -314,6 +280,7 @@ export const getProgram = /* GraphQL */ `
       university {
         id
         name
+        isDeactivated
         createdAt
         updatedAt
         _version
@@ -324,6 +291,7 @@ export const getProgram = /* GraphQL */ `
         nextToken
         startedAt
       }
+      isDeactivated
       createdAt
       updatedAt
       _version
@@ -346,6 +314,7 @@ export const listPrograms = /* GraphQL */ `
         requirements
         availability
         universityID
+        isDeactivated
         createdAt
         updatedAt
         _version
@@ -377,6 +346,7 @@ export const syncPrograms = /* GraphQL */ `
         requirements
         availability
         universityID
+        isDeactivated
         createdAt
         updatedAt
         _version
@@ -398,6 +368,7 @@ export const getUniversity = /* GraphQL */ `
         nextToken
         startedAt
       }
+      isDeactivated
       createdAt
       updatedAt
       _version
@@ -416,6 +387,7 @@ export const listUniversities = /* GraphQL */ `
       items {
         id
         name
+        isDeactivated
         createdAt
         updatedAt
         _version
@@ -443,6 +415,7 @@ export const syncUniversities = /* GraphQL */ `
       items {
         id
         name
+        isDeactivated
         createdAt
         updatedAt
         _version
@@ -460,6 +433,9 @@ export const getAdminLog = /* GraphQL */ `
       id
       applicationID
       adminCPR
+      dateTime
+      snapshot
+      reason
       admin {
         cpr
         fullName
@@ -470,9 +446,6 @@ export const getAdminLog = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
-      dateTime
-      snapshot
-      reason
       createdAt
       updatedAt
       _version
@@ -549,6 +522,9 @@ export const getStudentLog = /* GraphQL */ `
       id
       applicationID
       studentCPR
+      dateTime
+      snapshot
+      reason
       student {
         cpr
         fullName
@@ -570,9 +546,6 @@ export const getStudentLog = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
-      dateTime
-      snapshot
-      reason
       createdAt
       updatedAt
       _version
@@ -849,11 +822,11 @@ export const getStudent = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
+      parentInfoID
       StudentLogs {
         nextToken
         startedAt
       }
-      parentInfoID
       createdAt
       updatedAt
       _version
@@ -936,6 +909,41 @@ export const syncStudents = /* GraphQL */ `
         _version
         _deleted
         _lastChangedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const applicationsByStudentCPRAndGpa = /* GraphQL */ `
+  query ApplicationsByStudentCPRAndGpa(
+    $studentCPR: String!
+    $gpa: ModelIntKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelApplicationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    applicationsByStudentCPRAndGpa(
+      studentCPR: $studentCPR
+      gpa: $gpa
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        gpa
+        status
+        attachmentID
+        studentCPR
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        applicationAttachmentId
       }
       nextToken
       startedAt

@@ -7,7 +7,8 @@ export enum Status {
   REJECTED = "REJECTED",
   REVIEW = "REVIEW",
   WITHDRAWN = "WITHDRAWN",
-  ELIGIBLE = "ELIGIBLE"
+  ELIGIBLE = "ELIGIBLE",
+  NOT_COMPLETED = "NOT_COMPLETED"
 }
 
 export enum Gender {
@@ -108,10 +109,10 @@ type EagerAdminLog = {
   readonly id: string;
   readonly applicationID: string;
   readonly adminCPR: string;
-  readonly admin?: Admin | null;
   readonly dateTime?: string | null;
   readonly snapshot?: string | null;
   readonly reason?: string | null;
+  readonly admin?: Admin | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly applicationAdminLogsId?: string | null;
@@ -126,10 +127,10 @@ type LazyAdminLog = {
   readonly id: string;
   readonly applicationID: string;
   readonly adminCPR: string;
-  readonly admin: AsyncItem<Admin | undefined>;
   readonly dateTime?: string | null;
   readonly snapshot?: string | null;
   readonly reason?: string | null;
+  readonly admin: AsyncItem<Admin | undefined>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly applicationAdminLogsId?: string | null;
@@ -182,10 +183,10 @@ type EagerStudentLog = {
   readonly id: string;
   readonly applicationID: string;
   readonly studentCPR: string;
-  readonly student?: Student | null;
   readonly dateTime?: string | null;
   readonly snapshot?: string | null;
   readonly reason?: string | null;
+  readonly student?: Student | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly applicationStudentLogsId?: string | null;
@@ -200,10 +201,10 @@ type LazyStudentLog = {
   readonly id: string;
   readonly applicationID: string;
   readonly studentCPR: string;
-  readonly student: AsyncItem<Student | undefined>;
   readonly dateTime?: string | null;
   readonly snapshot?: string | null;
   readonly reason?: string | null;
+  readonly student: AsyncItem<Student | undefined>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly applicationStudentLogsId?: string | null;
@@ -236,8 +237,8 @@ type EagerStudent = {
   readonly address?: string | null;
   readonly applications?: (Application | null)[] | null;
   readonly ParentInfo?: ParentInfo | null;
-  readonly StudentLogs?: (StudentLog | null)[] | null;
   readonly parentInfoID?: string | null;
+  readonly StudentLogs?: (StudentLog | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -262,8 +263,8 @@ type LazyStudent = {
   readonly address?: string | null;
   readonly applications: AsyncCollection<Application>;
   readonly ParentInfo: AsyncItem<ParentInfo | undefined>;
-  readonly StudentLogs: AsyncCollection<StudentLog>;
   readonly parentInfoID?: string | null;
+  readonly StudentLogs: AsyncCollection<StudentLog>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -374,6 +375,7 @@ type EagerProgram = {
   readonly universityID: string;
   readonly university?: University | null;
   readonly applications?: (ProgramChoice | null)[] | null;
+  readonly isDeactivated?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly universityProgramsId?: string | null;
@@ -391,6 +393,7 @@ type LazyProgram = {
   readonly universityID: string;
   readonly university: AsyncItem<University | undefined>;
   readonly applications: AsyncCollection<ProgramChoice>;
+  readonly isDeactivated?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly universityProgramsId?: string | null;
@@ -410,6 +413,7 @@ type EagerUniversity = {
   readonly id: string;
   readonly name?: string | null;
   readonly Programs?: (Program | null)[] | null;
+  readonly isDeactivated?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -422,6 +426,7 @@ type LazyUniversity = {
   readonly id: string;
   readonly name?: string | null;
   readonly Programs: AsyncCollection<Program>;
+  readonly isDeactivated?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

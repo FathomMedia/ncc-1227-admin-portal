@@ -7,7 +7,8 @@ const Status = {
   "REJECTED": "REJECTED",
   "REVIEW": "REVIEW",
   "WITHDRAWN": "WITHDRAWN",
-  "ELIGIBLE": "ELIGIBLE"
+  "ELIGIBLE": "ELIGIBLE",
+  "NOT_COMPLETED": "NOT_COMPLETED"
 };
 
 const Gender = {

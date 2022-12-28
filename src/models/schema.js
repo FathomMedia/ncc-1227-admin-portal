@@ -269,21 +269,6 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "admin": {
-                    "name": "admin",
-                    "isArray": false,
-                    "type": {
-                        "model": "Admin"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetNames": [
-                            "adminCPR"
-                        ]
-                    }
-                },
                 "dateTime": {
                     "name": "dateTime",
                     "isArray": false,
@@ -304,6 +289,21 @@ export const schema = {
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
+                },
+                "admin": {
+                    "name": "admin",
+                    "isArray": false,
+                    "type": {
+                        "model": "Admin"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "adminCPR"
+                        ]
+                    }
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -484,21 +484,6 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "student": {
-                    "name": "student",
-                    "isArray": false,
-                    "type": {
-                        "model": "Student"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetNames": [
-                            "studentCPR"
-                        ]
-                    }
-                },
                 "dateTime": {
                     "name": "dateTime",
                     "isArray": false,
@@ -519,6 +504,21 @@ export const schema = {
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
+                },
+                "student": {
+                    "name": "student",
+                    "isArray": false,
+                    "type": {
+                        "model": "Student"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "studentCPR"
+                        ]
+                    }
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -717,6 +717,13 @@ export const schema = {
                         ]
                     }
                 },
+                "parentInfoID": {
+                    "name": "parentInfoID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "StudentLogs": {
                     "name": "StudentLogs",
                     "isArray": true,
@@ -732,13 +739,6 @@ export const schema = {
                             "studentStudentLogsCpr"
                         ]
                     }
-                },
-                "parentInfoID": {
-                    "name": "parentInfoID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -1105,6 +1105,13 @@ export const schema = {
                         ]
                     }
                 },
+                "isDeactivated": {
+                    "name": "isDeactivated",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -1187,6 +1194,13 @@ export const schema = {
                         ]
                     }
                 },
+                "isDeactivated": {
+                    "name": "isDeactivated",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -1238,7 +1252,8 @@ export const schema = {
                 "REJECTED",
                 "REVIEW",
                 "WITHDRAWN",
-                "ELIGIBLE"
+                "ELIGIBLE",
+                "NOT_COMPLETED"
             ]
         },
         "Gender": {
@@ -1258,5 +1273,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.3.2",
-    "version": "58501187807659b5ef59bfc9c13aca07"
+    "version": "3163789beeb8ff07739edb4c9f1f8608"
 };

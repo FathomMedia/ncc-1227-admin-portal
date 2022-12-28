@@ -206,6 +206,7 @@ export const createProgramChoice = /* GraphQL */ `
         requirements
         availability
         universityID
+        isDeactivated
         createdAt
         updatedAt
         _version
@@ -252,6 +253,7 @@ export const updateProgramChoice = /* GraphQL */ `
         requirements
         availability
         universityID
+        isDeactivated
         createdAt
         updatedAt
         _version
@@ -298,6 +300,7 @@ export const deleteProgramChoice = /* GraphQL */ `
         requirements
         availability
         universityID
+        isDeactivated
         createdAt
         updatedAt
         _version
@@ -343,6 +346,7 @@ export const createProgram = /* GraphQL */ `
       university {
         id
         name
+        isDeactivated
         createdAt
         updatedAt
         _version
@@ -353,6 +357,7 @@ export const createProgram = /* GraphQL */ `
         nextToken
         startedAt
       }
+      isDeactivated
       createdAt
       updatedAt
       _version
@@ -376,6 +381,7 @@ export const updateProgram = /* GraphQL */ `
       university {
         id
         name
+        isDeactivated
         createdAt
         updatedAt
         _version
@@ -386,6 +392,7 @@ export const updateProgram = /* GraphQL */ `
         nextToken
         startedAt
       }
+      isDeactivated
       createdAt
       updatedAt
       _version
@@ -409,6 +416,7 @@ export const deleteProgram = /* GraphQL */ `
       university {
         id
         name
+        isDeactivated
         createdAt
         updatedAt
         _version
@@ -419,6 +427,7 @@ export const deleteProgram = /* GraphQL */ `
         nextToken
         startedAt
       }
+      isDeactivated
       createdAt
       updatedAt
       _version
@@ -440,6 +449,7 @@ export const createUniversity = /* GraphQL */ `
         nextToken
         startedAt
       }
+      isDeactivated
       createdAt
       updatedAt
       _version
@@ -460,6 +470,7 @@ export const updateUniversity = /* GraphQL */ `
         nextToken
         startedAt
       }
+      isDeactivated
       createdAt
       updatedAt
       _version
@@ -480,6 +491,7 @@ export const deleteUniversity = /* GraphQL */ `
         nextToken
         startedAt
       }
+      isDeactivated
       createdAt
       updatedAt
       _version
@@ -497,6 +509,9 @@ export const createAdminLog = /* GraphQL */ `
       id
       applicationID
       adminCPR
+      dateTime
+      snapshot
+      reason
       admin {
         cpr
         fullName
@@ -507,9 +522,6 @@ export const createAdminLog = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
-      dateTime
-      snapshot
-      reason
       createdAt
       updatedAt
       _version
@@ -529,6 +541,9 @@ export const updateAdminLog = /* GraphQL */ `
       id
       applicationID
       adminCPR
+      dateTime
+      snapshot
+      reason
       admin {
         cpr
         fullName
@@ -539,9 +554,6 @@ export const updateAdminLog = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
-      dateTime
-      snapshot
-      reason
       createdAt
       updatedAt
       _version
@@ -561,6 +573,9 @@ export const deleteAdminLog = /* GraphQL */ `
       id
       applicationID
       adminCPR
+      dateTime
+      snapshot
+      reason
       admin {
         cpr
         fullName
@@ -571,9 +586,6 @@ export const deleteAdminLog = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
-      dateTime
-      snapshot
-      reason
       createdAt
       updatedAt
       _version
@@ -593,6 +605,9 @@ export const createStudentLog = /* GraphQL */ `
       id
       applicationID
       studentCPR
+      dateTime
+      snapshot
+      reason
       student {
         cpr
         fullName
@@ -614,9 +629,6 @@ export const createStudentLog = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
-      dateTime
-      snapshot
-      reason
       createdAt
       updatedAt
       _version
@@ -636,6 +648,9 @@ export const updateStudentLog = /* GraphQL */ `
       id
       applicationID
       studentCPR
+      dateTime
+      snapshot
+      reason
       student {
         cpr
         fullName
@@ -657,9 +672,6 @@ export const updateStudentLog = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
-      dateTime
-      snapshot
-      reason
       createdAt
       updatedAt
       _version
@@ -679,6 +691,9 @@ export const deleteStudentLog = /* GraphQL */ `
       id
       applicationID
       studentCPR
+      dateTime
+      snapshot
+      reason
       student {
         cpr
         fullName
@@ -700,9 +715,6 @@ export const deleteStudentLog = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
-      dateTime
-      snapshot
-      reason
       createdAt
       updatedAt
       _version
@@ -896,11 +908,11 @@ export const createStudent = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
+      parentInfoID
       StudentLogs {
         nextToken
         startedAt
       }
-      parentInfoID
       createdAt
       updatedAt
       _version
@@ -951,11 +963,11 @@ export const updateStudent = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
+      parentInfoID
       StudentLogs {
         nextToken
         startedAt
       }
-      parentInfoID
       createdAt
       updatedAt
       _version
@@ -1006,11 +1018,11 @@ export const deleteStudent = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
+      parentInfoID
       StudentLogs {
         nextToken
         startedAt
       }
-      parentInfoID
       createdAt
       updatedAt
       _version
