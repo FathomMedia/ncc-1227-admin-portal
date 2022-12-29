@@ -177,7 +177,7 @@ export default function Applications() {
                       className="input input-bordered"
                       type="text"
                       name="search"
-                      placeHolder="Search..."
+                      placeholder="Search..."
                       onChange={handleChange}
                       value={values.search}
                     ></Field>

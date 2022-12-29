@@ -20,7 +20,8 @@ interface IUseEducationContext {
     uniID: string,
     programName: string,
     availability: number,
-    requirements: string
+    requirements: string,
+    isDeactivated: boolean
   ) => Promise<Program | undefined>;
   syncUniList: () => Promise<void>;
 }
@@ -225,11 +226,12 @@ function useProviderEducation() {
     uniID: string,
     programName: string,
     availability: number,
-    requirements: string
+    requirements: string,
+    isDeactivated: boolean
   ): Promise<Program | undefined> {
     let query = `
     mutation CreateProgramForUniversity {
-      createProgram(input: {universityID: "${uniID}", name: "${programName}", availability: ${availability}, requirements: "${requirements}", universityProgramsId: "${uniID}"}) {
+      createProgram(input: {universityID: "${uniID}", name: "${programName}", availability: ${availability}, requirements: "${requirements}", universityProgramsId: "${uniID}", isDeactivated: ${isDeactivated}}) {
         name
         _deleted
         _lastChangedAt
