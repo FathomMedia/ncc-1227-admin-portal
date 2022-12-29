@@ -14,60 +14,61 @@ import { useAuth } from "../hooks/use-auth";
 export default function NavbarComponent() {
   const { signOut, isSignedIn, user } = useAuth();
   return (
-    <div className=" flex flex-col justify-between p-4 bg-nccGray-50 py-24 ">
+    <div className="flex flex-col justify-between p-4 py-24 bg-nccGray-50">
       <div className="flex flex-col gap-4">
-        <div className=" mb-8">
+        <div className="mb-8 ">
           <img src="/logo.svg" alt="logo" />
         </div>
-        <div className=" flex justify-center mb-8">{user?.getUsername()}</div>
+        <div className="flex justify-center mb-8 ">{user?.getUsername()}</div>
         <NavBarButton
           name={"Dashboard"}
           icon={
-            <AiOutlineAppstore className=" w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
+            <AiOutlineAppstore className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
           }
           linkTo={"/"}
         ></NavBarButton>
         <NavBarButton
           name={"Applications"}
           icon={
-            <HiOutlineBriefcase className="  w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
+            <HiOutlineBriefcase className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
           }
           linkTo={"/applications"}
         ></NavBarButton>
         <NavBarButton
           name={"Education"}
           icon={
-            <BsBook className="  w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
+            <BsBook className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
           }
           linkTo={"/education"}
         ></NavBarButton>
         <NavBarButton
           name={"Users"}
           icon={
-            <HiOutlineUsers className="  w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
+            <HiOutlineUsers className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
           }
           linkTo={"/users"}
         ></NavBarButton>
         <NavBarButton
           name={"Logs"}
           icon={
-            <HiOutlineClipboardList className="  w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
+            <HiOutlineClipboardList className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
           }
           linkTo={"/adminLogs"}
         ></NavBarButton>
         <NavBarButton
           name={"Support"}
           icon={
-            <HiOutlineChatAlt2 className="  w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
+            <HiOutlineChatAlt2 className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
           }
-          linkTo={"/support"}
+          linkTo={"https://app.crisp.chat/"}
+          target={"_blank"}
         ></NavBarButton>
       </div>
 
       {!isSignedIn ? (
         <></>
       ) : (
-        <div className=" flex justify-start w-52 px-4 py-2 text-gray rounded-xl text-sm hover:cursor-pointer ">
+        <div className="flex justify-start px-4 py-2 text-sm w-52 text-gray rounded-xl hover:cursor-pointer">
           <Image
             src={"/logout_icon.svg"}
             alt={"Log out icon"}
