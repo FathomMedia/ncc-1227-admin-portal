@@ -1,7 +1,7 @@
 import React from "react";
 import { Doughnut } from "react-chartjs-2";
-import PrimaryButton from "./primary-button";
-import SecondaryButton from "./secondary-button";
+import PrimaryButton from "./../primary-button";
+import SecondaryButton from "./../secondary-button";
 
 interface Props {
   title: string;
@@ -30,8 +30,8 @@ export default function LargeDonutGraphInfo({ title }: Props) {
   };
 
   return (
-    <div className="w-full h-72 p-4 border rounded-xl bg-nccGray-50 flex flex-col justify-between">
-      <div className=" flex justify-between justify-items-center items-center">
+    <div className="flex flex-col justify-between w-full p-4 border h-72 rounded-xl bg-nccGray-50">
+      <div className="flex items-center justify-between  justify-items-center">
         {title}
         <PrimaryButton
           name={"Export CSV"}
@@ -40,7 +40,7 @@ export default function LargeDonutGraphInfo({ title }: Props) {
           }}
         ></PrimaryButton>
       </div>
-      <div className=" flex justify-center items-center">
+      <div className="flex items-center justify-center ">
         <Doughnut
           data={data}
           options={{
