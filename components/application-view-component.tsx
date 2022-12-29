@@ -48,8 +48,8 @@ export default function ViewApplication({
   const { push } = useRouter();
 
   return (
-    <div className="overflow-x-auto mx-auto">
-      <div className=" m-4 flex justify-end">
+    <div className="mx-auto overflow-x-auto">
+      <div className="flex justify-end m-4 ">
         {!readOnly && (
           <PrimaryButton
             name={!isEditing ? "Edit" : "Close"}
@@ -131,14 +131,14 @@ export default function ViewApplication({
                 <tr>
                   <td>Status</td>
                   <td>
-                    <div className="text-sm font-semibold mb-4">
+                    <div className="mb-4 text-sm font-semibold">
                       {application.status === Status.ELIGIBLE
                         ? Status.REVIEW
                         : application.status}
                     </div>
                     {isEditing && (
                       <Field
-                        className=" border rounded-xl"
+                        className="border rounded-xl"
                         as="select"
                         name="applicationStatus"
                         value={values.applicationStatus}
@@ -154,18 +154,22 @@ export default function ViewApplication({
                     )}
                   </td>
                 </tr>
-                <tr>
-                  <td>Household Income</td>
-                  <td>{application.student?.householdIncome}</td>
-                </tr>
-                <tr>
-                  <td>Graduation Date</td>
-                  <td>{application.student?.graduationDate}</td>
-                </tr>
-                <tr>
-                  <td>School Specialization</td>
-                  <td>{application.student?.specialization}</td>
-                </tr>
+                {!readOnly && (
+                  <>
+                    <tr>
+                      <td>Household Income</td>
+                      <td>{application.student?.householdIncome}</td>
+                    </tr>
+                    <tr>
+                      <td>Graduation Date</td>
+                      <td>{application.student?.graduationDate}</td>
+                    </tr>
+                    <tr>
+                      <td>School Specialization</td>
+                      <td>{application.student?.specialization}</td>
+                    </tr>
+                  </>
+                )}
                 <tr>
                   <td>GPA</td>
                   <td>{application.gpa}</td>
@@ -239,8 +243,7 @@ export default function ViewApplication({
                   <td>
                     <Link
                       className="link link-primary"
-                      href={"../adminLogs"}
-                      target="_blank"
+                      href={`../studentLogs/${application.id}`}
                     >
                       View
                     </Link>
@@ -267,7 +270,7 @@ export default function ViewApplication({
                     }`}
                   ></Field>
                 </div>
-                <div className=" flex justify-end m-4">
+                <div className="flex justify-end m-4 ">
                   <button
                     type="submit"
                     className={`btn btn-primary text-white ${
