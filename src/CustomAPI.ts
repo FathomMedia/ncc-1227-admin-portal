@@ -16,6 +16,7 @@ import {
   CreateStudentLogMutation,
   CreateStudentLogMutationVariables,
   Program,
+  StudentLog,
   University,
   UpdateApplicationMutation,
   UpdateApplicationMutationVariables,
@@ -410,6 +411,38 @@ export async function getAdminByCPR(id: string): Promise<Admin | undefined> {
   return admin;
 }
 
+export async function listAllStudentLogsOfApplication(applicationID: string) {
+  let q = `
+  query GetAllApplicationStudentLogs {
+    getApplication(id: "${applicationID}") {
+      studentLogs {
+        items {
+          id
+          _version
+          _lastChangedAt
+          _deleted
+          applicationID
+          applicationStudentLogsId
+          createdAt
+          dateTime
+          reason
+          snapshot
+          studentCPR
+          studentStudentLogsCpr
+          updatedAt
+        }
+      }
+    }
+  } 
+    `;
+
+  let res = (await API.graphql(graphqlOperation(q))) as GraphQLResult<any>; // your fetch function here
+  let studentLogs = res.data
+    ? (res.data?.getApplication?.studentLogs?.items as StudentLog[])
+    : [];
+  return studentLogs;
+}
+
 export async function listAllAdminsLogs() {
   let q = `
   query ListAllAdminsLogs {
@@ -441,6 +474,46 @@ export async function listAllAdminsLogs() {
   let res = (await API.graphql(graphqlOperation(q))) as GraphQLResult<any>; // your fetch function here
   let adminsLogs = res.data?.listAdminLogs.items as AdminLog[];
   return adminsLogs;
+}
+
+export async function getStudentLogsByLogID(
+  id: string
+): Promise<StudentLog | undefined> {
+  let q = `
+  query StudentLogHistoryInfo {
+    getStudentLog(id: "${id}") {
+      id
+      _version
+      _lastChangedAt
+      _deleted
+      applicationID
+      applicationStudentLogsId
+      createdAt
+      dateTime
+      studentCPR
+      studentStudentLogsCpr
+      updatedAt
+      reason
+      snapshot
+      student {
+        fullName
+        email
+        phone
+        cpr
+      }
+    }
+  }
+      `;
+
+  const res = (await API.graphql(graphqlOperation(q))) as GraphQLResult<any>;
+
+  if (res.data === undefined || res.data === null) {
+    return undefined;
+  }
+
+  let studentLog = res.data.getStudentLog as StudentLog;
+
+  return studentLog;
 }
 
 export async function getAdminLogsByLogID(
