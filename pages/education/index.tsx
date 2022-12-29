@@ -144,7 +144,7 @@ export default function Education() {
       <div className=" mb-8">
         <div className=" text-2xl font-semibold">Education</div>
         <div className=" text-base font-medium text-gray-500">
-          View a list of universities.
+          View a list of universities or programs.
         </div>
       </div>
 
@@ -292,7 +292,7 @@ export default function Education() {
 
       {/* Education Table */}
       <div>
-        <div className="overflow-x-auto w-full h-screen mx-4">
+        <div className="overflow-x-auto w-full h-screen">
           <table className="table table-fixed w-full">
             <thead className=" ">
               <tr>
@@ -309,11 +309,14 @@ export default function Education() {
                   <td key={datum.id}>
                     <div className=" flex justify-between">{`${datum.name}`}</div>
                   </td>
-                  <td key={index}>
+                  <td className=" overflow-x-scroll" key={index}>
                     {datum.Programs?.items.map((program: Program) => (
                       <div
                         key={program?.id}
-                        className="badge badge-accent text-primary-content mr-2"
+                        className="badge badge-accent text-primary-content mr-2 hover:cursor-pointer"
+                        onClick={() => {
+                          push(`/education/programs/${program.id}`);
+                        }}
                       >
                         {program?.name}
                       </div>

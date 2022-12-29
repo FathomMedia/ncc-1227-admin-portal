@@ -83,6 +83,16 @@ function useProvideAuth() {
     return res.data?.getAdmin != null;
   }
 
+  async function checkAuthUser(user: CognitoUser): Promise<boolean> {
+    let isAdmin = await checkIfCprExist(user.getUsername());
+    if (!isAdmin) {
+      Auth.signOut();
+      setIsSignedIn(false);
+      setUser(undefined);
+    }
+    return isAdmin;
+  }
+
   /**
    * It checks if the user is signed in, and if so, it sets the user state to the user object returned by
    * the Auth.currentAuthenticatedUser() method
@@ -90,8 +100,14 @@ function useProvideAuth() {
   async function getAuthUser(): Promise<void> {
     try {
       const authUser = await Auth.currentAuthenticatedUser();
-      setIsSignedIn(true);
-      setUser(authUser);
+      if (authUser) {
+        await checkAuthUser(authUser).then((isAdmin) => {
+          if (isAdmin) {
+            setIsSignedIn(true);
+            setUser(authUser);
+          }
+        });
+      }
     } catch (error) {
       setIsSignedIn(false);
       setUser(undefined);

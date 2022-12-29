@@ -24,6 +24,8 @@ import {
   UpdateAttachmentMutationVariables,
   UpdateProgramChoiceMutation,
   UpdateProgramChoiceMutationVariables,
+  UpdateProgramMutation,
+  UpdateProgramMutationVariables,
 } from "./API";
 import {
   createAttachment,
@@ -34,6 +36,7 @@ import {
   updateProgramChoice,
   createStudentLog,
   createAdminLog,
+  updateProgram,
 } from "./graphql/mutations";
 
 /* -------------------------------------------------------------------------- */
@@ -553,4 +556,50 @@ export async function getAdminLogsByLogID(
   let adminLog = res.data.getAdminLog as AdminLog;
 
   return adminLog;
+}
+
+export async function getProgramById(id: string): Promise<Program | undefined> {
+  let q = `
+  query GetProgramLogById {
+    getProgram(id: "${id}") {
+      _deleted
+      _lastChangedAt
+      _version
+      availability
+      createdAt
+      id
+      isDeactivated
+      name
+      requirements
+      university {
+        name
+        isDeactivated
+        id
+      }
+      universityID
+      universityProgramsId
+    }
+  }
+      `;
+
+  const res = (await API.graphql(graphqlOperation(q))) as GraphQLResult<any>;
+
+  if (res.data === undefined || res.data === null) {
+    return undefined;
+  }
+
+  let program = res.data.getProgram as Program;
+
+  return program;
+}
+
+export async function updateProgramById(
+  mutationVars: UpdateProgramMutationVariables
+): Promise<UpdateProgramMutation | undefined> {
+  let res = (await API.graphql({
+    query: updateProgram,
+    variables: mutationVars,
+  })) as GraphQLResult<UpdateProgramMutation>;
+
+  return res.data;
 }
