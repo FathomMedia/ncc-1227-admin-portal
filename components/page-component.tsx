@@ -1,9 +1,11 @@
-import { FC, PropsWithChildren } from "react";
+import { FC, PropsWithChildren, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useAuth } from "../hooks/use-auth";
 import NavbarComponent from "./navbar-component";
 import SignInFormComponent from "./sign-in-form-component";
+
+import Image from "next/image";
 
 interface Props {
   title: string;
@@ -11,10 +13,29 @@ interface Props {
 
 export const PageComponent: FC<PropsWithChildren<Props>> = (props) => {
   const { isSignedIn, user } = useAuth();
+
   return (
     <div>
       <Toaster />
-
+      <div className="navbar lg:hidden bg-nccGray-50 shadow-lg shadow-black/5 fixed top-0 left-0 z-50">
+        <div className="flex-none">
+          <label
+            htmlFor="my-drawer-2"
+            className="btn btn-primary drawer-button rounded-xl lg:hidden"
+          >
+            <GiHamburgerMenu className=" fill-white" />
+          </label>
+        </div>
+        <div className="flex-1">
+          <Image
+            className=""
+            src="/logo.svg"
+            alt="logo"
+            width={200}
+            height={100}
+          />
+        </div>
+      </div>
       <div className="drawer drawer-mobile min-w-[277px]">
         <input
           id="my-drawer-2"
@@ -22,13 +43,7 @@ export const PageComponent: FC<PropsWithChildren<Props>> = (props) => {
           className="drawer-toggle"
           title="pageComponent"
         />
-        <div className="drawer-content ">
-          <label
-            htmlFor="my-drawer-2"
-            className="btn btn-primary drawer-button lg:hidden"
-          >
-            <GiHamburgerMenu />
-          </label>
+        <div className="drawer-content m-4">
           {!isSignedIn ? (
             <SignInFormComponent></SignInFormComponent>
           ) : (

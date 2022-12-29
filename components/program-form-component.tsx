@@ -206,7 +206,7 @@ export default function ProgramFormComponent({ program }: Props) {
                   placeholder="Availability"
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  className={`input input-bordered input-primary ${
+                  className={` checkbox text-orange-50 checkbox-warning ${
                     errors.isDeactivated && "input-error"
                   }`}
                 />

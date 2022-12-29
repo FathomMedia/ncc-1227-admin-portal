@@ -6,10 +6,15 @@ import {
   CreateAdminLogMutationVariables,
   Status,
   UpdateApplicationMutationVariables,
+  UpdateProgramMutationVariables,
 } from "../src/API";
 import PrimaryButton from "./primary-button";
 import * as yup from "yup";
-import { createAdminLogInDB, updateApplicationInDB } from "../src/CustomAPI";
+import {
+  createAdminLogInDB,
+  updateApplicationInDB,
+  updateProgramById,
+} from "../src/CustomAPI";
 import toast from "react-hot-toast";
 import { useAuth } from "../hooks/use-auth";
 import { useRouter } from "next/router";
@@ -94,8 +99,14 @@ export default function ViewApplication({
                 },
               };
 
-              await createAdminLogInDB(createAdminLogVariables);
-              push("/applications");
+              await createAdminLogInDB(createAdminLogVariables)
+                .then((value) => {
+                  push("/applications");
+                  return value;
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
             });
 
           actions.setSubmitting(false);
