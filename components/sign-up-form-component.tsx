@@ -41,8 +41,6 @@ export default function SignUpFormComponent() {
             "The email given is already linked to an existing account"
           );
         } else {
-          console.log("email ", findEmail?.email);
-
           if (findEmail !== null && findEmail !== undefined) {
             throw new Error("Failed to process admin account");
           }
@@ -58,10 +56,9 @@ export default function SignUpFormComponent() {
               } else {
                 throw new Error(`${res.error.message}`);
               }
-              console.log(values);
             })
             .catch((error) => {
-              console.log("createAdminUser", error);
+              console.log("createAdminUser => error", error);
               throw new Error(`${error}`);
             });
         }
@@ -75,8 +72,8 @@ export default function SignUpFormComponent() {
     <PageComponent title={"Add Admin User"}>
       <div>
         <div className="flex flex-col justify-between">
-          <div className=" text-xl font-bold mb-8">Sign Up New Admin</div>
-          <div className=" ">
+          <div className="mb-8 text-xl font-bold ">Sign Up New Admin</div>
+          <div className="">
             <Formik
               initialValues={initialValues}
               validationSchema={yup.object({
@@ -93,19 +90,10 @@ export default function SignUpFormComponent() {
                   },
                 });
 
-                console.log(values.cpr, values.email, values.fullName);
                 actions.setSubmitting(false);
               }}
             >
-              {({
-                values,
-                errors,
-                touched,
-                handleChange,
-                handleBlur,
-                isSubmitting,
-                isValid,
-              }) => (
+              {({ errors, touched, isSubmitting }) => (
                 <Form className="flex flex-col gap-3 p-4">
                   <div className="flex flex-col">
                     <label className="label">CPR</label>

@@ -12,7 +12,7 @@ export interface IChangePasswordForm {
 
 export default function ChangePasswordFormComponent() {
   const { push } = useRouter();
-  const { user, isChangePasswordRequired } = useAuth();
+  const { user } = useAuth();
 
   const initialValues: IChangePasswordForm = {
     newPassword: "",
@@ -20,8 +20,7 @@ export default function ChangePasswordFormComponent() {
 
   async function changePasswordInCognito(password: string) {
     user?.completeNewPasswordChallenge(password, null, {
-      onSuccess(session, userConfirmationNecessary?) {
-        console.log(session);
+      onSuccess(session) {
         push("/");
         return session;
       },
@@ -33,19 +32,18 @@ export default function ChangePasswordFormComponent() {
 
   return (
     <div>
-      <div className=" border rounded-xl p-4">
+      <div className="p-4 border rounded-xl">
         <div className="flex flex-col justify-between">
-          <div className=" text-xl font-bold mb-4 flex justify-center items-center">
+          <div className="flex items-center justify-center mb-4 text-xl font-bold ">
             Change Password
           </div>
-          <div className=" ">
+          <div className="">
             <Formik
               initialValues={initialValues}
               validationSchema={yup.object({
                 newPassword: yup.string().required("Password is required"),
               })}
               onSubmit={async (values, actions) => {
-                console.log(values.newPassword);
                 await toast.promise(
                   changePasswordInCognito(values.newPassword),
                   {

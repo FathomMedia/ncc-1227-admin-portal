@@ -71,7 +71,6 @@ export default function ViewApplication({
           reason: yup.string().required(),
         })}
         onSubmit={async (values, actions) => {
-          console.log(values.applicationStatus, values.reason);
           let updateVariables: UpdateApplicationMutationVariables = {
             input: {
               id: application.id,

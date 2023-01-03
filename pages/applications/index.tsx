@@ -130,42 +130,14 @@ export default function Applications() {
 
       {/* applications search bar */}
       <div className="flex items-center w-full p-4 my-8 border border-nccGray-100 rounded-xl bg-nccGray-100">
-        {/* <div className="min-w-fit">
-          <div className="text-sm font-semibold text-gray-500 ">
-            Search for applicants
-          </div>
-          <SearchBarComponent
-            searchChange={(value) => {
-              console.log(value);
-              setSearchValue(value);
-            }}
-            onSubmit={(value: string) => {
-              setSearchValue(value);
-              search();
-            }}
-          />
-        </div> */}
-
         <div className="flex w-full gap-4 ">
           <Formik
             initialValues={initialFilterValues}
-            onSubmit={(values, actions) => {
-              console.log("values", values);
-
+            onSubmit={(values) => {
               filter(values);
             }}
           >
-            {({
-              values,
-              errors,
-              touched,
-              handleChange,
-              handleBlur,
-              isSubmitting,
-              isValid,
-              handleReset,
-              resetForm,
-            }) => (
+            {({ values, handleChange, handleReset }) => (
               <Form className="flex flex-wrap items-end gap-3 p-4">
                 {/* Search Bar */}
                 <div>

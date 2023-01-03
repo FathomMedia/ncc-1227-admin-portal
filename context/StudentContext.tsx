@@ -243,23 +243,17 @@ export async function getAllApplicationsAPI(): Promise<
         id
         status
         studentCPR
-        adminLogs {
-          items {
-            snapshot
-            applicationID
-            applicationAdminLogsId
-            adminCPR
-            dateTime
-          }
-        }
         programs {
           items {
             _deleted
+              id
             programID
             program {
+              id
               name
               university {
                 name
+                id
               }
             }
           }
@@ -269,12 +263,49 @@ export async function getAllApplicationsAPI(): Promise<
       nextToken
     }
   }
-  
   `;
+  // let query = `
+  // query ListAllApplications {
+  //   listApplications {
+  //     items {
+  //       _version
+  //       _deleted
+  //       applicationAttachmentId
+  //       attachmentID
+  //       gpa
+  //       id
+  //       status
+  //       studentCPR
+  //       adminLogs {
+  //         items {
+  //           snapshot
+  //           applicationID
+  //           applicationAdminLogsId
+  //           adminCPR
+  //           dateTime
+  //         }
+  //       }
+  //       programs {
+  //         items {
+  //           _deleted
+  //           programID
+  //           program {
+  //             name
+  //             university {
+  //               name
+  //             }
+  //           }
+  //         }
+  //       }
+  //       createdAt
+  //     }
+  //     nextToken
+  //   }
+  // }
 
-  let res = (await API.graphql(
-    graphqlOperation(query)
-  )) as GraphQLResult<ListApplicationsQuery>;
+  // `;
+
+  let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;
 
   let tempApplicationList = res.data;
   let temp: Application[] = (tempApplicationList?.listApplications?.items ??

@@ -36,24 +36,22 @@ export default function Users() {
         value?.cpr?.toLowerCase().includes(searchValue.toLowerCase())
     );
     setResultList(searchResult);
-
-    console.log("Searching: ", searchResult);
   }
 
   return (
     <PageComponent title={"Users"}>
       <div className="">
-        <div className=" mb-4">
-          <div className=" mb-6">
-            <div className=" text-2xl font-semibold">Administrators</div>
-            <div className=" text-base font-medium text-gray-500">
+        <div className="mb-4 ">
+          <div className="mb-6 ">
+            <div className="text-2xl font-semibold ">Administrators</div>
+            <div className="text-base font-medium text-gray-500 ">
               View a list of users.
             </div>
           </div>
 
           {/* administrators search bar */}
-          <div className=" border rounded-xl border-nccGray-50 bg-nccGray-50 flex justify-between p-6 gap-4">
-            <div className=" w-full">
+          <div className="flex justify-between gap-4 p-6 border  rounded-xl border-nccGray-50 bg-nccGray-50">
+            <div className="w-full ">
               <SearchBarComponent
                 searchChange={(value) => {
                   setSearchValue(value);
@@ -68,7 +66,7 @@ export default function Users() {
                 }}
               />
             </div>
-            <div className=" flex gap-4">
+            <div className="flex gap-4 ">
               <PrimaryButton
                 name={"Search"}
                 buttonClick={search}
@@ -82,7 +80,7 @@ export default function Users() {
         </div>
 
         {/* grid table of users*/}
-        <div className=" grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5 gap-y-4 gap-x-3">
+        <div className="grid grid-cols-1  md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5 gap-y-4 gap-x-3">
           {resultList?.map((admin) => (
             <UsersCardInfo
               key={admin?.cpr}
