@@ -4,18 +4,32 @@ import PrimaryButton from "./../primary-button";
 
 interface Props {
   title: string;
+  barLabel: string;
+  subBarLabel: string;
+  min?: number;
+  max?: number;
+  labels: string[];
+  data: number[];
 }
 
-export default function LargeBarGraphInfo({ title }: Props) {
-  //! TODO sample data - remove and apply actual data from db
-  const data = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Aug"],
+export default function LargeBarGraphInfo({
+  title,
+  barLabel,
+  subBarLabel,
+  min,
+  max,
+  labels,
+  data,
+}: Props) {
+  const graph = {
+    labels: labels,
     datasets: [
       {
-        label: "Brutto",
+        label: barLabel,
+        data: data,
         borderRadius: 30,
-        data: [1, 0.4, 0.2, 0.3, 0.7, 0.8, 0.6],
         barThickness: 10,
+        backgroundColor: ["rgb(225, 185, 61)"],
       },
     ],
   };
@@ -31,17 +45,18 @@ export default function LargeBarGraphInfo({ title }: Props) {
           pointStyle: "circle",
         },
         title: {
-          text: "Some text",
+          text: subBarLabel,
           display: true,
         },
       },
     },
     scales: {
       x: {
-        display: false,
+        display: true,
       },
       y: {
-        max: 1,
+        min: min,
+        max: max,
       },
     },
     barPercentage: 0.3,
@@ -49,8 +64,8 @@ export default function LargeBarGraphInfo({ title }: Props) {
   };
 
   return (
-    <div className="flex flex-col justify-between w-full p-4 border  h-72 rounded-xl bg-nccGray-50">
-      <div className="flex items-center justify-between  justify-items-center">
+    <div className="flex flex-col justify-between w-full p-4 border h-72 rounded-xl bg-nccGray-50">
+      <div className="flex items-center justify-between justify-items-center">
         {title}
         <PrimaryButton
           name={"Export CSV"}
@@ -59,8 +74,8 @@ export default function LargeBarGraphInfo({ title }: Props) {
           }}
         ></PrimaryButton>
       </div>
-      <div className="flex items-center justify-center">
-        <Bar data={data} options={options} />
+      <div className="flex items-center justify-center mt-1 grow">
+        <Bar data={graph} options={options} />
       </div>
     </div>
   );

@@ -9,11 +9,6 @@ import SecondaryButton from "../../components/secondary-button";
 import { Formik, Form, Field } from "formik";
 import * as yup from "yup";
 import toast, { Toaster } from "react-hot-toast";
-import { TableData } from "../../components/table-component";
-
-interface Props {
-  universityName: string;
-}
 
 export default function Education() {
   const { universityList, addNewUniversity, syncUniList } = useEducation();
@@ -113,44 +108,20 @@ export default function Education() {
     }
   }
 
-  // list all universities in db
-  // function listAllUniversities() {
-  //   let uniList = universityList?.map((uni) => {
-  //     return uni;
-  //   });
-
-  //   return uniList?.map<TableData>((uni) => {
-  //     let programsList = uni.Programs?.items;
-  //     setUniversityProgramList(programsList);
-  //     return {
-  //       id: uni.id,
-  //       data: [uni.name, uni.Programs?.items],
-  //       // data: `${uni.name}`,
-  //     };
-  //   });
-  // }
-
-  // view university details based on id given
-  // async function viewDetails(event: any) {
-  //   let programsList = await getProgramsFromUniID(event);
-  //   setUniversityProgramList(programsList);
-  //   return push(`education/universities/${event}`);
-  // }
-
   // allow admins to add, edit university and related program info here
   return (
     <PageComponent title={"Education"}>
       <Toaster />
-      <div className=" mb-8">
-        <div className=" text-2xl font-semibold">Education</div>
-        <div className=" text-base font-medium text-gray-500">
+      <div className="mb-8 ">
+        <div className="text-2xl font-semibold ">Education</div>
+        <div className="text-base font-medium text-gray-500 ">
           View a list of universities or programs.
         </div>
       </div>
 
       {/* search bar */}
-      <div className=" my-8 p-4 w-full h-32 border border-nccGray-100 rounded-xl bg-nccGray-100 flex justify-between items-center gap-4">
-        <div className=" w-full">
+      <div className="flex items-center justify-between w-full h-32 gap-4 p-4 my-8 border  border-nccGray-100 rounded-xl bg-nccGray-100">
+        <div className="w-full ">
           <SearchBarComponent
             searchChange={(value) => {
               setSearchValue(value);
@@ -160,13 +131,12 @@ export default function Education() {
               }
             }}
             onSubmit={(value: string) => {
-              console.log("Searching..", value);
               setSearchValue(value);
               search();
             }}
           />
         </div>
-        <div className=" flex justify-between gap-4">
+        <div className="flex justify-between gap-4 ">
           <div
             className="min-w-[8rem] px-4 py-2 border-2 border-anzac-400 rounded-xl bg-anzac-400 text-white text-xs font-bold hover:cursor-pointer"
             onClick={() => setIsSubmitted(!isSubmitted)}
@@ -184,14 +154,14 @@ export default function Education() {
 
       {/* modal dialogue - adds university to db */}
       <div className={` modal ${isSubmitted && "modal-open"}`}>
-        <div className="modal-box relative">
+        <div className="relative modal-box">
           <label
             onClick={() => setIsSubmitted(!isSubmitted)}
-            className="btn btn-sm btn-circle absolute right-2 top-2"
+            className="absolute btn btn-sm btn-circle right-2 top-2"
           >
             ✕
           </label>
-          <div className=" p-4 mb-4">
+          <div className="p-4 mb-4 ">
             <div className="text-lg font-bold">Add New University</div>
             <div>
               <Formik
@@ -292,9 +262,9 @@ export default function Education() {
 
       {/* Education Table */}
       <div>
-        <div className="overflow-x-auto w-full h-screen">
-          <table className="table table-fixed w-full">
-            <thead className=" ">
+        <div className="w-full h-screen overflow-x-auto">
+          <table className="table w-full table-fixed">
+            <thead className="">
               <tr>
                 {EducationTableHeaders.map((title, index) => (
                   <th className=" bg-nccGray-100" key={index}>
@@ -307,13 +277,13 @@ export default function Education() {
               {shownData?.map((datum: any, index: number) => (
                 <tr key={index}>
                   <td key={datum.id}>
-                    <div className=" flex justify-between">{`${datum.name}`}</div>
+                    <div className="flex justify-between ">{`${datum.name}`}</div>
                   </td>
-                  <td className=" overflow-x-scroll" key={index}>
+                  <td className="overflow-x-scroll " key={index}>
                     {datum.Programs?.items.map((program: Program) => (
                       <div
                         key={program?.id}
-                        className="badge badge-accent text-primary-content mr-2 hover:cursor-pointer"
+                        className="mr-2 badge badge-accent text-primary-content hover:cursor-pointer"
                         onClick={() => {
                           push(`/education/programs/${program.id}`);
                         }}
@@ -333,7 +303,7 @@ export default function Education() {
             </tbody>
           </table>
           {/* fake pagination */}
-          <div className=" flex justify-center mt-8">
+          <div className="flex justify-center mt-8 ">
             <div className="btn-group">
               <button
                 className="btn btn-accent text-anzac-500"
@@ -349,7 +319,7 @@ export default function Education() {
                 {currentPage}
               </button>
               <button
-                className="btn btn-accent  text-anzac-500"
+                className="btn btn-accent text-anzac-500"
                 onClick={goNextPage}
                 disabled={disableForward}
               >
