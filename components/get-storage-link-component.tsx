@@ -10,28 +10,32 @@ export default function GetStorageLinkComponent({ storageKey }: Props) {
   const [link, setLink] = useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  useEffect(() => {
+  async function getLink(key: string) {
     setIsLoading(true);
-    async function getLink(key: string) {
-      let link = await Storage.get(key);
-      return link;
-    }
-    storageKey &&
-      getLink(storageKey).then((value) => {
-        setLink(value);
-      });
-
-    return () => {};
-  }, [storageKey]);
+    let link = await Storage.get(key);
+    setLink(link);
+    setIsLoading(false);
+  }
 
   return (
     <div>
-      {link && (
-        <Link className="link link-primary" target="_blank" href={link}>
-          View
-        </Link>
-      )}
-      {!link && <div className="text-error">Document Not Submitted</div>}
+      {storageKey &&
+        (!link ? (
+          <button
+            disabled={isLoading}
+            className={`btn btn-ghost btn-sm text-primary hover:bg-primary/20 ${
+              isLoading && "loading"
+            }`}
+            onClick={() => getLink(storageKey)}
+          >
+            {isLoading ? "Loading..." : "Get Link"}
+          </button>
+        ) : (
+          <Link className="link link-success" target="_blank" href={link}>
+            View Document
+          </Link>
+        ))}
+      {!storageKey && <div className="text-error">Document Not Submitted</div>}
     </div>
   );
 }
