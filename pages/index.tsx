@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
-import LargeBarGraphInfo from "../components/graphs/large-bar-graph-info";
-import LargeDonutGraphInfo from "../components/graphs/large-donut-graph-info";
+
 import MiniGraphInfo from "../components/graphs/mini-graph-info";
+import { LargeBarGraphInfo } from "../components/graphs/large-bar-graph-info";
 
 import { PageComponent } from "../components/page-component";
 import PrimaryButton from "../components/primary-button";
@@ -10,6 +10,9 @@ import { useStudent } from "../context/StudentContext";
 import { Status } from "../src/API";
 
 import _ from "lodash";
+
+import { CSVLink } from "react-csv";
+
 import {
   getMeGpaSummary,
   getMeWeeklySummary,
@@ -17,13 +20,14 @@ import {
   giveMeTopProgram,
   giveMeTopUniversities,
 } from "../src/Helpers";
+import { LargeDonutGraphInfo } from "../components/graphs/large-donut-graph-info";
 
 export default function Home() {
   const { push } = useRouter();
   const { applications } = useStudent();
 
   let sortedApplications = applications?.sort(
-    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
 
   let applicationThisMonthGraph =
@@ -53,7 +57,9 @@ export default function Home() {
           {/*  */}
           <div className="flex flex-col ">
             <div className="mb-5 ">
-              <div className="text-3xl font-semibold ">Application Summary</div>
+              <div className="text-3xl font-semibold ">
+                {new Date().getFullYear()} Applications Summary
+              </div>
               <div className="text-base font-medium text-gray-500 ">
                 An overview of enrollment for current batch.
               </div>
@@ -65,12 +71,40 @@ export default function Home() {
               name={"All Applications"}
               buttonClick={() => push("/applications")}
             ></PrimaryButton>
-            <SecondaryButton
-              name={"Export CSV"}
-              buttonClick={function (): void {
-                throw new Error("Function not implemented.");
-              }}
-            ></SecondaryButton>
+
+            <CSVLink
+              filename={`${new Date().getFullYear()}-Applications-Summary-${new Date().toISOString()}.csv`}
+              data={
+                sortedApplications
+                  ? [
+                      ...sortedApplications.map((app, index) => {
+                        let sortedProgramChoices = app.programs?.items?.sort(
+                          (a, b) =>
+                            (a?.choiceOrder ?? 0) - (b?.choiceOrder ?? 0)
+                        );
+
+                        return {
+                          row: index + 1,
+                          applicationId: app.id,
+                          gpa: app.gpa,
+                          status: app.status,
+                          studentCPR: app.studentCPR,
+                          dateTime: app.dateTime,
+                          primaryProgramID:
+                            sortedProgramChoices?.[0]?.program?.id,
+                          primaryProgram: `${sortedProgramChoices?.[0]?.program?.name}-${sortedProgramChoices?.[0]?.program?.university?.name}`,
+                          secondaryProgramID:
+                            sortedProgramChoices?.[1]?.program?.id,
+                          secondaryProgram: `${sortedProgramChoices?.[1]?.program?.name}-${sortedProgramChoices?.[1]?.program?.university?.name}`,
+                        };
+                      }),
+                    ]
+                  : []
+              }
+              className="text-xs hover:!text-white btn btn-primary btn-sm btn-outline"
+            >
+              Export CSV
+            </CSVLink>
           </div>
         </div>
 
@@ -149,18 +183,13 @@ export default function Home() {
               </div>
             </div>
             <div className="flex items-center justify-end h-10 gap-4 m-4 ">
-              <PrimaryButton
+              {/* !  TODO implement date range */}
+              {/* <PrimaryButton
                 name={"Apply"}
                 buttonClick={function (): void {
                   throw new Error("Function not implemented.");
                 }}
-              ></PrimaryButton>
-              <SecondaryButton
-                name={"Export CSV"}
-                buttonClick={function (): void {
-                  throw new Error("Function not implemented.");
-                }}
-              ></SecondaryButton>
+              ></PrimaryButton> */}
             </div>
           </div>
           {/* large graphs */}
@@ -171,12 +200,50 @@ export default function Home() {
               subBarLabel={"Applications per day"}
               labels={weeklySummaryGraph.map((perDay) => perDay.dayName)}
               data={weeklySummaryGraph.map((perDay) => perDay.count)}
-            ></LargeBarGraphInfo>
+            >
+              <CSVLink
+                filename={`Weekly-Summary-${new Date().toISOString()}.csv`}
+                data={
+                  weeklySummaryGraph
+                    ? [
+                        ...weeklySummaryGraph.map((perDay) => {
+                          return {
+                            dayOfWeek: perDay.dayName,
+                            numberOfApplications: perDay.count,
+                          };
+                        }),
+                      ]
+                    : []
+                }
+                className="text-xs text-white btn btn-primary btn-sm"
+              >
+                Export CSV
+              </CSVLink>
+            </LargeBarGraphInfo>
             <LargeDonutGraphInfo
               title={"Top Universities"}
               labels={topUniversitiesGraph.map((p) => p.name)}
               data={topUniversitiesGraph.map((p) => p.count)}
-            ></LargeDonutGraphInfo>
+            >
+              <CSVLink
+                filename={`Top-Universities-${new Date().toISOString()}.csv`}
+                data={
+                  topUniversitiesGraph
+                    ? [
+                        ...topUniversitiesGraph.map((p) => {
+                          return {
+                            university: p.name,
+                            numberOfApplications: p.count,
+                          };
+                        }),
+                      ]
+                    : []
+                }
+                className="text-xs text-white btn btn-primary btn-sm"
+              >
+                Export CSV
+              </CSVLink>
+            </LargeDonutGraphInfo>
             <LargeBarGraphInfo
               title={"GPA Summary"}
               barLabel={"GPA"}
@@ -185,12 +252,50 @@ export default function Home() {
               max={100}
               labels={gpaSummaryGraph.map((perMonth) => perMonth.monthName)}
               data={gpaSummaryGraph.map((perMonth) => perMonth.meanGpa)}
-            ></LargeBarGraphInfo>
+            >
+              <CSVLink
+                filename={`GPA-Summary-${new Date().toISOString()}.csv`}
+                data={
+                  gpaSummaryGraph
+                    ? [
+                        ...gpaSummaryGraph.map((perMonth) => {
+                          return {
+                            month: perMonth.monthName,
+                            meanGpa: perMonth.meanGpa,
+                          };
+                        }),
+                      ]
+                    : []
+                }
+                className="text-xs text-white btn btn-primary btn-sm"
+              >
+                Export CSV
+              </CSVLink>
+            </LargeBarGraphInfo>
             <LargeDonutGraphInfo
               title={"Top Programs"}
               labels={topProgramsGraph.map((p) => p.name)}
               data={topProgramsGraph.map((p) => p.count)}
-            ></LargeDonutGraphInfo>
+            >
+              <CSVLink
+                filename={`Top-Programs-${new Date().toISOString()}.csv`}
+                data={
+                  topProgramsGraph
+                    ? [
+                        ...topProgramsGraph.map((p) => {
+                          return {
+                            program: p.name,
+                            numberOfApplications: p.count,
+                          };
+                        }),
+                      ]
+                    : []
+                }
+                className="text-xs text-white btn btn-primary btn-sm"
+              >
+                Export CSV
+              </CSVLink>
+            </LargeDonutGraphInfo>
           </div>
         </div>
       </div>

@@ -23,9 +23,9 @@ export default function TableComponent({
 }: Props) {
   return (
     <div>
-      <div className="overflow-x-auto w-full h-screen">
+      <div className="w-full h-screen overflow-x-auto">
         <table className="table w-full ">
-          <thead className=" border rounded-xl border-nccGray-100">
+          <thead className="border  rounded-xl border-nccGray-100">
             <tr>
               {headers.map((title, index) => (
                 <th className=" bg-nccGray-100" key={index}>
@@ -39,28 +39,32 @@ export default function TableComponent({
               <tr key={index}>
                 <th key={datum?.id}>
                   <label>
-                    <input type="checkbox" className="checkbox" />
+                    <input
+                      title="Select"
+                      type="checkbox"
+                      className="checkbox"
+                    />
                   </label>
                 </th>
                 {datum?.data.map((hi: any, index: number) => (
                   <td key={index}>
-                    <div className=" flex justify-between">{`${hi}`}</div>
+                    <div className="flex justify-between ">{`${hi}`}</div>
                   </td>
                 ))}
 
                 <td>
-                  <button className="btn btn-ghost btn-xs relative group">
+                  <button className="relative btn btn-ghost btn-xs group">
                     <HiDotsVertical />
-                    <div className=" hidden absolute right-6 top-5 bg-white shadow-lg p-1 rounded-lg group-focus:flex flex-col min-w-min">
+                    <div className="absolute flex-col hidden p-1 bg-white rounded-lg shadow-lg  right-6 top-5 group-focus:flex min-w-min">
                       <div
-                        className="btn btn-ghost btn-xs hover:bg-anzac-100 hover:cursor-pointer hover:text-anzac-500 flex justify-start w-24 gap-2"
+                        className="flex justify-start w-24 gap-2 btn btn-ghost btn-xs hover:bg-anzac-100 hover:cursor-pointer hover:text-anzac-500"
                         onClick={() => viewClick(datum?.id)}
                       >
                         <BsFillEyeFill />
                         View
                       </div>
                       <div
-                        className="btn btn-ghost btn-xs hover:bg-anzac-100 hover:cursor-pointer hover:text-anzac-500 flex justify-start w-24 gap-2"
+                        className="flex justify-start w-24 gap-2 btn btn-ghost btn-xs hover:bg-anzac-100 hover:cursor-pointer hover:text-anzac-500"
                         onClick={() => {
                           historyClick;
                         }}

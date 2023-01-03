@@ -57,7 +57,7 @@ export function giveMeApplicationsThisMonth(
   applications: Application[] | undefined
 ) {
   return applications?.filter((app) => {
-    const orderDate = new Date(app.createdAt);
+    const orderDate = new Date(app.dateTime);
     const today = new Date();
     const isThisYear = orderDate.getFullYear() === today.getFullYear();
     const isThisMonth = orderDate.getMonth() === today.getMonth();
@@ -80,8 +80,8 @@ export function getApplicationsByMonth(
   applications: Application[] | undefined
 ) {
   return _.groupBy(applications, (app) => {
-    let createdAt = new Date(app.createdAt);
-    return createdAt.getMonth();
+    let dateTime = new Date(app.dateTime);
+    return dateTime.getMonth();
   });
 }
 
@@ -107,13 +107,13 @@ export function getMeWeeklySummary(applications: Application[] | undefined) {
 
     d.setDate(d.getDate() - 7);
 
-    return new Date(app.createdAt) > d && new Date(app.createdAt) <= new Date();
+    return new Date(app.dateTime) > d && new Date(app.dateTime) <= new Date();
   });
 
   let weeklySummaryData: WeeklySummaryGraphData[] = [];
 
   let applicationsPerDay = _.groupBy(applicationsThisWeek, (app) => {
-    return new Date(app.createdAt).getDay();
+    return new Date(app.dateTime).getDay();
   });
 
   _.forEach(applicationsPerDay, (value, key) => {

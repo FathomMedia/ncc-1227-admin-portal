@@ -231,12 +231,16 @@ export async function getApplicationByIdAPI(
 export async function getAllApplicationsAPI(): Promise<
   Application[] | undefined
 > {
+  let thisYear = new Date().getFullYear();
+  let nextYear = thisYear + 1;
+
   let query = `
   query ListAllApplications {
-    listApplications {
+    listApplications(filter: {dateTime: {between: ["${thisYear}-01-01T00:00:00", "${nextYear}-01-01T00:00:00"]}}) {
       items {
         _version
         _deleted
+         dateTime
         applicationAttachmentId
         attachmentID
         gpa
@@ -246,7 +250,7 @@ export async function getAllApplicationsAPI(): Promise<
         programs {
           items {
             _deleted
-              id
+            id
             programID
             program {
               id
@@ -259,10 +263,12 @@ export async function getAllApplicationsAPI(): Promise<
           }
         }
         createdAt
+       
       }
       nextToken
     }
   }
+  
   `;
   // let query = `
   // query ListAllApplications {

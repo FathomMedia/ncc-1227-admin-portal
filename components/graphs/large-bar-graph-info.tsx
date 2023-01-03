@@ -1,5 +1,6 @@
-import React from "react";
+import React, { FC, PropsWithChildren } from "react";
 import { Bar } from "react-chartjs-2";
+import { CSVLink } from "react-csv";
 import PrimaryButton from "./../primary-button";
 
 interface Props {
@@ -12,7 +13,19 @@ interface Props {
   data: number[];
 }
 
-export default function LargeBarGraphInfo({
+// export default function LargeBarGraphInfo({
+//   title,
+//   barLabel,
+//   subBarLabel,
+//   min,
+//   max,
+//   labels,
+//   data,
+// }: Props) {
+
+// }
+
+export const LargeBarGraphInfo: FC<PropsWithChildren<Props>> = ({
   title,
   barLabel,
   subBarLabel,
@@ -20,7 +33,8 @@ export default function LargeBarGraphInfo({
   max,
   labels,
   data,
-}: Props) {
+  children,
+}) => {
   const graph = {
     labels: labels,
     datasets: [
@@ -67,16 +81,11 @@ export default function LargeBarGraphInfo({
     <div className="flex flex-col justify-between w-full p-4 border h-72 rounded-xl bg-nccGray-50">
       <div className="flex items-center justify-between justify-items-center">
         {title}
-        <PrimaryButton
-          name={"Export CSV"}
-          buttonClick={function (): void {
-            throw new Error("Function not implemented.");
-          }}
-        ></PrimaryButton>
+        {children}
       </div>
       <div className="flex items-center justify-center mt-1 grow">
         <Bar data={graph} options={options} />
       </div>
     </div>
   );
-}
+};
