@@ -1,6 +1,6 @@
 import { Field, Form, Formik } from "formik";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Application,
   CreateAdminLogMutationVariables,
@@ -19,6 +19,8 @@ import toast from "react-hot-toast";
 import { useAuth } from "../hooks/use-auth";
 import { useRouter } from "next/router";
 import GetStorageLinkComponent from "./get-storage-link-component";
+import { ISendEmail } from "../pages/api/sendEmail";
+import Applications from "../pages/applications";
 
 interface Props {
   application: Application;
@@ -52,9 +54,33 @@ export default function ViewApplication({
   const { user } = useAuth();
   const { push } = useRouter();
 
+  let emailData: ISendEmail = {
+    status:
+      application.status === Status.APPROVED ||
+      application.status === Status.REJECTED
+        ? application.status
+        : undefined,
+    email: application.student?.email ?? undefined,
+    id: application.id,
+  };
+
   return (
     <div className="mx-auto overflow-x-auto">
-      <div className="flex justify-end m-4 ">
+      <div className="flex justify-end m-4 gap-4">
+        <div>
+          {(application.status === Status.APPROVED ||
+            application.status === Status.REJECTED) && (
+            <PrimaryButton
+              name="Send Email"
+              buttonClick={async () => {
+                await fetch("../../api/sendEmail", {
+                  method: "POST",
+                  body: JSON.stringify(emailData),
+                });
+              }}
+            ></PrimaryButton>
+          )}
+        </div>
         {!readOnly && (
           <PrimaryButton
             name={!isEditing ? "Edit" : "Close"}
@@ -71,7 +97,6 @@ export default function ViewApplication({
           reason: yup.string().required(),
         })}
         onSubmit={async (values, actions) => {
-          console.log(values.applicationStatus, values.reason);
           let updateVariables: UpdateApplicationMutationVariables = {
             input: {
               id: application.id,
@@ -142,27 +167,29 @@ export default function ViewApplication({
                 <tr>
                   <td>Status</td>
                   <td>
-                    <div className="mb-4 text-sm font-semibold">
-                      {application.status === Status.ELIGIBLE
-                        ? Status.REVIEW
-                        : application.status}
+                    <div className=" flex gap-8 items-center">
+                      <div className="text-sm font-semibold ">
+                        {application.status === Status.ELIGIBLE
+                          ? Status.REVIEW
+                          : application.status}
+                      </div>
+                      {isEditing && (
+                        <Field
+                          className="border rounded-xl"
+                          as="select"
+                          name="applicationStatus"
+                          value={values.applicationStatus}
+                          onBlur={handleBlur}
+                        >
+                          <option disabled value={Status.REVIEW}>
+                            REVIEW
+                          </option>
+                          <option value={Status.ELIGIBLE}>ELIGIBLE</option>
+                          <option value={Status.APPROVED}>APPROVED</option>
+                          <option value={Status.REJECTED}>REJECTED</option>
+                        </Field>
+                      )}
                     </div>
-                    {isEditing && (
-                      <Field
-                        className="border rounded-xl"
-                        as="select"
-                        name="applicationStatus"
-                        value={values.applicationStatus}
-                        onBlur={handleBlur}
-                      >
-                        <option disabled value={Status.REVIEW}>
-                          REVIEW
-                        </option>
-                        <option value={Status.ELIGIBLE}>ELIGIBLE</option>
-                        <option value={Status.APPROVED}>APPROVED</option>
-                        <option value={Status.REJECTED}>REJECTED</option>
-                      </Field>
-                    )}
                   </td>
                 </tr>
                 {!readOnly && (

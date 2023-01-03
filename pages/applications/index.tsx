@@ -204,14 +204,6 @@ export default function Applications() {
                           {status.replace("_", " ")}
                         </option>
                       ))}
-                      {/* <option value={Status.ELIGIBLE}>ELIGIBLE</option>
-                      <option value={Status.APPROVED}>APPROVED</option>
-                      <option value={Status.REJECTED}>REJECTED</option>
-                      <option value={Status.WITHDRAWN}>WITHDRAWN</option>
-                      <option value={Status.REVIEW}>REVIEW</option>
-                      <option value={Status.NOT_COMPLETED}>
-                        NOT COMPLETED
-                      </option> */}
                     </Field>
                   </div>
                 </div>
@@ -322,8 +314,10 @@ export default function Applications() {
                     <div
                       className={`badge text-sm font-semibold 
                         ${
-                          datum.status === Status.REVIEW &&
-                          "text-primary-content badge-accent"
+                          (datum.status === Status.NOT_COMPLETED &&
+                            "text-primary-content badge-info") ||
+                          (datum.status === Status.REVIEW &&
+                            "text-primary-content badge-accent")
                         } 
                         ${
                           datum.status === Status.WITHDRAWN ||
