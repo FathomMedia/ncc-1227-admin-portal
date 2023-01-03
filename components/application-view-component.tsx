@@ -295,6 +295,9 @@ export default function ViewApplication({
                   <label className="label">
                     <span className="text-base font-medium text-gray-500">
                       Reason
+                      <span className="text-base font-medium text-error">
+                        *
+                      </span>
                     </span>
                   </label>
                   <Field
