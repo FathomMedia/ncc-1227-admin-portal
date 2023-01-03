@@ -114,17 +114,13 @@ export default function Home() {
             title={"Total applications"}
             graphNum={applications?.length ?? 0}
             graph={{
-              labels: applications
-                ? [
-                    ...applications.map(
-                      (app) => `${new Date(app.createdAt).getMonth()}`
-                    ),
-                  ]
+              labels: gpaSummaryGraph
+                ? [...gpaSummaryGraph.map((perMonth) => perMonth.monthName)]
                 : [],
               datasets: [
                 {
-                  data: applications
-                    ? [...applications.map((app) => app.gpa ?? 0)]
+                  data: gpaSummaryGraph
+                    ? [...gpaSummaryGraph.map((perMonth) => perMonth.meanGpa)]
                     : [],
                 },
               ],
