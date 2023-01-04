@@ -49,6 +49,7 @@ export const DateRangeComponent: FC<Props> = ({ dateRange, updateRange }) => {
               value={values.start}
               handleChange={handleChange}
             />
+            <p className="text-gray-400 min-w-fit">{"→"}</p>
             <Field
               className={`input input-xs input-ghost`}
               name="end"
