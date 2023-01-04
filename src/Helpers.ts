@@ -1,11 +1,33 @@
 import _ from "lodash";
 import { Application, Program } from "./API";
 
+/* -------------------------------------------------------------------------- */
+/*                                  INTERFACE                                 */
+/* -------------------------------------------------------------------------- */
 export interface TopGraphData {
   id: string;
   name: string;
   count: number;
 }
+
+export interface IDateRange {
+  start: string;
+  end: string;
+}
+
+export interface GpaSummaryGraphData {
+  monthName: string;
+  meanGpa: number;
+}
+
+export interface WeeklySummaryGraphData {
+  dayName: string;
+  count: number;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                  FUNCTIONS                                 */
+/* -------------------------------------------------------------------------- */
 
 export function giveMeTopUniversities(
   programs: (Program | null | undefined)[],
@@ -64,16 +86,6 @@ export function giveMeApplicationsThisMonth(
 
     return isThisYear && isThisMonth;
   });
-}
-
-export interface GpaSummaryGraphData {
-  monthName: string;
-  meanGpa: number;
-}
-
-export interface WeeklySummaryGraphData {
-  dayName: string;
-  count: number;
 }
 
 export function getApplicationsByMonth(

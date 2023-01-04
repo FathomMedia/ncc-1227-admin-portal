@@ -5,7 +5,6 @@ import { LargeBarGraphInfo } from "../components/graphs/large-bar-graph-info";
 
 import { PageComponent } from "../components/page-component";
 import PrimaryButton from "../components/primary-button";
-import SecondaryButton from "../components/secondary-button";
 import { useStudent } from "../context/StudentContext";
 import { Status } from "../src/API";
 
@@ -21,10 +20,11 @@ import {
   giveMeTopUniversities,
 } from "../src/Helpers";
 import { LargeDonutGraphInfo } from "../components/graphs/large-donut-graph-info";
+import { DateRangeComponent } from "../components/date-range-component";
 
 export default function Home() {
   const { push } = useRouter();
-  const { applications } = useStudent();
+  const { applications, dateRange, updateDateRange } = useStudent();
 
   let sortedApplications = applications?.sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -53,12 +53,12 @@ export default function Home() {
   return (
     <PageComponent title={"Home"}>
       <div className="flex flex-col justify-between gap-4">
-        <div className="flex justify-between ">
+        <div className="flex flex-wrap justify-between ">
           {/*  */}
           <div className="flex flex-col ">
             <div className="mb-5 ">
               <div className="text-3xl font-semibold ">
-                {new Date().getFullYear()} Applications Summary
+                {new Date(dateRange.start).getFullYear()} Applications Summary
               </div>
               <div className="text-base font-medium text-gray-500 ">
                 An overview of enrollment for current batch.
@@ -66,7 +66,11 @@ export default function Home() {
             </div>
           </div>
           {/* TODO - dashboard buttons here  */}
-          <div className="flex items-center justify-end h-10 gap-4 m-4">
+          <div className="flex flex-wrap items-center justify-end gap-4 m-4">
+            <DateRangeComponent
+              dateRange={dateRange}
+              updateRange={updateDateRange}
+            ></DateRangeComponent>
             <PrimaryButton
               name={"All Applications"}
               buttonClick={() => push("/applications")}
@@ -109,7 +113,7 @@ export default function Home() {
         </div>
 
         {/* mini graphs */}
-        <div className="flex justify-between gap-8 mb-8 overflow-x-scroll">
+        <div className="flex justify-between gap-8 mb-8 overflow-x-scroll min-h-fit">
           <MiniGraphInfo
             title={"Total applications"}
             graphNum={applications?.length ?? 0}
@@ -189,7 +193,7 @@ export default function Home() {
             </div>
           </div>
           {/* large graphs */}
-          <div className="grid items-center justify-center w-full h-full grid-cols-2 gap-x-8 gap-y-10">
+          <div className="grid items-center justify-center w-full h-full grid-cols-2 gap-x-8 gap-y-10 [grid-auto-rows:1fr]">
             <LargeBarGraphInfo
               title={"Weekly Summary"}
               barLabel={"Applications"}

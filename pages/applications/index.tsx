@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { BsFillEyeFill } from "react-icons/bs";
 import { HiDotsVertical, HiOutlineClipboardList } from "react-icons/hi";
+import { DateRangeComponent } from "../../components/date-range-component";
 import { PageComponent } from "../../components/page-component";
 import SearchBarComponent from "../../components/search-bar-component";
 import { StudentsTableHeaders } from "../../constants/table-headers";
@@ -27,7 +28,7 @@ export default function Applications() {
     program: "",
   };
 
-  const { applications, students } = useStudent();
+  const { applications, students, dateRange, updateDateRange } = useStudent();
   const { universityList, programsList } = useEducation();
   const { push } = useRouter();
 
@@ -121,11 +122,17 @@ export default function Applications() {
   return (
     <PageComponent title={"Applications"}>
       <Toaster />
-      <div className="mb-8 ">
-        <div className="text-2xl font-semibold ">Applications</div>
-        <div className="text-base font-medium text-gray-500 ">
-          View all student applications.
+      <div className="flex flex-wrap items-center justify-between mb-8 ">
+        <div className="">
+          <div className="text-2xl font-semibold ">Applications</div>
+          <div className="text-base font-medium text-gray-500 ">
+            View all student applications.
+          </div>
         </div>
+        <DateRangeComponent
+          dateRange={dateRange}
+          updateRange={updateDateRange}
+        ></DateRangeComponent>
       </div>
 
       {/* applications search bar */}
@@ -253,7 +260,7 @@ export default function Applications() {
       <div>
         <div className="w-full h-screen overflow-x-auto">
           <table className="table w-full ">
-            <thead className="border rounded-xl border-nccGray-100">
+            <thead className="">
               <tr>
                 {StudentsTableHeaders.map((title, index) => (
                   <th className=" bg-nccGray-100" key={index}>

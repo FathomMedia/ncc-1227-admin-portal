@@ -37,8 +37,8 @@ export const LargeDonutGraphInfo: FC<PropsWithChildren<Props>> = ({
   };
 
   return (
-    <div className="flex flex-col justify-between w-full p-4 border h-72 rounded-xl bg-nccGray-50">
-      <div className="flex items-center justify-between justify-items-center">
+    <div className="flex flex-col justify-between w-full p-4 border  min-h-[18rem] rounded-xl bg-nccGray-50">
+      <div className="flex flex-wrap items-center justify-between justify-items-center">
         {title}
         {children}
       </div>

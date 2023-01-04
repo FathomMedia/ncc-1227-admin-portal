@@ -17,7 +17,7 @@ export const PageComponent: FC<PropsWithChildren<Props>> = (props) => {
   return (
     <div>
       <Toaster />
-      <div className="navbar lg:hidden bg-nccGray-50 shadow-lg shadow-black/5 fixed top-0 left-0 z-50">
+      <div className="fixed top-0 left-0 z-50 shadow-lg navbar lg:hidden bg-nccGray-50 shadow-black/5">
         <div className="flex-none">
           <label
             htmlFor="my-drawer-2"
@@ -43,13 +43,15 @@ export const PageComponent: FC<PropsWithChildren<Props>> = (props) => {
           className="drawer-toggle"
           title="pageComponent"
         />
-        <div className="drawer-content m-4">
+        <div className="m-4 drawer-content">
           {!isSignedIn ? (
             <SignInFormComponent></SignInFormComponent>
           ) : (
             user?.challengeName !== "NEW_PASSWORD_REQUIRED" && (
               <div>
-                <div className=" mx-16 mt-24">{props.children}</div>
+                <div className="container px-6 mx-auto mt-24 md:px-10 lg:px-16 ">
+                  {props.children}
+                </div>
               </div>
             )
           )}

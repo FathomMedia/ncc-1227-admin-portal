@@ -99,23 +99,23 @@ export default function ApplicationLog({
     <div>
       <PageComponent title={"ApplicationLog"}>
         <div>
-          <div className=" mb-8">
-            <div className=" text-2xl font-semibold">Application Log</div>
-            <div className=" text-base font-medium text-gray-500">
+          <div className="mb-8 ">
+            <div className="text-2xl font-semibold ">Application Log</div>
+            <div className="text-base font-medium text-gray-500 ">
               Application ID: {id}
             </div>
           </div>
 
           {/* modal dialogue - adds university to db */}
           <div className={` modal ${isSubmitted && "modal-open"}`}>
-            <div className="modal-box relative max-w-3xl">
+            <div className="relative max-w-3xl modal-box">
               <label
                 onClick={() => setIsSubmitted(!isSubmitted)}
-                className="btn btn-sm btn-circle absolute right-2 top-2"
+                className="absolute btn btn-sm btn-circle right-2 top-2"
               >
                 ✕
               </label>
-              <div className=" p-4 mb-4">
+              <div className="p-4 mb-4 ">
                 <div className="text-lg font-bold">Application Snapshot</div>
                 <div>
                   <div>
@@ -141,9 +141,9 @@ export default function ApplicationLog({
 
           {/* application table */}
           <div>
-            <div className="overflow-x-auto w-full h-screen">
+            <div className="w-full h-screen overflow-x-auto">
               <table className="table w-full ">
-                <thead className=" border rounded-xl border-nccGray-100">
+                <thead className="">
                   <tr>
                     <th>Name</th>
                     <th>CPR</th>
@@ -163,12 +163,12 @@ export default function ApplicationLog({
                       }).format(new Date(log.createdAt))}`}</td>
                       <td>{log.reason}</td>
                       <td>
-                        <div className=" flex justify-end">
-                          <button className="btn btn-ghost btn-xs relative group">
+                        <div className="flex justify-end ">
+                          <button className="relative btn btn-ghost btn-xs group">
                             <HiDotsVertical />
-                            <div className=" hidden absolute right-6 top-5 bg-white shadow-lg p-1 rounded-lg group-focus:flex flex-col min-w-min">
+                            <div className="absolute flex-col hidden p-1 bg-white rounded-lg shadow-lg  right-6 top-5 group-focus:flex min-w-min">
                               <div
-                                className="btn btn-ghost btn-xs hover:bg-anzac-100 hover:cursor-pointer hover:text-anzac-500 flex justify-start w-24 gap-2"
+                                className="flex justify-start w-24 gap-2 btn btn-ghost btn-xs hover:bg-anzac-100 hover:cursor-pointer hover:text-anzac-500"
                                 onClick={async () => {
                                   await getAdminLogsByLogID(log.id).then(
                                     (value) => {
@@ -191,7 +191,7 @@ export default function ApplicationLog({
                 <tfoot></tfoot>
               </table>
               {/* fake pagination */}
-              <div className=" flex justify-center mt-8">
+              <div className="flex justify-center mt-8 ">
                 <div className="btn-group">
                   <button
                     className="btn btn-accent text-anzac-500"
@@ -207,7 +207,7 @@ export default function ApplicationLog({
                     {currentPage}
                   </button>
                   <button
-                    className="btn btn-accent  text-anzac-500"
+                    className="btn btn-accent text-anzac-500"
                     onClick={goNextPage}
                     disabled={disableForward}
                   >
