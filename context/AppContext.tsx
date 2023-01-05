@@ -14,11 +14,15 @@ import { listAdmins } from "../src/graphql/queries";
 // interface for all the values & functions
 interface IUseAppContext {
   admins: ListAdminsQuery | undefined;
+  syncAdmins: () => Promise<void>;
 }
 
 // the default state for all the values & functions
 const defaultState: IUseAppContext = {
   admins: undefined,
+  syncAdmins: function (): Promise<void> {
+    throw new Error("Function not implemented.");
+  },
 };
 
 // creating the app contexts
@@ -55,6 +59,10 @@ function useProviderApp() {
     return res.data;
   }
 
+  async function syncAdmins() {
+    await getAdmins();
+  }
+
   // NOTE: return all the values & functions you want to export
-  return { admins };
+  return { admins, syncAdmins };
 }

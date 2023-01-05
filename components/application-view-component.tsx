@@ -21,6 +21,7 @@ import { useRouter } from "next/router";
 import GetStorageLinkComponent from "./get-storage-link-component";
 import { ISendEmail } from "../pages/api/sendEmail";
 import Applications from "../pages/applications";
+import { useStudent } from "../context/StudentContext";
 
 interface Props {
   application: Application;
@@ -53,6 +54,7 @@ export default function ViewApplication({
   const [isEditing, setIsEditing] = useState(false);
   const { user } = useAuth();
   const { push } = useRouter();
+  const { syncApplications } = useStudent();
 
   let emailData: ISendEmail = {
     status:
@@ -125,7 +127,8 @@ export default function ViewApplication({
               };
 
               await createAdminLogInDB(createAdminLogVariables)
-                .then((value) => {
+                .then(async (value) => {
+                  syncApplications();
                   push("/applications");
                   return value;
                 })
@@ -281,7 +284,7 @@ export default function ViewApplication({
                   <td>
                     <Link
                       className="link link-primary"
-                      href={`../studentLogs/${application.id}`}
+                      href={`/studentLogs/${application.id}`}
                     >
                       View
                     </Link>
@@ -306,7 +309,7 @@ export default function ViewApplication({
                     name="reason"
                     onChange={handleChange}
                     value={values.reason}
-                    className={`textarea textarea-bordered h-24 ${
+                    className={`textarea textarea-bordered resize-none mx-2 h-24 ${
                       errors.reason && "input-error"
                     }`}
                   ></Field>

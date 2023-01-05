@@ -153,40 +153,46 @@ export default function ApplicationLog({
                   </tr>
                 </thead>
                 <tbody>
-                  {applicationHistory.map((log) => (
-                    <tr key={log.id}>
-                      <td>{log.admin?.fullName}</td>
-                      <td>{log.adminCPR}</td>
-                      <td>{`${Intl.DateTimeFormat("en", {
-                        timeStyle: "short",
-                        dateStyle: "medium",
-                      }).format(new Date(log.createdAt))}`}</td>
-                      <td>{log.reason}</td>
-                      <td>
-                        <div className="flex justify-end ">
-                          <button className="relative btn btn-ghost btn-xs group">
-                            <HiDotsVertical />
-                            <div className="absolute flex-col hidden p-1 bg-white rounded-lg shadow-lg  right-6 top-5 group-focus:flex min-w-min">
-                              <div
-                                className="flex justify-start w-24 gap-2 btn btn-ghost btn-xs hover:bg-anzac-100 hover:cursor-pointer hover:text-anzac-500"
-                                onClick={async () => {
-                                  await getAdminLogsByLogID(log.id).then(
-                                    (value) => {
-                                      setLogHistory(value);
-                                      setIsSubmitted(true);
-                                    }
-                                  );
-                                }}
-                              >
-                                <BsFillEyeFill />
-                                View
+                  {applicationHistory
+                    .sort(
+                      (a, b) =>
+                        new Date(`${b.dateTime}`).getTime() -
+                        new Date(`${a.dateTime}`).getTime()
+                    )
+                    .map((log) => (
+                      <tr key={log.id}>
+                        <td>{log.admin?.fullName}</td>
+                        <td>{log.adminCPR}</td>
+                        <td>{`${Intl.DateTimeFormat("en", {
+                          timeStyle: "short",
+                          dateStyle: "medium",
+                        }).format(new Date(log.createdAt))}`}</td>
+                        <td>{log.reason}</td>
+                        <td>
+                          <div className="flex justify-end ">
+                            <button className="relative btn btn-ghost btn-xs group">
+                              <HiDotsVertical />
+                              <div className="absolute flex-col hidden p-1 bg-white rounded-lg shadow-lg  right-6 top-5 group-focus:flex min-w-min">
+                                <div
+                                  className="flex justify-start w-24 gap-2 btn btn-ghost btn-xs hover:bg-anzac-100 hover:cursor-pointer hover:text-anzac-500"
+                                  onClick={async () => {
+                                    await getAdminLogsByLogID(log.id).then(
+                                      (value) => {
+                                        setLogHistory(value);
+                                        setIsSubmitted(true);
+                                      }
+                                    );
+                                  }}
+                                >
+                                  <BsFillEyeFill />
+                                  View
+                                </div>
                               </div>
-                            </div>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
                 <tfoot></tfoot>
               </table>

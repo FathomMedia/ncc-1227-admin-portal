@@ -1,6 +1,8 @@
 import { useRouter } from "next/router";
 
-import MiniGraphInfo from "../components/graphs/mini-graph-info";
+import MiniGraphInfo, {
+  GraphColor,
+} from "../components/graphs/mini-graph-info";
 import { LargeBarGraphInfo } from "../components/graphs/large-bar-graph-info";
 
 import { PageComponent } from "../components/page-component";
@@ -35,7 +37,9 @@ export default function Home() {
 
   let pendingApprovalGraph = sortedApplications?.filter(
     (element) =>
-      element.status === Status.ELIGIBLE || element.status === Status.REVIEW
+      element.status === Status.ELIGIBLE ||
+      element.status === Status.REVIEW ||
+      element.status === Status.NOT_COMPLETED
   );
 
   let listOfPrograms = sortedApplications
@@ -115,6 +119,7 @@ export default function Home() {
         {/* mini graphs */}
         <div className="flex justify-between gap-8 mb-8 overflow-x-scroll min-h-fit">
           <MiniGraphInfo
+            color={GraphColor.YELLOW}
             title={"Total applications"}
             graphNum={applications?.length ?? 0}
             graph={{
@@ -131,6 +136,7 @@ export default function Home() {
             }}
           ></MiniGraphInfo>
           <MiniGraphInfo
+            color={GraphColor.RED}
             title={"Applicants this month"}
             graphNum={applicationThisMonthGraph?.length ?? 0}
             graph={{
@@ -155,7 +161,8 @@ export default function Home() {
             }}
           ></MiniGraphInfo>
           <MiniGraphInfo
-            title={"Pending approval"}
+            color={GraphColor.GREEN}
+            title={"Pending applications"}
             graphNum={pendingApprovalGraph?.length ?? 0}
             graph={{
               labels: pendingApprovalGraph
@@ -182,22 +189,14 @@ export default function Home() {
                 An overview of all data.
               </div>
             </div>
-            <div className="flex items-center justify-end h-10 gap-4 m-4 ">
-              {/* !  TODO implement date range */}
-              {/* <PrimaryButton
-                name={"Apply"}
-                buttonClick={function (): void {
-                  throw new Error("Function not implemented.");
-                }}
-              ></PrimaryButton> */}
-            </div>
+            <div className="flex items-center justify-end h-10 gap-4 m-4 "></div>
           </div>
           {/* large graphs */}
           <div className="grid items-center justify-center w-full h-full grid-cols-2 gap-x-8 gap-y-10 [grid-auto-rows:1fr]">
             <LargeBarGraphInfo
               title={"Weekly Summary"}
               barLabel={"Applications"}
-              subBarLabel={"Applications per day"}
+              subBarLabel={"Applications last 7 days"}
               labels={weeklySummaryGraph.map((perDay) => perDay.dayName)}
               data={weeklySummaryGraph.map((perDay) => perDay.count)}
             >

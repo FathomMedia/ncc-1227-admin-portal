@@ -20,6 +20,7 @@ interface IUseStudentContext {
   getApplicationByID: (id: string) => void;
   dateRange: IDateRange;
   updateDateRange: (newDateRange: IDateRange) => void;
+  syncApplications: () => Promise<void>;
 }
 
 // the default state for all the values & functions
@@ -33,6 +34,9 @@ const defaultState: IUseStudentContext = {
     end: `${new Date().getFullYear() + 1}-01-01`,
   },
   updateDateRange: function (): void {
+    throw new Error("Function not implemented.");
+  },
+  syncApplications: function (): Promise<void> {
     throw new Error("Function not implemented.");
   },
 };
@@ -137,6 +141,10 @@ function useProviderStudent() {
     return tempApplication;
   }
 
+  async function syncApplications() {
+    await getAllApplications(dateRange);
+  }
+
   // NOTE: return all the values & functions you want to export
   return {
     students,
@@ -145,6 +153,7 @@ function useProviderStudent() {
     getApplicationByID,
     dateRange,
     updateDateRange,
+    syncApplications,
   };
 }
 
@@ -266,7 +275,7 @@ export async function getAllApplicationsAPI(
       items {
         _version
         _deleted
-         dateTime
+        dateTime
         applicationAttachmentId
         attachmentID
         gpa
@@ -289,7 +298,9 @@ export async function getAllApplicationsAPI(
           }
         }
         createdAt
-       
+        student {
+          householdIncome
+        }
       }
       nextToken
     }

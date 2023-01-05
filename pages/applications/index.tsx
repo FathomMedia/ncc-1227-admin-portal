@@ -1,5 +1,5 @@
+import { cL } from "chart.js/dist/chunks/helpers.core";
 import { Field, Form, Formik } from "formik";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
@@ -7,11 +7,11 @@ import { BsFillEyeFill } from "react-icons/bs";
 import { HiDotsVertical, HiOutlineClipboardList } from "react-icons/hi";
 import { DateRangeComponent } from "../../components/date-range-component";
 import { PageComponent } from "../../components/page-component";
-import SearchBarComponent from "../../components/search-bar-component";
 import { StudentsTableHeaders } from "../../constants/table-headers";
 import { useEducation } from "../../context/EducationContext";
 import { useStudent } from "../../context/StudentContext";
-import { Status } from "../../src/API";
+import { Application, Status } from "../../src/API";
+import { getStatusOrder } from "../../src/Helpers";
 
 interface InitialFilterValues {
   search: string;
@@ -38,13 +38,28 @@ export default function Applications() {
   const [currentPage, setCurrentPage] = useState(1);
   const [disableForward, setDisableForward] = useState(false);
   const [disableBackward, setDisableBackward] = useState(true);
-  const [shownData, setShownData] = useState<any>([]);
+  const [shownData, setShownData] = useState<Application[] | undefined>([]);
 
+  let sortedApplications = applications
+    ?.sort(
+      (a, b) =>
+        (a.student?.householdIncome ?? 0) - (b.student?.householdIncome ?? 0)
+    )
+    .sort((a, b) => (b.gpa ?? 0) - (a.gpa ?? 0))
+    .sort((a, b) => {
+      if (a.status && b.status) {
+        if (getStatusOrder(b.status) > getStatusOrder(a.status)) return 1;
+        if (getStatusOrder(b.status) < getStatusOrder(a.status)) return -1;
+      }
+      return 0;
+    });
   useEffect(() => {
-    setNumberOfPages(Math.ceil((applications?.length ?? 0) / elementPerPage));
+    setNumberOfPages(
+      Math.ceil((sortedApplications?.length ?? 0) / elementPerPage)
+    );
 
     return () => {};
-  }, [applications?.length]);
+  }, [sortedApplications?.length]);
 
   useEffect(() => {
     setDisableBackward(true);
@@ -64,15 +79,29 @@ export default function Applications() {
   useEffect(() => {
     function paginate() {
       setShownData(
-        applications?.slice(
+        sortedApplications?.slice(
           (currentPage - 1) * elementPerPage,
           currentPage * elementPerPage
         )
+        // .sort(
+        //   (a, b) =>
+        //     (a.student?.householdIncome ?? 0) -
+        //     (b.student?.householdIncome ?? 0)
+        // )
+        // .sort((a, b) => (b.gpa ?? 0) - (a.gpa ?? 0))
+
+        // .sort((a, b) => {
+        //   if (a.status && b.status) {
+        //     if (a.status > b.status) return 1;
+        //     if (a.status < b.status) return -1;
+        //   }
+        //   return 0;
+        // })
       );
     }
     paginate();
     return () => {};
-  }, [applications, currentPage]);
+  }, [sortedApplications, currentPage]);
 
   function goNextPage() {
     setCurrentPage(currentPage + 1);
@@ -88,7 +117,7 @@ export default function Applications() {
   // Table Data Pagination
 
   function filter(values: InitialFilterValues) {
-    let filteredApplications = applications?.filter(
+    let filteredApplications = sortedApplications?.filter(
       (element) =>
         (findStudentName(element.studentCPR)
           ?.toLowerCase()
@@ -116,7 +145,7 @@ export default function Applications() {
 
   // ! TODO - reset all filters
   function resetFilters() {
-    setShownData(applications);
+    setShownData(sortedApplications);
   }
 
   return (
@@ -270,7 +299,7 @@ export default function Applications() {
               </tr>
             </thead>
             <tbody>
-              {shownData?.map((datum: any, index: number) => (
+              {shownData?.map((datum: Application, index: number) => (
                 <tr key={index}>
                   <th key={datum?.id}>
                     <label>
@@ -293,8 +322,7 @@ export default function Applications() {
                     <div
                       className={`badge text-sm font-semibold 
                         ${
-                          (datum.status === Status.NOT_COMPLETED &&
-                            "text-primary-content badge-info") ||
+                          (datum.status === Status.NOT_COMPLETED && "") ||
                           (datum.status === Status.REVIEW &&
                             "text-primary-content badge-accent")
                         } 
@@ -312,8 +340,12 @@ export default function Applications() {
                           "text-info-content badge-info"
                         }
                         mr-2`}
-                    >{`${datum.status}`}</div>
+                    >{`${datum.status?.replace("_", " ")}`}</div>
                   </td>
+                  <td>
+                    <div className="flex justify-between ">{datum.gpa}</div>
+                  </td>
+
                   <td>
                     <div className="flex flex-col gap-4 ">
                       {datum.programs?.items.map(
@@ -333,7 +365,7 @@ export default function Applications() {
                     ).format(new Date(datum.createdAt))}`}</div>
                   </td>
 
-                  <td>
+                  <td className="">
                     <div className="flex justify-end ">
                       <button className="relative btn btn-ghost btn-xs group">
                         <HiDotsVertical />

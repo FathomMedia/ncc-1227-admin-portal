@@ -17,7 +17,7 @@ export interface ISignUpForm {
 export default function SignUpFormComponent() {
   const { push } = useRouter();
   const { checkIfCprExist } = useAuth();
-  const { admins } = useAppContext();
+  const { admins, syncAdmins } = useAppContext();
 
   const initialValues: ISignUpForm = {
     cpr: "",
@@ -52,6 +52,7 @@ export default function SignUpFormComponent() {
             .then(async (values) => {
               let res = await values.json();
               if (values.status === 200) {
+                syncAdmins();
                 push("/users");
               } else {
                 throw new Error(`${res.error.message}`);

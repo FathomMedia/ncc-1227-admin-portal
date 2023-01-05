@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { Application, Program } from "./API";
+import { Application, Program, Status } from "./API";
 
 /* -------------------------------------------------------------------------- */
 /*                                  INTERFACE                                 */
@@ -78,14 +78,19 @@ export function giveMeTopProgram(
 export function giveMeApplicationsThisMonth(
   applications: Application[] | undefined
 ) {
-  return applications?.filter((app) => {
-    const orderDate = new Date(app.dateTime);
-    const today = new Date();
-    const isThisYear = orderDate.getFullYear() === today.getFullYear();
-    const isThisMonth = orderDate.getMonth() === today.getMonth();
+  return applications
+    ?.filter((app) => {
+      const orderDate = new Date(app.dateTime);
+      const today = new Date();
+      const isThisYear = orderDate.getFullYear() === today.getFullYear();
+      const isThisMonth = orderDate.getMonth() === today.getMonth();
 
-    return isThisYear && isThisMonth;
-  });
+      return isThisYear && isThisMonth;
+    })
+    .sort(
+      (a, b) =>
+        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    );
 }
 
 export function getApplicationsByMonth(
@@ -138,6 +143,27 @@ export function getMeWeeklySummary(applications: Application[] | undefined) {
 
   return weeklySummaryData;
 }
+
+export function getStatusOrder(status: Status) {
+  switch (status) {
+    case Status.APPROVED:
+      return 1;
+    case Status.ELIGIBLE:
+      return 0.7;
+    case Status.REVIEW:
+      return 0.5;
+    case Status.NOT_COMPLETED:
+      return 0.3;
+    case Status.REJECTED:
+      return 0.2;
+    case Status.WITHDRAWN:
+      return 0.1;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                    VARS                                    */
+/* -------------------------------------------------------------------------- */
 
 export const monthNames = [
   "January",

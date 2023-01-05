@@ -2,7 +2,6 @@ import { Formik, Form, Field } from "formik";
 import React, { FC } from "react";
 
 import * as yup from "yup";
-import { useStudent } from "../context/StudentContext";
 import { IDateRange } from "../src/Helpers";
 
 interface Props {
@@ -31,18 +30,10 @@ export const DateRangeComponent: FC<Props> = ({ dateRange, updateRange }) => {
           actions.setSubmitting(false);
         }}
       >
-        {({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          isSubmitting,
-          isValid,
-        }) => (
+        {({ values, handleChange, isSubmitting }) => (
           <Form className="flex items-center justify-center gap-3 w-min input input-bordered">
             <Field
-              className={`input input-xs input-ghost`}
+              className={`input input-xs input-ghost text-gray-600`}
               name="start"
               type="date"
               placeholder="Start Date"
@@ -51,7 +42,7 @@ export const DateRangeComponent: FC<Props> = ({ dateRange, updateRange }) => {
             />
             <p className="text-gray-400 min-w-fit">{"→"}</p>
             <Field
-              className={`input input-xs input-ghost`}
+              className={`input input-xs input-ghost text-gray-600`}
               name="end"
               type="date"
               placeholder="End Date"
