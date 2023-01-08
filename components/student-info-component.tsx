@@ -35,7 +35,7 @@ export default function StudentInfoComponent({ student }: Props) {
           </tr>
           <tr>
             <td>Address</td>
-            <td>{student?.address}</td>
+            <td className=" overflow-x-scroll">{student?.address}</td>
           </tr>
         </tbody>
       </table>

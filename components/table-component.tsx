@@ -39,7 +39,11 @@ export default function TableComponent({
               <tr key={index}>
                 <th key={datum?.id}>
                   <label>
-                    <input type="checkbox" className="checkbox" />
+                    <input
+                      type="checkbox"
+                      className="checkbox"
+                      title="aLabel"
+                    />
                   </label>
                 </th>
                 {datum?.data.map((hi: any, index: number) => (

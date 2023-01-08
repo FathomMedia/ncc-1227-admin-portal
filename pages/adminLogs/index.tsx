@@ -32,46 +32,54 @@ export default function AdminLogs() {
           View all logs made by other admins.
         </div>
       </div>
-      <table className="table w-full ">
-        <thead className=" border rounded-xl border-nccGray-100">
-          <tr>
-            <th>Name</th>
-            <th>CPR</th>
-            <th>Date</th>
-            <th>History</th>
-          </tr>
-        </thead>
-        <tbody>
-          {adminsLogs
-            .sort(
-              (a, b) =>
-                new Date(`${b.dateTime}`).getTime() -
-                new Date(`${a.dateTime}`).getTime()
-            )
-            .map((log) => (
-              <tr key={log.id}>
-                <td>{log.admin?.fullName}</td>
-                <td>{log.adminCPR}</td>
-                <td>{`${Intl.DateTimeFormat("en", {
-                  timeStyle: "short",
-                  dateStyle: "medium",
-                }).format(new Date(`${log.dateTime}`))}`}</td>
-                <td>
-                  <Link
-                    className=" link link-primary"
-                    href={""}
-                    onClick={() => {
-                      push(`/adminLogs/${log.id}`);
-                    }}
-                  >
-                    View
-                  </Link>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-        <tfoot></tfoot>
-      </table>
+      {adminsLogs.length > 0 ? (
+        <table className="table w-full ">
+          <thead className=" border rounded-xl border-nccGray-100">
+            <tr>
+              <th>Name</th>
+              <th>CPR</th>
+              <th>Date</th>
+              <th>History</th>
+            </tr>
+          </thead>
+          <tbody>
+            {adminsLogs
+              .sort(
+                (a, b) =>
+                  new Date(`${b.dateTime}`).getTime() -
+                  new Date(`${a.dateTime}`).getTime()
+              )
+              .map((log) => (
+                <tr key={log.id}>
+                  <td>{log.admin?.fullName}</td>
+                  <td>{log.adminCPR}</td>
+                  <td>{`${Intl.DateTimeFormat("en", {
+                    timeStyle: "short",
+                    dateStyle: "medium",
+                  }).format(new Date(`${log.dateTime}`))}`}</td>
+                  <td>
+                    <Link
+                      className=" link link-primary"
+                      href={""}
+                      onClick={() => {
+                        push(`/adminLogs/${log.id}`);
+                      }}
+                    >
+                      View
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+          <tfoot></tfoot>
+        </table>
+      ) : (
+        <div className=" flex justify-center items-center border border-nccGray-100 rounded-xl bg-nccGray-100 p-8">
+          <div className=" text-base font-medium">
+            Sorry! No data to display
+          </div>
+        </div>
+      )}
     </PageComponent>
   );
 }

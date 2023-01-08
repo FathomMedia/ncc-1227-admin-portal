@@ -603,3 +603,44 @@ export async function updateProgramById(
 
   return res.data;
 }
+
+// get all programs related to uni id
+export async function getUniversityByID(
+  id?: string
+): Promise<University | undefined> {
+  let query = `
+  query GetUniInfo {
+    getUniversity(id: "${id}") {
+      name
+      updatedAt
+      id
+      createdAt
+      _lastChangedAt
+      _deleted
+      isDeactivated 
+      Programs {
+        items {
+          isDeactivated
+          name
+          requirements
+          universityID
+          universityProgramsId
+          updatedAt
+          createdAt
+          availability
+          id
+          _version
+          _lastChangedAt
+          _deleted
+        }
+      }
+    }
+  }
+  `;
+
+  let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;
+
+  let tempProgramList = res.data.getUniversity as University;
+
+  return tempProgramList;
+}

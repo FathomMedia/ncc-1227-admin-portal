@@ -250,41 +250,42 @@ export default function Applications() {
       </div>
 
       {/* applications table with pagination*/}
-      <div>
-        <div className="w-full h-screen overflow-x-auto">
-          <table className="table w-full ">
-            <thead className="border rounded-xl border-nccGray-100">
-              <tr>
-                {StudentsTableHeaders.map((title, index) => (
-                  <th className=" bg-nccGray-100" key={index}>
-                    {title}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {shownData?.map((datum: any, index: number) => (
-                <tr key={index}>
-                  <th key={datum?.id}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        className="checkbox"
-                        title="selectApplications"
-                      />
-                    </label>
-                  </th>
-                  <td>
-                    <div className="flex flex-col justify-between ">
-                      <div className="text-sm font-semibold ">{`${findStudentName(
-                        datum.studentCPR
-                      )}`}</div>
-                      <div className="text-sm ">{`${datum.studentCPR}`}</div>
-                    </div>
-                  </td>
-                  <td>
-                    <div
-                      className={`badge text-sm font-semibold 
+      {shownData?.length > 0 ? (
+        <div>
+          <div className="w-full h-screen overflow-x-auto">
+            <table className="table w-full ">
+              <thead className="border rounded-xl border-nccGray-100">
+                <tr>
+                  {StudentsTableHeaders.map((title, index) => (
+                    <th className=" bg-nccGray-100" key={index}>
+                      {title}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {shownData?.map((datum: any, index: number) => (
+                  <tr key={index}>
+                    <th key={datum?.id}>
+                      <label>
+                        <input
+                          type="checkbox"
+                          className="checkbox"
+                          title="selectApplications"
+                        />
+                      </label>
+                    </th>
+                    <td>
+                      <div className="flex flex-col justify-between ">
+                        <div className="text-sm font-semibold ">{`${findStudentName(
+                          datum.studentCPR
+                        )}`}</div>
+                        <div className="text-sm ">{`${datum.studentCPR}`}</div>
+                      </div>
+                    </td>
+                    <td>
+                      <div
+                        className={`badge text-sm font-semibold 
                         ${
                           (datum.status === Status.NOT_COMPLETED &&
                             "text-primary-content badge-info") ||
@@ -305,88 +306,95 @@ export default function Applications() {
                           "text-info-content badge-info"
                         }
                         mr-2`}
-                    >{`${datum.status}`}</div>
-                  </td>
-                  <td>
-                    <div className="flex flex-col gap-4 ">
-                      {datum.programs?.items.map(
-                        (value: any, index: number) => (
-                          <div
-                            key={index}
-                            className=""
-                          >{`${value?.program?.name} - ${value?.program?.university?.name}`}</div>
-                        )
-                      )}
-                    </div>
-                  </td>
-                  <td>
-                    <div className="flex justify-between ">{`${Intl.DateTimeFormat(
-                      "en",
-                      { timeStyle: "short", dateStyle: "medium" }
-                    ).format(new Date(datum.createdAt))}`}</div>
-                  </td>
+                      >{`${datum.status}`}</div>
+                    </td>
+                    <td>
+                      <div className="flex flex-col gap-4 ">
+                        {datum.programs?.items.map(
+                          (value: any, index: number) => (
+                            <div
+                              key={index}
+                              className=""
+                            >{`${value?.program?.name} - ${value?.program?.university?.name}`}</div>
+                          )
+                        )}
+                      </div>
+                    </td>
+                    <td>
+                      <div className="flex justify-between ">{`${Intl.DateTimeFormat(
+                        "en",
+                        { timeStyle: "short", dateStyle: "medium" }
+                      ).format(new Date(datum.createdAt))}`}</div>
+                    </td>
 
-                  <td>
-                    <div className="flex justify-end ">
-                      <button className="relative btn btn-ghost btn-xs group">
-                        <HiDotsVertical />
-                        <div className="absolute flex-col hidden p-1 bg-white rounded-lg shadow-lg right-6 top-5 group-focus:flex min-w-min">
-                          <div
-                            className="flex justify-start w-24 gap-2 btn btn-ghost btn-xs hover:bg-anzac-100 hover:cursor-pointer hover:text-anzac-500"
-                            onClick={() => {
-                              push(`/applications/${datum.id}`);
-                            }}
-                          >
-                            <BsFillEyeFill />
-                            View
+                    <td>
+                      <div className="flex justify-end ">
+                        <button className="relative btn btn-ghost btn-xs group">
+                          <HiDotsVertical />
+                          <div className="absolute flex-col hidden p-1 bg-white rounded-lg shadow-lg right-6 top-5 group-focus:flex min-w-min">
+                            <div
+                              className="flex justify-start w-24 gap-2 btn btn-ghost btn-xs hover:bg-anzac-100 hover:cursor-pointer hover:text-anzac-500"
+                              onClick={() => {
+                                push(`/applications/${datum.id}`);
+                              }}
+                            >
+                              <BsFillEyeFill />
+                              View
+                            </div>
+                            <div
+                              className="flex justify-start w-24 gap-2 btn btn-ghost btn-xs hover:bg-anzac-100 hover:cursor-pointer hover:text-anzac-500"
+                              onClick={() => {
+                                push(
+                                  `/applications/applicationHistory/${datum.id}`
+                                );
+                              }}
+                            >
+                              <HiOutlineClipboardList />
+                              History
+                            </div>
                           </div>
-                          <div
-                            className="flex justify-start w-24 gap-2 btn btn-ghost btn-xs hover:bg-anzac-100 hover:cursor-pointer hover:text-anzac-500"
-                            onClick={() => {
-                              push(
-                                `/applications/applicationHistory/${datum.id}`
-                              );
-                            }}
-                          >
-                            <HiOutlineClipboardList />
-                            History
-                          </div>
-                        </div>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-            <tfoot></tfoot>
-          </table>
-          {/* fake pagination */}
-          <div className="flex justify-center mt-8 ">
-            <div className="btn-group">
-              <button
-                className="btn btn-accent text-anzac-500"
-                onClick={goPrevPage}
-                disabled={disableBackward}
-              >
-                «
-              </button>
-              <button
-                disabled
-                className="btn hover:cursor-auto disabled:btn-accent"
-              >
-                {currentPage}
-              </button>
-              <button
-                className="btn btn-accent text-anzac-500"
-                onClick={goNextPage}
-                disabled={disableForward}
-              >
-                »
-              </button>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+              <tfoot></tfoot>
+            </table>
+            {/* fake pagination */}
+            <div className="flex justify-center mt-8 ">
+              <div className="btn-group">
+                <button
+                  className="btn btn-accent text-anzac-500"
+                  onClick={goPrevPage}
+                  disabled={disableBackward}
+                >
+                  «
+                </button>
+                <button
+                  disabled
+                  className="btn hover:cursor-auto disabled:btn-accent"
+                >
+                  {currentPage}
+                </button>
+                <button
+                  className="btn btn-accent text-anzac-500"
+                  onClick={goNextPage}
+                  disabled={disableForward}
+                >
+                  »
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className=" flex justify-center items-center border border-nccGray-100 rounded-xl bg-nccGray-100 p-8">
+          <div className=" text-base font-medium">
+            Sorry! No data to display
+          </div>
+        </div>
+      )}
     </PageComponent>
   );
 }

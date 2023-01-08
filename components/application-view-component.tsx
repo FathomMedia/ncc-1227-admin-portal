@@ -51,6 +51,7 @@ export default function ViewApplication({
   readOnly,
 }: Props) {
   const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { user } = useAuth();
   const { push } = useRouter();
 
@@ -61,6 +62,7 @@ export default function ViewApplication({
         ? application.status
         : undefined,
     email: application.student?.email ?? undefined,
+    studentName: application.student?.fullName ?? undefined,
     id: application.id,
   };
 
@@ -73,10 +75,17 @@ export default function ViewApplication({
             <PrimaryButton
               name="Send Email"
               buttonClick={async () => {
-                await fetch("../../api/sendEmail", {
-                  method: "POST",
-                  body: JSON.stringify(emailData),
-                });
+                await toast.promise(
+                  fetch("../../api/sendEmail", {
+                    method: "POST",
+                    body: JSON.stringify(emailData),
+                  }),
+                  {
+                    loading: "Sending email...",
+                    success: "Email sent to user!",
+                    error: "Failed to send email to user",
+                  }
+                );
               }}
             ></PrimaryButton>
           )}
@@ -97,6 +106,7 @@ export default function ViewApplication({
           reason: yup.string().required(),
         })}
         onSubmit={async (values, actions) => {
+          setIsLoading(true);
           let updateVariables: UpdateApplicationMutationVariables = {
             input: {
               id: application.id,
@@ -135,6 +145,7 @@ export default function ViewApplication({
             });
 
           actions.setSubmitting(false);
+          setIsLoading(false);
         }}
       >
         {({
@@ -294,7 +305,7 @@ export default function ViewApplication({
                 <div className="form-control">
                   <label className="label">
                     <span className="text-base font-medium text-gray-500">
-                      Reason
+                      Reason for status change
                       <span className="text-base font-medium text-error">
                         *
                       </span>
@@ -317,7 +328,7 @@ export default function ViewApplication({
                     className={`btn btn-primary text-white ${
                       isSubmitting && "loading"
                     }`}
-                    disabled={isSubmitting || !isValid}
+                    disabled={isSubmitting || isLoading || !isValid}
                   >
                     Save Changes
                   </button>

@@ -9,6 +9,7 @@ import {
 } from "react";
 import { ListUniversitiesQuery, Program, University } from "../src/API";
 import { GraphQLResult } from "@aws-amplify/api-graphql";
+import { getUniversityByID } from "../src/CustomAPI";
 
 interface IUseEducationContext {
   universityList: University[] | undefined;
@@ -92,6 +93,7 @@ function useProviderEducation() {
           createdAt
           updatedAt
           name
+          isDeactivated
           Programs {
             items {
               id
@@ -183,41 +185,8 @@ function useProviderEducation() {
   async function getProgramsFromUniID(
     id?: string
   ): Promise<University | undefined> {
-    let query = `
-    query GetUniInfo {
-      getUniversity(id: "${id}") {
-        name
-        updatedAt
-        id
-        createdAt
-        _lastChangedAt
-        _deleted
-        Programs {
-          items {
-            name
-            requirements
-            universityID
-            universityProgramsId
-            updatedAt
-            createdAt
-            availability
-            id
-            _version
-            _lastChangedAt
-            _deleted
-          }
-        }
-      }
-    }
-    `;
-
-    let res = (await API.graphql(
-      graphqlOperation(query)
-    )) as GraphQLResult<any>;
-
-    let tempProgramList = res.data.getUniversity as University;
+    let tempProgramList = await getUniversityByID(id);
     setUniversityPrograms(tempProgramList);
-
     return tempProgramList;
   }
 

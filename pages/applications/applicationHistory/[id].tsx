@@ -140,83 +140,91 @@ export default function ApplicationLog({
           </div>
 
           {/* application table */}
-          <div>
-            <div className="overflow-x-auto w-full h-screen">
-              <table className="table w-full ">
-                <thead className=" border rounded-xl border-nccGray-100">
-                  <tr>
-                    <th>Name</th>
-                    <th>CPR</th>
-                    <th>Date</th>
-                    <th>Reason</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {applicationHistory.map((log) => (
-                    <tr key={log.id}>
-                      <td>{log.admin?.fullName}</td>
-                      <td>{log.adminCPR}</td>
-                      <td>{`${Intl.DateTimeFormat("en", {
-                        timeStyle: "short",
-                        dateStyle: "medium",
-                      }).format(new Date(log.createdAt))}`}</td>
-                      <td>{log.reason}</td>
-                      <td>
-                        <div className=" flex justify-end">
-                          <button className="btn btn-ghost btn-xs relative group">
-                            <HiDotsVertical />
-                            <div className=" hidden absolute right-6 top-5 bg-white shadow-lg p-1 rounded-lg group-focus:flex flex-col min-w-min">
-                              <div
-                                className="btn btn-ghost btn-xs hover:bg-anzac-100 hover:cursor-pointer hover:text-anzac-500 flex justify-start w-24 gap-2"
-                                onClick={async () => {
-                                  await getAdminLogsByLogID(log.id).then(
-                                    (value) => {
-                                      setLogHistory(value);
-                                      setIsSubmitted(true);
-                                    }
-                                  );
-                                }}
-                              >
-                                <BsFillEyeFill />
-                                View
-                              </div>
-                            </div>
-                          </button>
-                        </div>
-                      </td>
+          {applicationHistory.length > 0 ? (
+            <div>
+              <div className="overflow-x-auto w-full h-screen">
+                <table className="table w-full ">
+                  <thead className=" border rounded-xl border-nccGray-100">
+                    <tr>
+                      <th>Name</th>
+                      <th>CPR</th>
+                      <th>Date</th>
+                      <th>Reason</th>
+                      <th></th>
                     </tr>
-                  ))}
-                </tbody>
-                <tfoot></tfoot>
-              </table>
-              {/* fake pagination */}
-              <div className=" flex justify-center mt-8">
-                <div className="btn-group">
-                  <button
-                    className="btn btn-accent text-anzac-500"
-                    onClick={goPrevPage}
-                    disabled={disableBackward}
-                  >
-                    «
-                  </button>
-                  <button
-                    disabled
-                    className="btn hover:cursor-auto disabled:btn-accent"
-                  >
-                    {currentPage}
-                  </button>
-                  <button
-                    className="btn btn-accent  text-anzac-500"
-                    onClick={goNextPage}
-                    disabled={disableForward}
-                  >
-                    »
-                  </button>
+                  </thead>
+                  <tbody>
+                    {applicationHistory.map((log) => (
+                      <tr key={log.id}>
+                        <td>{log.admin?.fullName}</td>
+                        <td>{log.adminCPR}</td>
+                        <td>{`${Intl.DateTimeFormat("en", {
+                          timeStyle: "short",
+                          dateStyle: "medium",
+                        }).format(new Date(log.createdAt))}`}</td>
+                        <td>{log.reason}</td>
+                        <td>
+                          <div className=" flex justify-end">
+                            <button className="btn btn-ghost btn-xs relative group">
+                              <HiDotsVertical />
+                              <div className=" hidden absolute right-6 top-5 bg-white shadow-lg p-1 rounded-lg group-focus:flex flex-col min-w-min">
+                                <div
+                                  className="btn btn-ghost btn-xs hover:bg-anzac-100 hover:cursor-pointer hover:text-anzac-500 flex justify-start w-24 gap-2"
+                                  onClick={async () => {
+                                    await getAdminLogsByLogID(log.id).then(
+                                      (value) => {
+                                        setLogHistory(value);
+                                        setIsSubmitted(true);
+                                      }
+                                    );
+                                  }}
+                                >
+                                  <BsFillEyeFill />
+                                  View
+                                </div>
+                              </div>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                  <tfoot></tfoot>
+                </table>
+                {/* fake pagination */}
+                <div className=" flex justify-center mt-8">
+                  <div className="btn-group">
+                    <button
+                      className="btn btn-accent text-anzac-500"
+                      onClick={goPrevPage}
+                      disabled={disableBackward}
+                    >
+                      «
+                    </button>
+                    <button
+                      disabled
+                      className="btn hover:cursor-auto disabled:btn-accent"
+                    >
+                      {currentPage}
+                    </button>
+                    <button
+                      className="btn btn-accent  text-anzac-500"
+                      onClick={goNextPage}
+                      disabled={disableForward}
+                    >
+                      »
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className=" flex justify-center items-center border border-nccGray-100 rounded-xl bg-nccGray-100 p-8">
+              <div className=" text-base font-medium">
+                Sorry! There is no data to display
+              </div>
+            </div>
+          )}
         </div>
       </PageComponent>
     </div>

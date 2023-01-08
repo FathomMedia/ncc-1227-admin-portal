@@ -80,15 +80,23 @@ export default function Users() {
         </div>
 
         {/* grid table of users*/}
-        <div className="grid grid-cols-1  md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5 gap-y-4 gap-x-3">
-          {resultList?.map((admin) => (
-            <UsersCardInfo
-              key={admin?.cpr}
-              fullName={`${admin?.fullName}`}
-              userName={`${admin?.cpr}`}
-            ></UsersCardInfo>
-          ))}
-        </div>
+        {resultList.length > 0 ? (
+          <div className="grid grid-cols-1  md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5 gap-y-4 gap-x-3">
+            {resultList?.map((admin) => (
+              <UsersCardInfo
+                key={admin?.cpr}
+                fullName={`${admin?.fullName}`}
+                userName={`${admin?.cpr}`}
+              ></UsersCardInfo>
+            ))}
+          </div>
+        ) : (
+          <div className=" flex justify-center items-center border border-nccGray-100 rounded-xl bg-nccGray-100 p-8">
+            <div className=" text-base font-medium">
+              Sorry! There are no admins at the moment.
+            </div>
+          </div>
+        )}
       </div>
     </PageComponent>
   );

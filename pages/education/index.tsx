@@ -263,9 +263,10 @@ export default function Education() {
       {/* Education Table */}
       <div>
         <div className="w-full h-screen overflow-x-auto">
-          <table className="table w-full table-fixed">
+          <table className="table w-full table-auto">
             <thead className="">
               <tr>
+                <th className=" bg-nccGray-100">Active</th>
                 {EducationTableHeaders.map((title, index) => (
                   <th className=" bg-nccGray-100" key={index}>
                     {title}
@@ -275,15 +276,29 @@ export default function Education() {
             </thead>
             <tbody>
               {shownData?.map((datum: any, index: number) => (
-                <tr key={index}>
+                <tr key={index} className=" hover">
+                  <th className=" w-full">
+                    <label className=" mx-auto">
+                      <input
+                        type="checkbox"
+                        className="checkbox checkbox-warning  mx-auto"
+                        title="deactivate-uni"
+                        checked={!datum.isDeactivated}
+                        disabled
+                      />
+                    </label>
+                  </th>
                   <td key={datum.id}>
-                    <div className="flex justify-between ">{`${datum.name}`}</div>
+                    <div
+                      className="flex justify-between hover:cursor-pointer"
+                      onClick={() => push(`education/universities/${datum.id}`)}
+                    >{`${datum.name}`}</div>
                   </td>
                   <td className="overflow-x-scroll " key={index}>
                     {datum.Programs?.items.map((program: Program) => (
                       <div
                         key={program?.id}
-                        className="mr-2 badge badge-accent text-primary-content hover:cursor-pointer"
+                        className="mr-2 badge badge-accent text-primary-content hover:cursor-pointer hover:badge-warning duration-150"
                         onClick={() => {
                           push(`/education/programs/${program.id}`);
                         }}
