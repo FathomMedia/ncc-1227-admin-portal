@@ -943,7 +943,7 @@ export const syncStudents = /* GraphQL */ `
 export const applicationsByStudentCPRAndGpa = /* GraphQL */ `
   query ApplicationsByStudentCPRAndGpa(
     $studentCPR: String!
-    $gpa: ModelIntKeyConditionInput
+    $gpa: ModelFloatKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelApplicationFilterInput
     $limit: Int

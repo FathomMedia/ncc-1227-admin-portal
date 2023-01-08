@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC, PropsWithChildren } from "react";
 import { Doughnut } from "react-chartjs-2";
 import PrimaryButton from "./../primary-button";
 
@@ -7,7 +7,13 @@ interface Props {
   labels: string[];
   data: number[];
 }
-export default function LargeDonutGraphInfo({ title, labels, data }: Props) {
+
+export const LargeDonutGraphInfo: FC<PropsWithChildren<Props>> = ({
+  title,
+  labels,
+  data,
+  children,
+}) => {
   const graphData = {
     labels: labels ?? [],
     datasets: [
@@ -31,15 +37,10 @@ export default function LargeDonutGraphInfo({ title, labels, data }: Props) {
   };
 
   return (
-    <div className="flex flex-col justify-between w-full p-4 border h-72 rounded-xl bg-nccGray-50">
-      <div className="flex items-center justify-between justify-items-center">
+    <div className="flex flex-col justify-between w-full p-4 border  min-h-[18rem] rounded-xl bg-nccGray-50">
+      <div className="flex flex-wrap items-center justify-between justify-items-center">
         {title}
-        <PrimaryButton
-          name={"Export CSV"}
-          buttonClick={function (): void {
-            throw new Error("Function not implemented.");
-          }}
-        ></PrimaryButton>
+        {children}
       </div>
       <div className="flex items-center justify-center grow">
         <Doughnut
@@ -56,4 +57,4 @@ export default function LargeDonutGraphInfo({ title, labels, data }: Props) {
       </div>
     </div>
   );
-}
+};

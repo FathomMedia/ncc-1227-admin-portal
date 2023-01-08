@@ -1,11 +1,33 @@
 import _ from "lodash";
-import { Application, Program } from "./API";
+import { Application, Program, Status } from "./API";
 
+/* -------------------------------------------------------------------------- */
+/*                                  INTERFACE                                 */
+/* -------------------------------------------------------------------------- */
 export interface TopGraphData {
   id: string;
   name: string;
   count: number;
 }
+
+export interface IDateRange {
+  start: string;
+  end: string;
+}
+
+export interface GpaSummaryGraphData {
+  monthName: string;
+  meanGpa: number;
+}
+
+export interface WeeklySummaryGraphData {
+  dayName: string;
+  count: number;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                  FUNCTIONS                                 */
+/* -------------------------------------------------------------------------- */
 
 export function giveMeTopUniversities(
   programs: (Program | null | undefined)[],
@@ -56,32 +78,27 @@ export function giveMeTopProgram(
 export function giveMeApplicationsThisMonth(
   applications: Application[] | undefined
 ) {
-  return applications?.filter((app) => {
-    const orderDate = new Date(app.createdAt);
-    const today = new Date();
-    const isThisYear = orderDate.getFullYear() === today.getFullYear();
-    const isThisMonth = orderDate.getMonth() === today.getMonth();
+  return applications
+    ?.filter((app) => {
+      const orderDate = new Date(app.dateTime);
+      const today = new Date();
+      const isThisYear = orderDate.getFullYear() === today.getFullYear();
+      const isThisMonth = orderDate.getMonth() === today.getMonth();
 
-    return isThisYear && isThisMonth;
-  });
-}
-
-export interface GpaSummaryGraphData {
-  monthName: string;
-  meanGpa: number;
-}
-
-export interface WeeklySummaryGraphData {
-  dayName: string;
-  count: number;
+      return isThisYear && isThisMonth;
+    })
+    .sort(
+      (a, b) =>
+        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    );
 }
 
 export function getApplicationsByMonth(
   applications: Application[] | undefined
 ) {
   return _.groupBy(applications, (app) => {
-    let createdAt = new Date(app.createdAt);
-    return createdAt.getMonth();
+    let dateTime = new Date(app.dateTime);
+    return dateTime.getMonth();
   });
 }
 
@@ -107,13 +124,13 @@ export function getMeWeeklySummary(applications: Application[] | undefined) {
 
     d.setDate(d.getDate() - 7);
 
-    return new Date(app.createdAt) > d && new Date(app.createdAt) <= new Date();
+    return new Date(app.dateTime) > d && new Date(app.dateTime) <= new Date();
   });
 
   let weeklySummaryData: WeeklySummaryGraphData[] = [];
 
   let applicationsPerDay = _.groupBy(applicationsThisWeek, (app) => {
-    return new Date(app.createdAt).getDay();
+    return new Date(app.dateTime).getDay();
   });
 
   _.forEach(applicationsPerDay, (value, key) => {
@@ -126,6 +143,27 @@ export function getMeWeeklySummary(applications: Application[] | undefined) {
 
   return weeklySummaryData;
 }
+
+export function getStatusOrder(status: Status) {
+  switch (status) {
+    case Status.APPROVED:
+      return 1;
+    case Status.ELIGIBLE:
+      return 0.7;
+    case Status.REVIEW:
+      return 0.5;
+    case Status.NOT_COMPLETED:
+      return 0.3;
+    case Status.REJECTED:
+      return 0.2;
+    case Status.WITHDRAWN:
+      return 0.1;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                    VARS                                    */
+/* -------------------------------------------------------------------------- */
 
 export const monthNames = [
   "January",

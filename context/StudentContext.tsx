@@ -10,6 +10,7 @@ import {
 import { Application, ListApplicationsQuery } from "../src/API";
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { Student } from "../src/models";
+import { IDateRange } from "../src/Helpers";
 
 // interface for all the values & functions
 interface IUseStudentContext {
@@ -17,6 +18,9 @@ interface IUseStudentContext {
   applications: Application[] | undefined;
   applicationById: Application | undefined;
   getApplicationByID: (id: string) => void;
+  dateRange: IDateRange;
+  updateDateRange: (newDateRange: IDateRange) => void;
+  syncApplications: () => Promise<void>;
 }
 
 // the default state for all the values & functions
@@ -24,7 +28,17 @@ const defaultState: IUseStudentContext = {
   students: undefined,
   applications: undefined,
   applicationById: undefined,
-  getApplicationByID: (id: string) => {},
+  getApplicationByID: () => {},
+  dateRange: {
+    start: `${new Date().getFullYear()}-01-01`,
+    end: `${new Date().getFullYear() + 1}-01-01`,
+  },
+  updateDateRange: function (): void {
+    throw new Error("Function not implemented.");
+  },
+  syncApplications: function (): Promise<void> {
+    throw new Error("Function not implemented.");
+  },
 };
 
 // creating the app contexts
@@ -45,29 +59,44 @@ export const StudentProvider: FC<PropsWithChildren> = ({ children }) => {
 
 //NOTE: declare vars and functions here
 function useProviderStudent() {
-  const [students, setStudents] = useState<Student[] | undefined>(undefined);
+  const [students, setStudents] = useState<Student[] | undefined>(
+    defaultState.students
+  );
 
   const [applications, setApplications] = useState<Application[] | undefined>(
-    undefined
+    defaultState.applications
+  );
+
+  const [dateRange, setDateRange] = useState<IDateRange>(
+    defaultState.dateRange
   );
 
   const [applicationById, setApplicationById] = useState<
     Application | undefined
   >(undefined);
 
+  useEffect(() => {
+    getStudents();
+
+    return () => {};
+  }, []);
+
   useEffect(
     () => {
       // Run this
-      getStudents();
-      getAllApplications();
+      getAllApplications(dateRange);
 
       // on destroy
       return () => {};
     },
 
     // Re-run whenever anything here changes
-    []
+    [dateRange]
   );
+
+  function updateDateRange(newDateRange: IDateRange) {
+    setDateRange(newDateRange);
+  }
 
   async function getStudents(): Promise<Student[] | undefined> {
     let query = `
@@ -94,8 +123,10 @@ function useProviderStudent() {
   }
 
   // add programs to uni
-  async function getAllApplications(): Promise<Application[] | undefined> {
-    let tempApplicationList = await getAllApplicationsAPI();
+  async function getAllApplications(
+    newDateR: IDateRange
+  ): Promise<Application[] | undefined> {
+    let tempApplicationList = await getAllApplicationsAPI(newDateR);
     setApplications(tempApplicationList);
     return tempApplicationList;
   }
@@ -110,12 +141,19 @@ function useProviderStudent() {
     return tempApplication;
   }
 
+  async function syncApplications() {
+    await getAllApplications(dateRange);
+  }
+
   // NOTE: return all the values & functions you want to export
   return {
     students,
     applications,
     applicationById,
     getApplicationByID,
+    dateRange,
+    updateDateRange,
+    syncApplications,
   };
 }
 
@@ -228,15 +266,16 @@ export async function getApplicationByIdAPI(
   return tempApplication.getApplication as Application;
 }
 
-export async function getAllApplicationsAPI(): Promise<
-  Application[] | undefined
-> {
+export async function getAllApplicationsAPI(
+  dateRange: IDateRange
+): Promise<Application[] | undefined> {
   let query = `
   query ListAllApplications {
-    listApplications {
+    listApplications(filter: {dateTime: {between: ["${dateRange.start}T00:00:00", "${dateRange.end}T00:00:00"]}}) {
       items {
         _version
         _deleted
+        dateTime
         applicationAttachmentId
         attachmentID
         gpa
@@ -246,7 +285,7 @@ export async function getAllApplicationsAPI(): Promise<
         programs {
           items {
             _deleted
-              id
+            id
             programID
             program {
               id
@@ -259,51 +298,15 @@ export async function getAllApplicationsAPI(): Promise<
           }
         }
         createdAt
+        student {
+          householdIncome
+        }
       }
       nextToken
     }
   }
+  
   `;
-  // let query = `
-  // query ListAllApplications {
-  //   listApplications {
-  //     items {
-  //       _version
-  //       _deleted
-  //       applicationAttachmentId
-  //       attachmentID
-  //       gpa
-  //       id
-  //       status
-  //       studentCPR
-  //       adminLogs {
-  //         items {
-  //           snapshot
-  //           applicationID
-  //           applicationAdminLogsId
-  //           adminCPR
-  //           dateTime
-  //         }
-  //       }
-  //       programs {
-  //         items {
-  //           _deleted
-  //           programID
-  //           program {
-  //             name
-  //             university {
-  //               name
-  //             }
-  //           }
-  //         }
-  //       }
-  //       createdAt
-  //     }
-  //     nextToken
-  //   }
-  // }
-
-  // `;
 
   let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;
 

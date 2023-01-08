@@ -26,9 +26,9 @@ export default function AdminLogs() {
   return (
     <PageComponent title={"Admin Logs"}>
       <Toaster />
-      <div className=" mb-8">
-        <div className=" text-2xl font-semibold">Admin Log History</div>
-        <div className=" text-base font-medium text-gray-500">
+      <div className="mb-8 ">
+        <div className="text-2xl font-semibold ">Admin Log History</div>
+        <div className="text-base font-medium text-gray-500 ">
           View all logs made by other admins.
         </div>
       </div>

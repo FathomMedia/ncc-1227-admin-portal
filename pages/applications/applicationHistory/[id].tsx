@@ -99,23 +99,23 @@ export default function ApplicationLog({
     <div>
       <PageComponent title={"ApplicationLog"}>
         <div>
-          <div className=" mb-8">
-            <div className=" text-2xl font-semibold">Application Log</div>
-            <div className=" text-base font-medium text-gray-500">
+          <div className="mb-8 ">
+            <div className="text-2xl font-semibold ">Application Log</div>
+            <div className="text-base font-medium text-gray-500 ">
               Application ID: {id}
             </div>
           </div>
 
           {/* modal dialogue - adds university to db */}
           <div className={` modal ${isSubmitted && "modal-open"}`}>
-            <div className="modal-box relative max-w-3xl">
+            <div className="relative max-w-3xl modal-box">
               <label
                 onClick={() => setIsSubmitted(!isSubmitted)}
-                className="btn btn-sm btn-circle absolute right-2 top-2"
+                className="absolute btn btn-sm btn-circle right-2 top-2"
               >
                 ✕
               </label>
-              <div className=" p-4 mb-4">
+              <div className="p-4 mb-4 ">
                 <div className="text-lg font-bold">Application Snapshot</div>
                 <div>
                   <div>
