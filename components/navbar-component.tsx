@@ -78,8 +78,8 @@ export default function NavbarComponent() {
           <Image
             src={"/logout_icon.svg"}
             alt={"Log out icon"}
-            width="20"
-            height="20"
+            width={20}
+            height={20}
           />
           <button className="pl-4" onClick={signOut}>
             Log out

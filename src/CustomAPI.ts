@@ -26,6 +26,8 @@ import {
   UpdateProgramChoiceMutationVariables,
   UpdateProgramMutation,
   UpdateProgramMutationVariables,
+  UpdateUniversityMutation,
+  UpdateUniversityMutationVariables,
 } from "./API";
 import {
   createAttachment,
@@ -37,6 +39,7 @@ import {
   createStudentLog,
   createAdminLog,
   updateProgram,
+  updateUniversity,
 } from "./graphql/mutations";
 
 /* -------------------------------------------------------------------------- */
@@ -611,6 +614,7 @@ export async function getUniversityByID(
   let query = `
   query GetUniInfo {
     getUniversity(id: "${id}") {
+      _version
       name
       updatedAt
       id
@@ -643,4 +647,15 @@ export async function getUniversityByID(
   let tempProgramList = res.data.getUniversity as University;
 
   return tempProgramList;
+}
+
+export async function updateUniversityById(
+  mutationVars: UpdateUniversityMutationVariables
+): Promise<UpdateUniversityMutation | undefined> {
+  let res = (await API.graphql({
+    query: updateUniversity,
+    variables: mutationVars,
+  })) as GraphQLResult<UpdateUniversityMutation>;
+
+  return res.data;
 }

@@ -6,6 +6,7 @@ import { GetServerSideProps } from "next";
 import { getUniversityByID } from "../../../src/CustomAPI";
 import { University } from "../../../src/API";
 import { Program } from "../../../src/models";
+import UniversityFormComponent from "../../../components/university-form-component";
 
 interface Props {
   getUni: University | undefined;
@@ -36,54 +37,7 @@ export default function UniversityInfo({ getUni }: Props) {
           <div className="text-base font-medium text-gray-500 ">ID - {id}</div>
         </div>
 
-        <div>
-          <div className=" w-[400px] flex justify-between items-center">
-            <div>Name</div>
-            <div>
-              <input
-                type="text"
-                className=" border rounded-xl"
-                title="uni-name"
-                value={`${getUni?.name}`}
-              />
-            </div>
-          </div>
-
-          <div className=" w-[400px] flex justify-between items-center">
-            <div>Deactivate?</div>
-            <div>
-              <input
-                type="checkbox"
-                className=" checkbox "
-                title="uni-deactivated"
-                checked={getUni?.isDeactivated ? true : false}
-              />
-            </div>
-            <div></div>
-          </div>
-
-          <div className=" mb-4">Programs</div>
-          <div>
-            <div className="overflow-x-auto">
-              <table className="table w-full">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {getUni?.Programs?.items.map((program) => {
-                    return (
-                      <tr key={program?.id}>
-                        <td>{program?.name}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+        <UniversityFormComponent university={getUni}></UniversityFormComponent>
       </PageComponent>
     </div>
   );

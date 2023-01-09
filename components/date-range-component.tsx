@@ -38,7 +38,7 @@ export const DateRangeComponent: FC<Props> = ({ dateRange, updateRange }) => {
               type="date"
               placeholder="Start Date"
               value={values.start}
-              handleChange={handleChange}
+              onChange={handleChange}
             />
             <p className="text-gray-400 min-w-fit">{"→"}</p>
             <Field
@@ -47,7 +47,7 @@ export const DateRangeComponent: FC<Props> = ({ dateRange, updateRange }) => {
               type="date"
               placeholder="End Date"
               value={values.end}
-              handleChange={handleChange}
+              onChange={handleChange}
             />
             <button
               type="submit"

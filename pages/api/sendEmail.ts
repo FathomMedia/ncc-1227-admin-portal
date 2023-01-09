@@ -31,9 +31,12 @@ export default async function handler(
         "Failed to send an email to the given user. Please try again later."
       );
     }
+
     if (data.status === undefined) {
-      throw new Error("Could not retrieve application status.");
-    } else if (data.status === Status.REJECTED) {
+      throw new Error("Could not get application status");
+    }
+
+    if (data.status === Status.REJECTED) {
       const result = await sendRefusalEmail(
         "nccxfthm1227@gmail.com",
         data.studentName
@@ -47,8 +50,6 @@ export default async function handler(
       return res.json(result);
     }
   } catch (err) {
-    // console.log(err);
-    // return res.status(500);
-    throw new Error(`${err}`);
+    throw err;
   }
 }

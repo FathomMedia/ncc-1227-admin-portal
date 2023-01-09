@@ -286,7 +286,7 @@ export default function Applications() {
       </div>
 
       {/* applications table with pagination*/}
-      {shownData?.length > 0 ? (
+      {(shownData?.length ?? 0) > 0 ? (
         <div>
           <div className="w-full h-screen overflow-x-auto">
             <table className="table w-full ">

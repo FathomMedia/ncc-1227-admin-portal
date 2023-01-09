@@ -19,8 +19,6 @@
         body {
             margin: 0 auto !important;
             padding: 0 !important;
-            /* height: 100% !important; */
-            /* width: 100% !important; */
             background: white;
         }
 
@@ -127,47 +125,42 @@
 
 </head>
 
-<body min-height='100vh' width="400px"
-    style="margin: 0; padding: 0 !important; mso-line-height-rule: exactly; background-color: #222222;">
-    <center style="background-color: #f1f1f1;">
-        <div
-            style="display: none; font-size: 1px;max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden; mso-hide: all; font-family: sans-serif;">
-        </div>
+<body width="100%" style="margin: 0; padding: 0 !important; mso-line-height-rule: exactly; background-color: #222222;">
+    <div style="background-color: #f1f1f1;">
         <div style="max-width: 600px; margin: 0 auto;" class="email-container">
-            <table style="width: 500px;" cellpadding="8">
-                <thead>
-                    <th>
-                        <img src="https://res.cloudinary.com/dqg2db5gf/image/upload/v1672816898/Ncc/logo_siywsu.png"
-                            alt="logo" width='400' height='100' />
-                    </th>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td style="margin-bottom: 2rem;">
-                            <h2 style="font-family: inter; color: #243746; ">A decision was made on your application!
-                            </h2>
-                            <p style="color: #243746; font-family: inter;">Dear ${userName}, <br /><br /> Thank you for
-                                your applying to [insert name of service here]. We have given
-                                a careful consideration to your application.<br /><br /></p>
-                            <p style="color: #243746; font-family: inter;">
-                                We regret to inform you that you did not qualify for this year's scholarship.
-                                <br /><br />
-                            </p>
-                            <p style="color: #243746; font-family: inter;">
-                                For more information on what to do next - follow this [insert link here idk lmao]
-                                <br /><br />
-                            </p>
-                            <div style="padding: 2rem">
-                                <a href="#"><button
-                                        style="cursor: pointer; font-family: inter; font-weight: bold; border: none; background-color: #FECD04; padding: 1rem 2rem; border-radius: 100px;">Contact
-                                        Support</button></a>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div style="padding: 50px 0;
+            /* border: 3px solid green; */
+            text-align: center;">
+                <img src="${logo}" alt="logo" width='400' height='100' />
+            </div>
+            <h2 style="font-family: inter; color: #243746; text-align: center;">A decision was made on your application!
+            </h2>
+
+            <p style="color: #243746; font-family: inter;">Dear ${userName}, <br /><br /> Thank you for
+                applying to Isa Bin Salman Education Charitable Trust Scholarship Service. We have given
+                a careful consideration to your application.<br /><br /></p>
+
+            <p style="color: #243746; font-family: inter;">Congratulations! We are pleased
+                to
+                inform you
+                that your application
+                has been approved. <br /><br /></p>
+            <p style="color: #243746; font-family: inter;">
+                More information will be sent to you in the following days.
+                <br /><br />
+            </p>
+
+            <div style="text-align: center;">
+                <div style="padding: 2rem">
+                    <a href="#"><button
+                            style="cursor: pointer; font-family: inter; font-weight: bold; border: none; background-color: #FECD04; padding: 1rem 2rem; border-radius: 100px;">Contact
+                            Support</button></a>
+                </div>
+            </div>
         </div>
-    </center>
+
+    </div>
+
 </body>
 
 </html>

@@ -19,7 +19,7 @@ import {
 import { StudentProvider } from "../context/StudentContext";
 import { AppProvider } from "../context/AppContext";
 import { AuthProvider } from "../hooks/use-auth";
-import { AdminProvider } from "../context/AdminContext";
+// import { AdminProvider } from "../context/AdminContext";
 import { EducationProvider } from "../context/EducationContext";
 
 Amplify.configure({ ...awsExports, ssr: true });
@@ -43,13 +43,13 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <AuthProvider>
       <AppProvider>
-        <AdminProvider>
-          <StudentProvider>
-            <EducationProvider>
-              <Component {...pageProps} />
-            </EducationProvider>
-          </StudentProvider>
-        </AdminProvider>
+        {/* <AdminProvider> */}
+        <StudentProvider>
+          <EducationProvider>
+            <Component {...pageProps} />
+          </EducationProvider>
+        </StudentProvider>
+        {/* </AdminProvider> */}
       </AppProvider>
     </AuthProvider>
   );

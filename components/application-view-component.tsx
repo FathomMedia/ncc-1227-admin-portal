@@ -72,8 +72,7 @@ export default function ViewApplication({
     <div className="mx-auto overflow-x-auto">
       <div className="flex justify-end m-4 gap-4">
         <div>
-          {(application.status === Status.APPROVED ||
-            application.status === Status.REJECTED) && (
+          {application.status === Status.APPROVED && (
             <PrimaryButton
               name="Send Email"
               buttonClick={async () => {
@@ -124,6 +123,21 @@ export default function ViewApplication({
             })
             .then(async (value) => {
               setIsEditing(false);
+
+              if (values.applicationStatus === Status.REJECTED) {
+                await toast.promise(
+                  fetch("../../api/sendEmail", {
+                    method: "POST",
+                    body: JSON.stringify(emailData),
+                  }),
+                  {
+                    loading: "Sending email...",
+                    success: "Email sent to user!",
+                    error: "Failed to send email to user",
+                  }
+                );
+              }
+
               let createAdminLogVariables: CreateAdminLogMutationVariables = {
                 input: {
                   applicationID: application.id,

@@ -133,6 +133,7 @@ function useProviderEducation() {
       listPrograms {
         items {
           name
+          id
           universityID
           universityProgramsId
         }
