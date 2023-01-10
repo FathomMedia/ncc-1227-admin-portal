@@ -1,7 +1,7 @@
-import { cL } from "chart.js/dist/chunks/helpers.core";
 import { Field, Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { CSVLink } from "react-csv";
 import { Toaster } from "react-hot-toast";
 import { BsFillEyeFill } from "react-icons/bs";
 import { HiDotsVertical, HiOutlineClipboardList } from "react-icons/hi";
@@ -39,6 +39,11 @@ export default function Applications() {
   const [disableForward, setDisableForward] = useState(false);
   const [disableBackward, setDisableBackward] = useState(true);
   const [shownData, setShownData] = useState<Application[] | undefined>([]);
+  const [selectedApplication, setSelectedApplication] = useState<Application[]>(
+    []
+  );
+
+  // let selectedApplication: Application[] = [];
 
   let sortedApplications = applications
     ?.sort(
@@ -83,25 +88,20 @@ export default function Applications() {
           (currentPage - 1) * elementPerPage,
           currentPage * elementPerPage
         )
-        // .sort(
-        //   (a, b) =>
-        //     (a.student?.householdIncome ?? 0) -
-        //     (b.student?.householdIncome ?? 0)
-        // )
-        // .sort((a, b) => (b.gpa ?? 0) - (a.gpa ?? 0))
-
-        // .sort((a, b) => {
-        //   if (a.status && b.status) {
-        //     if (a.status > b.status) return 1;
-        //     if (a.status < b.status) return -1;
-        //   }
-        //   return 0;
-        // })
       );
     }
     paginate();
     return () => {};
   }, [sortedApplications, currentPage]);
+
+  function addToSelected(app: Application) {
+    setSelectedApplication([...selectedApplication, app]);
+  }
+  function removeFromSelected(app: Application) {
+    setSelectedApplication(
+      selectedApplication.filter((a: Application) => a.id !== app.id)
+    );
+  }
 
   function goNextPage() {
     setCurrentPage(currentPage + 1);
@@ -286,17 +286,59 @@ export default function Applications() {
       </div>
 
       {/* applications table with pagination*/}
-      {shownData?.length > 0 ? (
+      {(shownData?.length ?? 0) > 0 ? (
         <div>
           <div className="w-full h-screen overflow-x-auto">
             <table className="table w-full ">
               <thead className="border rounded-xl border-nccGray-100">
                 <tr>
-                  {StudentsTableHeaders.map((title, index) => (
-                    <th className=" bg-nccGray-100" key={index}>
-                      {title}
-                    </th>
-                  ))}
+                  {StudentsTableHeaders.map((title, index) =>
+                    index !== 0 ? (
+                      <th className=" bg-nccGray-100" key={index}>
+                        {title}
+                      </th>
+                    ) : selectedApplication.length > 0 ? (
+                      <th className=" bg-nccGray-100" key={index}>
+                        <CSVLink
+                          className="text-xs hover:!text-white btn btn-primary btn-sm btn-outline"
+                          filename={`${new Date().getFullYear()}-Applications-${new Date().toISOString()}.csv`}
+                          data={[
+                            ...selectedApplication.map((app, index) => {
+                              let sortedProgramChoices =
+                                app.programs?.items?.sort(
+                                  (a, b) =>
+                                    (a?.choiceOrder ?? 0) -
+                                    (b?.choiceOrder ?? 0)
+                                );
+
+                              return {
+                                row: index + 1,
+                                applicationId: app.id,
+                                gpa: app.gpa,
+                                status: app.status,
+                                studentCPR: app.studentCPR,
+                                dateTime: app.dateTime,
+                                primaryProgramID:
+                                  sortedProgramChoices?.[0]?.program?.id,
+                                primaryProgram: `${sortedProgramChoices?.[0]?.program?.name}-${sortedProgramChoices?.[0]?.program?.university?.name}`,
+                                secondaryProgramID:
+                                  sortedProgramChoices?.[1]?.program?.id,
+                                secondaryProgram: `${sortedProgramChoices?.[1]?.program?.name}-${sortedProgramChoices?.[1]?.program?.university?.name}`,
+                              };
+                            }),
+                          ]}
+                          key={index}
+                          onClick={() => {
+                            setSelectedApplication([]);
+                          }}
+                        >
+                          CSV
+                        </CSVLink>
+                      </th>
+                    ) : (
+                      <th className=" bg-nccGray-100" key={index}></th>
+                    )
+                  )}
                 </tr>
               </thead>
               <tbody>
@@ -308,6 +350,18 @@ export default function Applications() {
                           type="checkbox"
                           className="checkbox"
                           title="selectApplications"
+                          checked={
+                            selectedApplication.find(
+                              (app: Application) => app.id === datum.id
+                            ) !== undefined
+                          }
+                          onChange={(event) => {
+                            if (event.target.checked) {
+                              addToSelected(datum as Application);
+                            } else {
+                              removeFromSelected(datum as Application);
+                            }
+                          }}
                         />
                       </label>
                     </th>
@@ -424,8 +478,8 @@ export default function Applications() {
           </div>
         </div>
       ) : (
-        <div className=" flex justify-center items-center border border-nccGray-100 rounded-xl bg-nccGray-100 p-8">
-          <div className=" text-base font-medium">
+        <div className="flex items-center justify-center p-8 border border-nccGray-100 rounded-xl bg-nccGray-100">
+          <div className="text-base font-medium ">
             Sorry! No data to display
           </div>
         </div>

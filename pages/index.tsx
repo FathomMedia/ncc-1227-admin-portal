@@ -56,7 +56,7 @@ export default function Home() {
 
   return (
     <PageComponent title={"Home"}>
-      <div className="flex flex-col justify-between gap-4">
+      <div className="flex flex-col justify-between gap-4 mb-14">
         <div className="flex flex-wrap justify-between ">
           {/*  */}
           <div className="flex flex-col ">
