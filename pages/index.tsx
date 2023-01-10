@@ -70,7 +70,7 @@ export default function Home() {
             </div>
           </div>
           {/* TODO - dashboard buttons here  */}
-          <div className="flex flex-wrap items-center justify-end gap-4 m-4">
+          <div className="flex flex-wrap items-center justify-end gap-4 my-4">
             <DateRangeComponent
               dateRange={dateRange}
               updateRange={updateDateRange}
@@ -117,7 +117,7 @@ export default function Home() {
         </div>
 
         {/* mini graphs */}
-        <div className="flex justify-between gap-8 mb-8 overflow-x-scroll min-h-fit">
+        <div className="grid justify-between grid-cols-1 gap-8 mb-8 md:grid-cols-2 xl:grid-cols-3 min-h-fit">
           <MiniGraphInfo
             color={GraphColor.YELLOW}
             title={"Total applications"}
