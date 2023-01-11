@@ -298,6 +298,7 @@ export async function getAllApplicationsAPI(
           }
         }
         createdAt
+        updatedAt
         student {
           householdIncome
         }

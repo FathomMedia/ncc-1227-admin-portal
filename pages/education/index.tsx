@@ -6,9 +6,14 @@ import { Program } from "../../src/API";
 import SearchBarComponent from "../../components/search-bar-component";
 import { useRouter } from "next/router";
 import SecondaryButton from "../../components/secondary-button";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, FormikHelpers, FormikValues } from "formik";
 import * as yup from "yup";
 import toast, { Toaster } from "react-hot-toast";
+
+interface InitialFilterValues {
+  search: string;
+  activeStatus: string;
+}
 
 export default function Education() {
   const { universityList, addNewUniversity, syncUniList } = useEducation();
@@ -26,6 +31,15 @@ export default function Education() {
   const [disableForward, setDisableForward] = useState(false);
   const [disableBackward, setDisableBackward] = useState(true);
   const [shownData, setShownData] = useState<any>([]);
+
+  const initialFilterValues: InitialFilterValues = {
+    search: "",
+    activeStatus: "",
+  };
+
+  const initialValues = {
+    universityName: "",
+  };
 
   useEffect(() => {
     setNumberOfPages(Math.ceil((resultList?.length ?? 0) / elementPerPage));
@@ -77,10 +91,6 @@ export default function Education() {
   }, [universityList]);
   // Table Data Pagination
 
-  const initialValues = {
-    universityName: "",
-  };
-
   function resetList() {
     setResultList(universityList);
   }
@@ -120,37 +130,113 @@ export default function Education() {
       </div>
 
       {/* search bar */}
-      <div className="flex items-center justify-between w-full h-32 gap-4 p-4 my-8 border  border-nccGray-100 rounded-xl bg-nccGray-100">
-        <div className="w-full ">
-          <SearchBarComponent
-            searchChange={(value) => {
-              setSearchValue(value);
 
-              if (value === "") {
-                resetList();
-              }
-            }}
-            onSubmit={(value: string) => {
-              setSearchValue(value);
-              search();
-            }}
-          />
-        </div>
-        <div className="flex justify-between gap-4 ">
-          <div
-            className="min-w-[8rem] px-4 py-2 border-2 border-anzac-400 rounded-xl bg-anzac-400 text-white text-xs font-bold hover:cursor-pointer"
-            onClick={() => setIsSubmitted(!isSubmitted)}
-          >
-            Add University
-          </div>
-          <SecondaryButton
-            name={"Add Programs"}
-            buttonClick={() => {
-              push("/education/programs/addProgram");
-            }}
-          ></SecondaryButton>
-        </div>
-      </div>
+      <Formik
+        initialValues={initialFilterValues}
+        validationSchema={yup.object({
+          universityName: yup.string().required("Invalid university name"),
+        })}
+        onSubmit={async (values, actions) => {
+          // let uniFound = universityList
+          //   ?.filter((value) => value._deleted !== true)
+          //   .find(
+          //     (value) =>
+          //       value.name?.toLowerCase() ===
+          //       values.universityName.toLowerCase()
+          //   );
+          // if (uniFound) {
+          //   toast.error("A university already exists with the same name");
+          // } else {
+          //   setIsSubmitted(true);
+          //   toast
+          //     .promise(
+          //       addNewUniversity(values.universityName).catch((error) => {
+          //         throw error;
+          //       }),
+          //       {
+          //         loading: "Loading...",
+          //         success: () => {
+          //           return `University successfully added`;
+          //         },
+          //         error: (error) => {
+          //           return `${error?.message}`;
+          //         },
+          //       }
+          //     )
+          //     .then(async (val) => {
+          //       await syncUniList();
+          //       return val;
+          //     })
+          //     .catch((err) => {
+          //       console.log(err);
+          //     })
+          //     .finally(() => {
+          //       setIsSubmitted(false);
+          //     });
+          // }
+        }}
+      >
+        {({ values, handleChange, handleReset, isSubmitting, isValid }) => (
+          <Form>
+            <div className="flex flex-wrap md:flex-row items-center justify-between w-full gap-4 p-4 my-8 border  border-nccGray-100 rounded-xl bg-nccGray-100">
+              <div className="grow">
+                <SearchBarComponent
+                  searchChange={(value) => {
+                    setSearchValue(value);
+
+                    if (value === "") {
+                      resetList();
+                    }
+                  }}
+                  onSubmit={(value: string) => {
+                    setSearchValue(value);
+                    search();
+                  }}
+                />
+              </div>
+              <div>
+                <div>
+                  <Field
+                    className="input input-bordered"
+                    as="select"
+                    name="activeStatus"
+                    onChange={handleChange}
+                    value={values}
+                  >
+                    <option value={""}>All</option>
+                    <option value={"Active"}>Active</option>
+                    <option value={"Inactive"}>Inactive</option>
+                  </Field>
+                </div>
+              </div>
+              <button
+                type="submit"
+                className={`min-w-[8rem] px-4 py-2 border-2 border-anzac-400 rounded-xl bg-anzac-400 text-white text-xs font-bold hover:cursor-pointer ${
+                  isSubmitting && "loading"
+                }`}
+                disabled={isSubmitting || !isValid}
+              >
+                Apply
+              </button>
+              <div className=" flex gap-4">
+                <div className="h-full w-[1px] bg-gray-300"></div>
+                <div
+                  className="min-w-[8rem] px-4 py-2 border-2 border-anzac-400 rounded-xl bg-anzac-400 text-white text-xs font-bold hover:cursor-pointer"
+                  onClick={() => setIsSubmitted(!isSubmitted)}
+                >
+                  Add University
+                </div>
+                <SecondaryButton
+                  name={"Add Programs"}
+                  buttonClick={() => {
+                    push("/education/programs/addProgram");
+                  }}
+                ></SecondaryButton>
+              </div>
+            </div>
+          </Form>
+        )}
+      </Formik>
 
       {/* modal dialogue - adds university to db */}
       <div className={` modal ${isSubmitted && "modal-open"}`}>
@@ -266,7 +352,6 @@ export default function Education() {
           <table className="table w-full table-auto">
             <thead className="">
               <tr>
-                <th className=" bg-nccGray-100">Active</th>
                 {EducationTableHeaders.map((title, index) => (
                   <th className=" bg-nccGray-100" key={index}>
                     {title}
@@ -276,29 +361,28 @@ export default function Education() {
             </thead>
             <tbody>
               {shownData?.map((datum: any, index: number) => (
-                <tr key={index} className=" hover">
-                  <th className=" w-full">
-                    <label className=" mx-auto">
-                      <input
-                        type="checkbox"
-                        className="checkbox checkbox-warning  mx-auto"
-                        title="deactivate-uni"
-                        checked={!datum.isDeactivated}
-                        disabled
-                      />
-                    </label>
-                  </th>
-                  <td key={datum.id}>
+                <tr
+                  key={index}
+                  className={` hover hover:text-gray-500 ${
+                    datum.isDeactivated && " bg-gray-200"
+                  }`}
+                >
+                  <td key={datum.id} className="bg-transparent">
                     <div
-                      className="flex justify-between hover:cursor-pointer"
+                      className={`flex justify-between hover:cursor-pointer ${
+                        datum.isDeactivated && "text-gray-400"
+                      }`}
                       onClick={() => push(`education/universities/${datum.id}`)}
                     >{`${datum.name}`}</div>
                   </td>
-                  <td className="overflow-x-scroll " key={index}>
+                  <td className="overflow-x-scroll bg-transparent " key={index}>
                     {datum.Programs?.items.map((program: Program) => (
                       <div
                         key={program?.id}
-                        className="mr-2 badge badge-accent text-primary-content hover:cursor-pointer hover:badge-warning duration-150"
+                        className={`mr-2 badge text-white hover:cursor-pointer hover:badge-warning duration-150 ${
+                          !datum.isDeactivated &&
+                          " badge-accent text-primary-content "
+                        }`}
                         onClick={() => {
                           push(`/education/programs/${program.id}`);
                         }}

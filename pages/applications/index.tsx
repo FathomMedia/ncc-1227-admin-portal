@@ -341,8 +341,12 @@ export default function Applications() {
                           "text-info-content badge-info"
                         }
                         mr-2`}
-                      >{`${datum.status}`}</div>
+                      >{`${datum.status?.replace("_", " ")}`}</div>
                     </td>
+                    <td>
+                      <div className="flex justify-between ">{datum.gpa}</div>
+                    </td>
+
                     <td>
                       <div className="flex flex-col gap-4 ">
                         {datum.programs?.items.map(
@@ -360,6 +364,12 @@ export default function Applications() {
                         "en",
                         { timeStyle: "short", dateStyle: "medium" }
                       ).format(new Date(datum.createdAt))}`}</div>
+                    </td>
+                    <td>
+                      <div className="flex justify-between ">{`${Intl.DateTimeFormat(
+                        "en",
+                        { timeStyle: "short", dateStyle: "medium" }
+                      ).format(new Date(datum.updatedAt))}`}</div>
                     </td>
 
                     <td>

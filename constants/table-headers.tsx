@@ -5,6 +5,7 @@ export const StudentsTableHeaders = [
   "GPA",
   "Program - University",
   "Application Date",
+  "Last Updated",
   "",
 ];
 
