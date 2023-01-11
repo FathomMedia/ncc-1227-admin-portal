@@ -25,6 +25,7 @@ export default function MiniGraphInfo({
   const data = graph;
 
   const options = {
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         display: false,
@@ -64,11 +65,11 @@ export default function MiniGraphInfo({
         color === GraphColor.GREEN && "bg-goblin-50"
       }`}
     >
-      <div className="flex flex-col ">
+      <div className="flex flex-col w-full">
         <div className="text-xs font-semibold text-gray-600 ">{title}</div>
-        <div className="flex justify-between p-4 ">
+        <div className="flex justify-between p-4 grow">
           <div className="w-8 text-2xl ">{graphNum}</div>
-          <Line data={data} width={100} height={40} options={options} />
+          <Line data={data} className="" options={options} />
         </div>
       </div>
     </div>
