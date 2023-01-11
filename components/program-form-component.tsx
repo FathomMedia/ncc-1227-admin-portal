@@ -17,7 +17,7 @@ interface Props {
 }
 
 export default function ProgramFormComponent({ program }: Props) {
-  const { push } = useRouter();
+  const { push, back } = useRouter();
 
   const { universityList, addProgramToUni, getProgramsFromUniID, syncUniList } =
     useEducation();
@@ -83,7 +83,7 @@ export default function ProgramFormComponent({ program }: Props) {
                 return val;
               })
               .finally(() => {
-                push("../");
+                back();
               });
           } else {
             if (programFound) {
@@ -113,7 +113,7 @@ export default function ProgramFormComponent({ program }: Props) {
                   return val;
                 })
                 .finally(() => {
-                  push("../");
+                  back();
                 });
             }
           }
@@ -178,7 +178,7 @@ export default function ProgramFormComponent({ program }: Props) {
               </label>
             </div>
 
-            <div className=" flex justify-between gap-4">
+            <div className="flex justify-between gap-4 ">
               <div className="flex flex-col grow">
                 <label className="label">Availability</label>
                 <Field
@@ -198,7 +198,7 @@ export default function ProgramFormComponent({ program }: Props) {
                     errors.availability}
                 </label>
               </div>
-              <div className="flex flex-col justify-between items-center">
+              <div className="flex flex-col items-center justify-between">
                 <label className="label">Deactivate?</label>
                 <Field
                   name="isDeactivated"
@@ -223,7 +223,7 @@ export default function ProgramFormComponent({ program }: Props) {
                 <span className="label-text">Program Requirements</span>
               </label>
               <textarea
-                className="textarea textarea-bordered h-24"
+                className="h-24 textarea textarea-bordered"
                 placeholder="Requirements"
                 name="requirements"
                 onChange={handleChange}

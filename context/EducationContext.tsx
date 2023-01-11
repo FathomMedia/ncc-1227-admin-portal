@@ -107,6 +107,7 @@ function useProviderEducation() {
               universityID
               universityProgramsId
               updatedAt
+              isDeactivated
             }
           }
         }

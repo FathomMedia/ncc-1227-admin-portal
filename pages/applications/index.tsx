@@ -143,9 +143,9 @@ export default function Applications() {
     setShownData(filteredApplications);
   }
 
-  // ! TODO - reset all filters
   function resetFilters() {
     setShownData(sortedApplications);
+    setSelectedApplication([]);
   }
 
   return (

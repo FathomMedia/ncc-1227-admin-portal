@@ -150,7 +150,7 @@ function useProvideAuth() {
       {
         loading: "Signing in...",
         success: (authUser) => {
-          push("../");
+          push("/");
           return `${authUser?.getUsername()} Successfully signed in`;
         },
         error: (error) => {
@@ -171,7 +171,7 @@ function useProvideAuth() {
       {
         loading: "Signing Out...",
         success: () => {
-          push("../");
+          push("/");
           return "Signed out";
         },
         error: (error) => {

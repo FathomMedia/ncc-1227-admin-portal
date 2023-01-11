@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { PageComponent } from "../../components/page-component";
 import { EducationTableHeaders } from "../../constants/table-headers";
 import { useEducation } from "../../context/EducationContext";
-import { Program } from "../../src/API";
-import SearchBarComponent from "../../components/search-bar-component";
+import { Program, University } from "../../src/API";
 import { useRouter } from "next/router";
 import SecondaryButton from "../../components/secondary-button";
-import { Formik, Form, Field, FormikHelpers, FormikValues } from "formik";
+import { Formik, Form, Field } from "formik";
 import * as yup from "yup";
 import toast, { Toaster } from "react-hot-toast";
+import { B } from "chart.js/dist/chunks/helpers.core";
 
 interface InitialFilterValues {
   search: string;
@@ -19,7 +19,7 @@ export default function Education() {
   const { universityList, addNewUniversity, syncUniList } = useEducation();
   const { push } = useRouter();
 
-  const [searchValue, setSearchValue] = useState("");
+  // const [searchValue, setSearchValue] = useState("");
   const [resultList, setResultList] = useState<any>([]);
 
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
@@ -30,7 +30,7 @@ export default function Education() {
   const [currentPage, setCurrentPage] = useState(1);
   const [disableForward, setDisableForward] = useState(false);
   const [disableBackward, setDisableBackward] = useState(true);
-  const [shownData, setShownData] = useState<any>([]);
+  const [shownData, setShownData] = useState<University[] | undefined>([]);
 
   const initialFilterValues: InitialFilterValues = {
     search: "",
@@ -96,22 +96,36 @@ export default function Education() {
   }
 
   //filter through uni and program list
-  function search() {
-    let searchUniResult = universityList?.filter((value) => {
-      let sameUniName = value.name
-        ?.toLowerCase()
-        .includes(searchValue.toLowerCase());
-      let haveProgramWithName = value.Programs?.items?.filter((prog) =>
-        prog?.name?.toLowerCase().includes(searchValue.toLowerCase())
-      );
-      let isThereAnyPrograms = (haveProgramWithName ?? []).length > 0;
+  function search(searchValue: string, isDisabled: string) {
+    let searchUniResult = universityList
+      ?.filter((value) => {
+        let sameUniName = value.name
+          ?.toLowerCase()
+          .includes(searchValue.toLowerCase());
+        let haveProgramWithName = value.Programs?.items?.filter((prog) =>
+          prog?.name?.toLowerCase().includes(searchValue.toLowerCase())
+        );
+        let isThereAnyPrograms = (haveProgramWithName ?? []).length > 0;
 
-      if (sameUniName || isThereAnyPrograms) {
-        return true;
-      } else {
-        return false;
-      }
-    });
+        if (sameUniName || isThereAnyPrograms) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .filter((value: University) => {
+        let temp = value.isDeactivated === true ? "Active" : "Inactive";
+
+        if (isDisabled === "") {
+          return true;
+        }
+
+        if (temp === isDisabled) {
+          return false;
+        } else {
+          return true;
+        }
+      });
 
     if (searchUniResult) {
       setResultList(searchUniResult);
@@ -133,66 +147,28 @@ export default function Education() {
 
       <Formik
         initialValues={initialFilterValues}
-        validationSchema={yup.object({
-          universityName: yup.string().required("Invalid university name"),
-        })}
+        validationSchema={yup.object({})}
         onSubmit={async (values, actions) => {
-          // let uniFound = universityList
-          //   ?.filter((value) => value._deleted !== true)
-          //   .find(
-          //     (value) =>
-          //       value.name?.toLowerCase() ===
-          //       values.universityName.toLowerCase()
-          //   );
-          // if (uniFound) {
-          //   toast.error("A university already exists with the same name");
-          // } else {
-          //   setIsSubmitted(true);
-          //   toast
-          //     .promise(
-          //       addNewUniversity(values.universityName).catch((error) => {
-          //         throw error;
-          //       }),
-          //       {
-          //         loading: "Loading...",
-          //         success: () => {
-          //           return `University successfully added`;
-          //         },
-          //         error: (error) => {
-          //           return `${error?.message}`;
-          //         },
-          //       }
-          //     )
-          //     .then(async (val) => {
-          //       await syncUniList();
-          //       return val;
-          //     })
-          //     .catch((err) => {
-          //       console.log(err);
-          //     })
-          //     .finally(() => {
-          //       setIsSubmitted(false);
-          //     });
-          // }
+          if (values.search === "") {
+            resetList();
+          }
+          search(values.search, values.activeStatus);
+
+          actions.setSubmitting(false);
         }}
       >
-        {({ values, handleChange, handleReset, isSubmitting, isValid }) => (
+        {({ values, handleChange, isSubmitting, isValid }) => (
           <Form>
-            <div className="flex flex-wrap md:flex-row items-center justify-between w-full gap-4 p-4 my-8 border  border-nccGray-100 rounded-xl bg-nccGray-100">
+            <div className="flex flex-wrap items-center justify-between w-full gap-4 p-4 my-8 border md:flex-row border-nccGray-100 rounded-xl bg-nccGray-100">
               <div className="grow">
-                <SearchBarComponent
-                  searchChange={(value) => {
-                    setSearchValue(value);
-
-                    if (value === "") {
-                      resetList();
-                    }
-                  }}
-                  onSubmit={(value: string) => {
-                    setSearchValue(value);
-                    search();
-                  }}
-                />
+                <Field
+                  className="w-full input input-bordered"
+                  type="text"
+                  name="search"
+                  placeholder="Search..."
+                  onChange={handleChange}
+                  value={values.search}
+                ></Field>
               </div>
               <div>
                 <div>
@@ -201,7 +177,7 @@ export default function Education() {
                     as="select"
                     name="activeStatus"
                     onChange={handleChange}
-                    value={values}
+                    value={values.activeStatus}
                   >
                     <option value={""}>All</option>
                     <option value={"Active"}>Active</option>
@@ -218,7 +194,7 @@ export default function Education() {
               >
                 Apply
               </button>
-              <div className=" flex gap-4">
+              <div className="flex gap-4 ">
                 <div className="h-full w-[1px] bg-gray-300"></div>
                 <div
                   className="min-w-[8rem] px-4 py-2 border-2 border-anzac-400 rounded-xl bg-anzac-400 text-white text-xs font-bold hover:cursor-pointer"
@@ -257,7 +233,7 @@ export default function Education() {
                     .string()
                     .required("Invalid university name"),
                 })}
-                onSubmit={async (values, actions) => {
+                onSubmit={async (values) => {
                   let uniFound = universityList
                     ?.filter((value) => value._deleted !== true)
                     .find(
@@ -304,7 +280,6 @@ export default function Education() {
                 }}
               >
                 {({
-                  values,
                   errors,
                   touched,
                   handleChange,
@@ -360,45 +335,60 @@ export default function Education() {
               </tr>
             </thead>
             <tbody>
-              {shownData?.map((datum: any, index: number) => (
-                <tr
-                  key={index}
-                  className={` hover hover:text-gray-500 ${
-                    datum.isDeactivated && " bg-gray-200"
-                  }`}
-                >
-                  <td key={datum.id} className="bg-transparent">
-                    <div
-                      className={`flex justify-between hover:cursor-pointer ${
-                        datum.isDeactivated && "text-gray-400"
-                      }`}
-                      onClick={() => push(`education/universities/${datum.id}`)}
-                    >{`${datum.name}`}</div>
-                  </td>
-                  <td className="overflow-x-scroll bg-transparent " key={index}>
-                    {datum.Programs?.items.map((program: Program) => (
+              {shownData
+                ?.sort((a, b) => {
+                  let bD = b.isDeactivated === true ? -1 : 1;
+                  return bD;
+                })
+                .map((datum: any, index: number) => (
+                  <tr
+                    key={index}
+                    className={` hover:bg-anzac-50 hover:text-anzac-500 ${
+                      datum.isDeactivated && " bg-gray-200"
+                    }`}
+                  >
+                    <td key={datum.id} className="bg-transparent">
                       <div
-                        key={program?.id}
-                        className={`mr-2 badge text-white hover:cursor-pointer hover:badge-warning duration-150 ${
-                          !datum.isDeactivated &&
-                          " badge-accent text-primary-content "
+                        className={`flex justify-between hover:cursor-pointer ${
+                          datum.isDeactivated && "text-gray-400"
                         }`}
-                        onClick={() => {
-                          push(`/education/programs/${program.id}`);
-                        }}
-                      >
-                        {program?.name}
-                      </div>
-                    ))}
+                        onClick={() =>
+                          push(`education/universities/${datum.id}`)
+                        }
+                      >{`${datum.name}`}</div>
+                    </td>
+                    <td
+                      className="overflow-x-scroll bg-transparent "
+                      key={index}
+                    >
+                      {datum.Programs?.items
+                        ?.sort((a: any, b: any) => {
+                          let bD = b.isDeactivated === true ? -1 : 1;
+                          return bD;
+                        })
+                        .map((program: Program) => (
+                          <div
+                            key={program?.id}
+                            className={`mr-2 badge text-white hover:cursor-pointer hover:badge-warning duration-150 ${
+                              !program.isDeactivated &&
+                              "badge-accent text-primary-content"
+                            }`}
+                            onClick={() => {
+                              push(`/education/programs/${program.id}`);
+                            }}
+                          >
+                            {program?.name}
+                          </div>
+                        ))}
 
-                    {datum.Programs?.items.length === 0 && (
-                      <div className="badge badge-error text-error-content">
-                        No Programs
-                      </div>
-                    )}
-                  </td>
-                </tr>
-              ))}
+                      {datum.Programs?.items.length === 0 && (
+                        <div className="badge badge-error text-error-content">
+                          No Programs
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
           {/* fake pagination */}

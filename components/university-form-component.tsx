@@ -1,5 +1,5 @@
 import { Field, Form, Formik } from "formik";
-import React, { useDeferredValue } from "react";
+import React from "react";
 import {
   University,
   UpdateProgramMutationVariables,
@@ -7,7 +7,6 @@ import {
 } from "../src/API";
 import * as yup from "yup";
 import { updateProgramById, updateUniversityById } from "../src/CustomAPI";
-import { update } from "lodash";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import { useEducation } from "../context/EducationContext";
@@ -17,7 +16,7 @@ interface Props {
 }
 
 export default function UniversityFormComponent({ university }: Props) {
-  const { push } = useRouter();
+  const { push, back } = useRouter();
   const { syncUniList } = useEducation();
 
   const initialValues = {
@@ -61,7 +60,7 @@ export default function UniversityFormComponent({ university }: Props) {
                         })
                         .finally(async () => {
                           await syncUniList();
-                          push("../");
+                          back();
                         });
                     }
                   });
@@ -90,8 +89,8 @@ export default function UniversityFormComponent({ university }: Props) {
           isValid,
         }) => (
           <Form className="flex flex-col gap-6">
-            <div className=" flex justify-between">
-              <div className=" flex justify-between items-center gap-10">
+            <div className="flex justify-between ">
+              <div className="flex items-center justify-between gap-10 ">
                 <div className="text-base font-medium">Name</div>
                 <div>
                   <Field
@@ -145,16 +144,46 @@ export default function UniversityFormComponent({ university }: Props) {
                     </tr>
                   </thead>
                   <tbody>
-                    {university?.Programs?.items.map((program) => {
-                      return (
-                        <tr key={program?.id}>
-                          <td>{program?.name}</td>
-                          <td>
-                            {program?.isDeactivated ? "Inactive" : "Active"}
-                          </td>
-                        </tr>
-                      );
-                    })}
+                    {(university?.Programs?.items?.length ?? 0) == 0 && (
+                      <tr className="">
+                        <td className="text-error">No Programs</td>
+                        <td className="text-error">-</td>
+                      </tr>
+                    )}
+                    {(university?.Programs?.items?.length ?? 0) > 0 &&
+                      university?.Programs?.items
+                        .sort((a: any, b: any) => {
+                          let bD = b.isDeactivated === true ? -1 : 1;
+                          return bD;
+                        })
+                        .map((program) => {
+                          return (
+                            <tr
+                              className={`hover:cursor-pointer hover:bg-anzac-50 hover:text-anzac-500 ${
+                                program?.isDeactivated ? "bg-gray-200" : ""
+                              }`}
+                              onClick={() => {
+                                push(`/education/programs/${program?.id}`);
+                              }}
+                              key={program?.id}
+                            >
+                              <td className="bg-transparent">
+                                {program?.name}
+                              </td>
+                              <td className="bg-transparent ">
+                                <div
+                                  className={`badge ${
+                                    program?.isDeactivated ? "" : "badge-accent"
+                                  }`}
+                                >
+                                  {program?.isDeactivated
+                                    ? "Inactive"
+                                    : "Active"}
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })}
                   </tbody>
                 </table>
               </div>

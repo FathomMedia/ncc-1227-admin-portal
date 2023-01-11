@@ -1,11 +1,10 @@
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React from "react";
 import { Toaster } from "react-hot-toast";
 import { PageComponent } from "../../../components/page-component";
 import { GetServerSideProps } from "next";
 import { getUniversityByID } from "../../../src/CustomAPI";
 import { University } from "../../../src/API";
-import { Program } from "../../../src/models";
 import UniversityFormComponent from "../../../components/university-form-component";
 
 interface Props {
