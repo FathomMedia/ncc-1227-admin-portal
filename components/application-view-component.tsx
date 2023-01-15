@@ -70,7 +70,7 @@ export default function ViewApplication({
 
   return (
     <div className="mx-auto overflow-x-auto">
-      <div className="flex justify-end m-4 gap-4">
+      <div className="flex justify-end gap-4 m-4">
         <div>
           {application.status === Status.APPROVED && (
             <PrimaryButton
@@ -195,7 +195,7 @@ export default function ViewApplication({
                 <tr>
                   <td>Status</td>
                   <td>
-                    <div className=" flex gap-8 items-center">
+                    <div className="flex items-center gap-8 ">
                       <div className="text-sm font-semibold ">
                         {application.status === Status.ELIGIBLE
                           ? Status.REVIEW
@@ -261,7 +261,7 @@ export default function ViewApplication({
                   } - ${
                     application.programs?.items?.sort(
                       (a, b) => (a?.choiceOrder ?? 0) - (b?.choiceOrder ?? 0)
-                    )[0]?.program?.university?.name
+                    )[1]?.program?.university?.name
                   }`}</td>
                 </tr>
                 <tr>
