@@ -10,9 +10,11 @@ import {
 import NavBarButton from "./navbar-button";
 import Image from "next/image";
 import { useAuth } from "../hooks/use-auth";
+import { useTranslation } from "react-i18next";
 
 export default function NavbarComponent() {
   const { signOut, isSignedIn } = useAuth();
+  const { t } = useTranslation("pageTitles");
 
   return (
     <div className="flex flex-col justify-between p-4 py-24 bg-nccGray-50">
@@ -27,42 +29,42 @@ export default function NavbarComponent() {
           />
         </div>
         <NavBarButton
-          name={"Dashboard"}
+          name={t("Dashboard")}
           icon={
             <AiOutlineAppstore className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
           }
           linkTo={"/"}
         ></NavBarButton>
         <NavBarButton
-          name={"Applications"}
+          name={t("Applications")}
           icon={
             <HiOutlineBriefcase className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
           }
           linkTo={"/applications"}
         ></NavBarButton>
         <NavBarButton
-          name={"Education"}
+          name={t("Education")}
           icon={
             <BsBook className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
           }
           linkTo={"/education"}
         ></NavBarButton>
         <NavBarButton
-          name={"Users"}
+          name={t("Users")}
           icon={
             <HiOutlineUsers className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
           }
           linkTo={"/users"}
         ></NavBarButton>
         <NavBarButton
-          name={"Logs"}
+          name={t("Logs")}
           icon={
             <HiOutlineClipboardList className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
           }
           linkTo={"/adminLogs"}
         ></NavBarButton>
         <NavBarButton
-          name={"Support"}
+          name={t("Support")}
           icon={
             <HiOutlineChatAlt2 className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
           }
@@ -82,7 +84,7 @@ export default function NavbarComponent() {
             height={20}
           />
           <button className="pl-4" onClick={signOut}>
-            Log out
+            {t("signOut")}
           </button>
         </div>
       )}

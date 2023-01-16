@@ -9,9 +9,10 @@ import { PageComponent } from "../components/page-component";
 import PrimaryButton from "../components/primary-button";
 import { useStudent } from "../context/StudentContext";
 import { Status } from "../src/API";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "next-i18next";
 
 import _ from "lodash";
-
 import { CSVLink } from "react-csv";
 
 import {
@@ -23,10 +24,26 @@ import {
 } from "../src/Helpers";
 import { LargeDonutGraphInfo } from "../components/graphs/large-donut-graph-info";
 import { DateRangeComponent } from "../components/date-range-component";
+import { GetStaticProps } from "next";
 
-export default function Home() {
+export const getStaticProps: GetStaticProps = async (ctx) => {
+  const { locale } = ctx;
+
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? "en", [
+        "common",
+        "pageTitles",
+        "signIn",
+      ])),
+    },
+  };
+};
+
+const Home = () => {
   const { push } = useRouter();
   const { applications, dateRange, updateDateRange } = useStudent();
+  const { t } = useTranslation("common");
 
   let sortedApplications = applications?.sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -58,14 +75,17 @@ export default function Home() {
     <PageComponent title={"Home"}>
       <div className="flex flex-col justify-between gap-4 mb-14">
         <div className="flex flex-wrap justify-between ">
-          {/*  */}
           <div className="flex flex-col ">
             <div className="mb-5 ">
-              <div className="text-3xl font-semibold ">
-                {new Date(dateRange.start).getFullYear()} Applications Summary
+              <div>
+                <h1 className="text-3xl font-semibold ">
+                  {new Date(dateRange.start).getFullYear()}{" "}
+                  {t("dashboardTitle")}
+                </h1>
               </div>
               <div className="text-base font-medium text-gray-500 ">
-                An overview of enrollment for current batch.
+                {/* An overview of enrollment for current batch. */}
+                {t("dashboardSubtitle")}
               </div>
             </div>
           </div>
@@ -76,7 +96,7 @@ export default function Home() {
               updateRange={updateDateRange}
             ></DateRangeComponent>
             <PrimaryButton
-              name={"All Applications"}
+              name={t("allApplicationsButton")}
               buttonClick={() => push("/applications")}
             ></PrimaryButton>
 
@@ -111,7 +131,7 @@ export default function Home() {
               }
               className="text-xs hover:!text-white btn btn-primary btn-sm btn-outline"
             >
-              Export CSV
+              {t("exportCSV")}
             </CSVLink>
           </div>
         </div>
@@ -120,7 +140,7 @@ export default function Home() {
         <div className="grid justify-between grid-cols-1 gap-8 mb-8 md:grid-cols-2 xl:grid-cols-3 min-h-fit">
           <MiniGraphInfo
             color={GraphColor.YELLOW}
-            title={"Total applications"}
+            title={t("totalApplications")}
             graphNum={applications?.length ?? 0}
             graph={{
               labels: gpaSummaryGraph
@@ -137,7 +157,7 @@ export default function Home() {
           ></MiniGraphInfo>
           <MiniGraphInfo
             color={GraphColor.RED}
-            title={"Applicants this month"}
+            title={t("applicationsThisMonth")}
             graphNum={applicationThisMonthGraph?.length ?? 0}
             graph={{
               labels: applicationThisMonthGraph
@@ -162,7 +182,7 @@ export default function Home() {
           ></MiniGraphInfo>
           <MiniGraphInfo
             color={GraphColor.GREEN}
-            title={"Pending applications"}
+            title={t("pendingApplications")}
             graphNum={pendingApprovalGraph?.length ?? 0}
             graph={{
               labels: pendingApprovalGraph
@@ -184,9 +204,11 @@ export default function Home() {
           {/* title and sub buttons */}
           <div className="flex justify-between mb-5 ">
             <div className="flex flex-col ">
-              <div className="text-3xl font-semibold ">Reports & Graphs</div>
+              <div className="text-3xl font-semibold ">
+                {t("reportsAndGraphsTitle")}
+              </div>
               <div className="text-base font-medium text-gray-500 ">
-                An overview of all data.
+                {t("reportsAndGraphsSubtitle")}
               </div>
             </div>
             <div className="flex items-center justify-end h-10 gap-4 m-4 "></div>
@@ -194,7 +216,7 @@ export default function Home() {
           {/* large graphs */}
           <div className="grid items-center justify-center w-full h-full grid-cols-2 gap-x-8 gap-y-10 [grid-auto-rows:1fr]">
             <LargeBarGraphInfo
-              title={"Weekly Summary"}
+              title={t("weeklySummary")}
               barLabel={"Applications"}
               subBarLabel={"Applications last 7 days"}
               labels={weeklySummaryGraph.map((perDay) => perDay.dayName)}
@@ -216,11 +238,11 @@ export default function Home() {
                 }
                 className="text-xs text-white btn btn-primary btn-sm"
               >
-                Export CSV
+                {t("exportCSV")}
               </CSVLink>
             </LargeBarGraphInfo>
             <LargeDonutGraphInfo
-              title={"Top Universities"}
+              title={t("topUniversities")}
               labels={topUniversitiesGraph.map((p) => p.name)}
               data={topUniversitiesGraph.map((p) => p.count)}
             >
@@ -240,11 +262,11 @@ export default function Home() {
                 }
                 className="text-xs text-white btn btn-primary btn-sm"
               >
-                Export CSV
+                {t("exportCSV")}
               </CSVLink>
             </LargeDonutGraphInfo>
             <LargeBarGraphInfo
-              title={"GPA Summary"}
+              title={t("gpaSummary")}
               barLabel={"GPA"}
               subBarLabel={"Mean of the applications"}
               min={70}
@@ -268,11 +290,11 @@ export default function Home() {
                 }
                 className="text-xs text-white btn btn-primary btn-sm"
               >
-                Export CSV
+                {t("exportCSV")}
               </CSVLink>
             </LargeBarGraphInfo>
             <LargeDonutGraphInfo
-              title={"Top Programs"}
+              title={t("topProgram")}
               labels={topProgramsGraph.map((p) => p.name)}
               data={topProgramsGraph.map((p) => p.count)}
             >
@@ -292,7 +314,7 @@ export default function Home() {
                 }
                 className="text-xs text-white btn btn-primary btn-sm"
               >
-                Export CSV
+                {t("exportCSV")}
               </CSVLink>
             </LargeDonutGraphInfo>
           </div>
@@ -300,4 +322,6 @@ export default function Home() {
       </div>
     </PageComponent>
   );
-}
+};
+
+export default Home;

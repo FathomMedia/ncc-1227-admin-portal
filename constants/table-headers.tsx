@@ -1,12 +1,12 @@
 export const StudentsTableHeaders = [
   "",
-  "Student",
-  "Status",
-  "GPA",
-  "Program - University",
-  "Application Date",
-  "Last Updated",
+  "tableTitleStudent",
+  "searchStatus",
+  "tableTitleGpa",
+  "tableTitleEducation",
+  "tableTitleApplicationDate",
+  "tableTitleLastUpdate",
   "",
 ];
 
-export const EducationTableHeaders = ["Name", "Programs"];
+export const EducationTableHeaders = ["tableUniName", "tableUniPrograms"];

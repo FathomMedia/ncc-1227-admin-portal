@@ -5,6 +5,7 @@ import * as yup from "yup";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import { useAuth } from "../hooks/use-auth";
+import { useTranslation } from "react-i18next";
 
 export interface IChangePasswordForm {
   newPassword: string;
@@ -13,6 +14,7 @@ export interface IChangePasswordForm {
 export default function ChangePasswordFormComponent() {
   const { push } = useRouter();
   const { user } = useAuth();
+  const { t } = useTranslation("changePassword");
 
   const initialValues: IChangePasswordForm = {
     newPassword: "",
@@ -35,7 +37,7 @@ export default function ChangePasswordFormComponent() {
       <div className="p-4 border rounded-xl">
         <div className="flex flex-col justify-between">
           <div className="flex items-center justify-center mb-4 text-xl font-bold ">
-            Change Password
+            {t("changePassword")}
           </div>
           <div className="">
             <Formik
@@ -70,7 +72,7 @@ export default function ChangePasswordFormComponent() {
               }) => (
                 <Form className="flex flex-col gap-8 p-4">
                   <div className="flex flex-col ">
-                    <label className="label">New Password</label>
+                    <label className="label">{t("newPassword")}</label>
                     <Field
                       name="newPassword"
                       type="password"
@@ -93,7 +95,7 @@ export default function ChangePasswordFormComponent() {
                     className={`btn btn-primary ${isSubmitting && "loading"}`}
                     disabled={isSubmitting || !isValid}
                   >
-                    Set new password
+                    {t("setNewPassword")}
                   </button>
                 </Form>
               )}

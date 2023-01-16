@@ -21,6 +21,9 @@ import { AppProvider } from "../context/AppContext";
 import { AuthProvider } from "../hooks/use-auth";
 // import { AdminProvider } from "../context/AdminContext";
 import { EducationProvider } from "../context/EducationContext";
+import NextNProgress from "nextjs-progressbar";
+import { useRouter } from "next/router";
+import { appWithTranslation } from "next-i18next";
 
 Amplify.configure({ ...awsExports, ssr: true });
 
@@ -39,18 +42,26 @@ ChartJS.register(
   ArcElement
 );
 
-export default function App({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }: AppProps) {
+  const { locale } = useRouter();
+
+  const dir = locale === "ar" ? "rtl" : "ltr";
   return (
-    <AuthProvider>
-      <AppProvider>
-        {/* <AdminProvider> */}
-        <StudentProvider>
-          <EducationProvider>
-            <Component {...pageProps} />
-          </EducationProvider>
-        </StudentProvider>
-        {/* </AdminProvider> */}
-      </AppProvider>
-    </AuthProvider>
+    <div dir={dir}>
+      <AuthProvider>
+        <AppProvider>
+          {/* <AdminProvider> */}
+          <StudentProvider>
+            <EducationProvider>
+              <NextNProgress color="#E1BA3D" />
+              <Component {...pageProps} />
+            </EducationProvider>
+          </StudentProvider>
+          {/* </AdminProvider> */}
+        </AppProvider>
+      </AuthProvider>
+    </div>
   );
 }
+
+export default appWithTranslation(App);

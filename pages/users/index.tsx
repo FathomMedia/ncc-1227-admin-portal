@@ -7,10 +7,27 @@ import UsersCardInfo from "../../components/users-card-info";
 import { useAppContext } from "../../context/AppContext";
 import { useRouter } from "next/router";
 import { Admin } from "../../src/API";
+import { GetStaticProps } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "react-i18next";
 
-export default function Users() {
+export const getStaticProps: GetStaticProps = async (ctx) => {
+  const { locale } = ctx;
+
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? "en", [
+        "users",
+        "pageTitles",
+        "signIn",
+      ])),
+    },
+  };
+};
+
+const Users = () => {
   const admins = useAppContext();
-
+  const { t } = useTranslation("users");
   const { push } = useRouter();
 
   const [searchValue, setSearchValue] = useState("");
@@ -43,9 +60,9 @@ export default function Users() {
       <div className="">
         <div className="mb-4 ">
           <div className="mb-6 ">
-            <div className="text-2xl font-semibold ">Administrators</div>
+            <div className="text-2xl font-semibold ">{t("adminTitle")}</div>
             <div className="text-base font-medium text-gray-500 ">
-              View a list of users.
+              {t("adminSubtitle")}
             </div>
           </div>
 
@@ -68,11 +85,11 @@ export default function Users() {
             </div>
             <div className="flex gap-4 ">
               <PrimaryButton
-                name={"Search"}
+                name={t("search")}
                 buttonClick={search}
               ></PrimaryButton>
               <SecondaryButton
-                name={"+ Add User"}
+                name={t("addUser")}
                 buttonClick={() => push("/users/addUsers")}
               ></SecondaryButton>
             </div>
@@ -80,7 +97,7 @@ export default function Users() {
         </div>
 
         {/* grid table of users*/}
-        {resultList.length > 0 ? (
+        {resultList?.length > 0 ? (
           <div className="grid grid-cols-1  md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5 gap-y-4 gap-x-3">
             {resultList?.map((admin) => (
               <UsersCardInfo
@@ -100,4 +117,6 @@ export default function Users() {
       </div>
     </PageComponent>
   );
-}
+};
+
+export default Users;

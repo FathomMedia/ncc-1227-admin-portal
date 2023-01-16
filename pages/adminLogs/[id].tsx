@@ -7,23 +7,34 @@ import { useRouter } from "next/router";
 import PrimaryButton from "../../components/primary-button";
 import ViewApplication from "../../components/application-view-component";
 import { getAdminLogsByLogID } from "../../src/CustomAPI";
+import { useTranslation } from "react-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 interface Props {
   adminLog: AdminLog;
 }
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { id } = ctx.query;
+  const { locale } = ctx;
 
   let adminLog = await getAdminLogsByLogID(`${id}`);
   return {
-    props: { adminLog: adminLog },
+    props: {
+      adminLog: adminLog,
+      ...(await serverSideTranslations(locale ?? "en", [
+        "adminLog",
+        "pageTitles",
+        "signIn",
+        "applicationLog",
+      ])),
+    },
   };
 };
 
 export default function AdminLogHistoryInfo({ adminLog }: Props) {
   const router = useRouter();
   const { id } = router.query;
-
+  const { t } = useTranslation("adminLog");
   const [snapshot, setSnapshot] = useState<Application | undefined>(undefined);
 
   useEffect(() => {
@@ -41,11 +52,13 @@ export default function AdminLogHistoryInfo({ adminLog }: Props) {
         <div className=" p-4 ">
           <div className=" mb-8 flex justify-between items-center ">
             <div>
-              <div className=" text-2xl font-semibold">Log History</div>
+              <div className=" text-2xl font-semibold">
+                {t("adminLogTitle")}
+              </div>
               <div className=" text-base font-medium text-gray-500">{id}</div>
             </div>
             <PrimaryButton
-              name={"Back"}
+              name={t("backButton")}
               buttonClick={() => {
                 router.back();
               }}
@@ -54,13 +67,17 @@ export default function AdminLogHistoryInfo({ adminLog }: Props) {
           {/* body */}
           <div className=" flex flex-col justify-between gap-4">
             <div>
-              <div className=" text-xl font-semibold">Admin Information</div>
+              <div className=" text-xl font-semibold">
+                {t("adminInformation")}
+              </div>
               <div>{adminLog.admin?.fullName}</div>
               <div>{adminLog.admin?.email}</div>
               <div>{adminLog.admin?.cpr}</div>
             </div>
             <div className=" ">
-              <div className=" text-xl font-semibold">Application Details</div>
+              <div className=" text-xl font-semibold">
+                {t("applicationDetails")}
+              </div>
               {snapshot && (
                 <ViewApplication
                   application={snapshot}
@@ -76,11 +93,13 @@ export default function AdminLogHistoryInfo({ adminLog }: Props) {
               )}
             </div>
             <div>
-              <div className=" text-xl font-semibold">Reason for change</div>
+              <div className=" text-xl font-semibold">
+                {t("reasonForChange")}
+              </div>
               <div>{adminLog.reason}</div>
             </div>
             <div>
-              <div className=" text-xl font-semibold">Updated at</div>
+              <div className=" text-xl font-semibold">{t("updatedAt")}</div>
               <div>{`${Intl.DateTimeFormat("en", {
                 timeStyle: "short",
                 dateStyle: "medium",

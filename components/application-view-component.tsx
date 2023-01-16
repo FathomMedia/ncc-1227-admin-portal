@@ -22,6 +22,7 @@ import GetStorageLinkComponent from "./get-storage-link-component";
 import { ISendEmail } from "../pages/api/sendEmail";
 import Applications from "../pages/applications";
 import { useStudent } from "../context/StudentContext";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   application: Application;
@@ -56,6 +57,7 @@ export default function ViewApplication({
   const { user } = useAuth();
   const { push } = useRouter();
   const { syncApplications } = useStudent();
+  const { t } = useTranslation("applicationLog");
 
   let emailData: ISendEmail = {
     status:
@@ -178,13 +180,13 @@ export default function ViewApplication({
             <table className="table w-full mb-4 table-fixed">
               <thead>
                 <tr>
-                  <th>Application Field</th>
-                  <th>Value</th>
+                  <th>{t("applicationField")}</th>
+                  <th>{t("value")}</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>Created at</td>
+                  <td>{t("createdAt")}</td>
                   <td>
                     {Intl.DateTimeFormat("en", {
                       timeStyle: "short",
@@ -193,7 +195,7 @@ export default function ViewApplication({
                   </td>
                 </tr>
                 <tr>
-                  <td>Status</td>
+                  <td>{t("status")}</td>
                   <td>
                     <div className="flex items-center gap-8 ">
                       <div className="text-sm font-semibold ">
@@ -223,25 +225,25 @@ export default function ViewApplication({
                 {!readOnly && (
                   <>
                     <tr>
-                      <td>Household Income</td>
+                      <td>{t("householdIncome")}</td>
                       <td>{application.student?.householdIncome}</td>
                     </tr>
                     <tr>
-                      <td>Graduation Date</td>
+                      <td>{t("graduationDate")}</td>
                       <td>{application.student?.graduationDate}</td>
                     </tr>
                     <tr>
-                      <td>School Specialization</td>
+                      <td>{t("schoolSpecialization")}</td>
                       <td>{application.student?.specialization}</td>
                     </tr>
                   </>
                 )}
                 <tr>
-                  <td>GPA</td>
+                  <td>{t("gpa")}</td>
                   <td>{application.gpa}</td>
                 </tr>
                 <tr>
-                  <td>Primary Program</td>
+                  <td>{t("primaryProgram")}</td>
                   <td>{`${
                     application.programs?.items?.sort(
                       (a, b) => (a?.choiceOrder ?? 0) - (b?.choiceOrder ?? 0)
@@ -253,7 +255,7 @@ export default function ViewApplication({
                   }`}</td>
                 </tr>
                 <tr>
-                  <td>Secondary Program</td>
+                  <td>{t("secondaryProgram")}</td>
                   <td>{`${
                     application.programs?.items?.sort(
                       (a, b) => (a?.choiceOrder ?? 0) - (b?.choiceOrder ?? 0)
@@ -265,7 +267,7 @@ export default function ViewApplication({
                   }`}</td>
                 </tr>
                 <tr>
-                  <td>CPR Document</td>
+                  <td>{t("cprDocument")}</td>
                   <td>
                     {
                       <GetStorageLinkComponent
@@ -275,7 +277,7 @@ export default function ViewApplication({
                   </td>
                 </tr>
                 <tr>
-                  <td>Acceptance Letter Document</td>
+                  <td>{t("acceptanceLetter")}</td>
                   <td>
                     {
                       <GetStorageLinkComponent
@@ -285,7 +287,7 @@ export default function ViewApplication({
                   </td>
                 </tr>
                 <tr>
-                  <td>Transcript Document</td>
+                  <td>{t("transcriptDocument")}</td>
                   <td>
                     {
                       <GetStorageLinkComponent
@@ -295,7 +297,7 @@ export default function ViewApplication({
                   </td>
                 </tr>
                 <tr>
-                  <td>Signed Contract Document</td>
+                  <td>{t("signedContract")}</td>
                   <td>
                     {
                       <GetStorageLinkComponent
@@ -305,13 +307,13 @@ export default function ViewApplication({
                   </td>
                 </tr>
                 <tr>
-                  <td>Student Logs</td>
+                  <td>{t("studentLog")}</td>
                   <td>
                     <Link
                       className="link link-primary"
                       href={`/studentLogs/${application.id}`}
                     >
-                      View
+                      {t("view")}
                     </Link>
                   </td>
                 </tr>
@@ -322,7 +324,7 @@ export default function ViewApplication({
                 <div className="form-control">
                   <label className="label">
                     <span className="text-base font-medium text-gray-500">
-                      Reason for status change
+                      {t("reasonForChange")}
                       <span className="text-base font-medium text-error">
                         *
                       </span>
@@ -347,7 +349,7 @@ export default function ViewApplication({
                     }`}
                     disabled={isSubmitting || isLoading || !isValid}
                   >
-                    Save Changes
+                    {t("save")}
                   </button>
                 </div>
               </div>

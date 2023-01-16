@@ -1,4 +1,5 @@
 import { Field, Form, Formik } from "formik";
+import { useTranslation } from "react-i18next";
 import * as yup from "yup";
 import { useAuth } from "../hooks/use-auth";
 interface ISignInForm {
@@ -8,6 +9,7 @@ interface ISignInForm {
 
 export default function SignInFormComponent() {
   const auth = useAuth();
+  const { t } = useTranslation("signIn");
 
   const initialValues: ISignInForm = {
     cpr: "",
@@ -19,7 +21,7 @@ export default function SignInFormComponent() {
       <div className=" min-h-screen flex justify-center items-center">
         <div className=" border rounded-xl min-w-min p-4">
           <div className="flex flex-col items-center">
-            <div className=" text-xl font-bold ">Sign In</div>
+            <div className=" text-xl font-bold ">{t("signIn")}</div>
             <Formik
               initialValues={initialValues}
               validationSchema={yup.object({
@@ -42,7 +44,7 @@ export default function SignInFormComponent() {
               }) => (
                 <Form className="flex flex-col gap-3 p-4">
                   <div className="flex flex-col">
-                    <label className="label">CPR</label>
+                    <label className="label">{t("cpr")}</label>
                     <Field
                       name="cpr"
                       type="text"
@@ -56,7 +58,7 @@ export default function SignInFormComponent() {
                     </label>
                   </div>
                   <div className="flex flex-col">
-                    <label className="label">Password</label>
+                    <label className="label">{t("password")}</label>
                     <Field
                       name="password"
                       type="password"
@@ -71,7 +73,7 @@ export default function SignInFormComponent() {
                     className={`btn btn-primary ${isSubmitting && "loading"}`}
                     disabled={isSubmitting}
                   >
-                    Sign In
+                    {t("signIn")}
                   </button>
                 </Form>
               )}

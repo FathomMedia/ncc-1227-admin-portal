@@ -10,6 +10,7 @@ import { updateProgramById, updateUniversityById } from "../src/CustomAPI";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import { useEducation } from "../context/EducationContext";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   university: University | undefined;
@@ -18,6 +19,7 @@ interface Props {
 export default function UniversityFormComponent({ university }: Props) {
   const { push, back } = useRouter();
   const { syncUniList } = useEducation();
+  const { t } = useTranslation("education");
 
   const initialValues = {
     universityName: university?.name ?? "",
@@ -91,7 +93,7 @@ export default function UniversityFormComponent({ university }: Props) {
           <Form className="flex flex-col gap-6">
             <div className="flex justify-between ">
               <div className="flex items-center justify-between gap-10 ">
-                <div className="text-base font-medium">Name</div>
+                <div className="text-base font-medium">{t("tableUniName")}</div>
                 <div>
                   <Field
                     name="universityName"
@@ -112,7 +114,7 @@ export default function UniversityFormComponent({ university }: Props) {
               </div>
 
               <div className=" w-[150px] flex justify-between items-center">
-                <div className="text-base font-medium">Deactivate?</div>
+                <div className="text-base font-medium">{t("deactivate")}</div>
                 <div>
                   <Field
                     name="isDeactivated"
@@ -133,14 +135,14 @@ export default function UniversityFormComponent({ university }: Props) {
               </div>
             </div>
 
-            <div className="text-base font-medium">Programs</div>
+            <div className="text-base font-medium">{t("tableUniPrograms")}</div>
             <div>
               <div className="overflow-x-auto">
                 <table className="table w-full">
                   <thead>
                     <tr>
-                      <th>Name</th>
-                      <th>Status</th>
+                      <th>{t("tableUniName")}</th>
+                      <th>{t("tableUniPrograms")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -194,7 +196,7 @@ export default function UniversityFormComponent({ university }: Props) {
               className={`btn btn-primary ${isSubmitting && "loading"}`}
               disabled={isSubmitting || !isValid}
             >
-              Save Changes
+              {t("saveButton")}
             </button>
           </Form>
         )}

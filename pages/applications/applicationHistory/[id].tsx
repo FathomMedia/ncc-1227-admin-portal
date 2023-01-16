@@ -11,6 +11,8 @@ import { GetServerSideProps } from "next";
 import { BsFillEyeFill } from "react-icons/bs";
 import { HiDotsVertical } from "react-icons/hi";
 import ViewApplication from "../../../components/application-view-component";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   application: Application;
@@ -19,12 +21,21 @@ interface Props {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { id } = ctx.query;
+  const { locale } = ctx;
 
   let application = await getApplicationData(`${id}`);
   let applicationHistory = application?.adminLogs?.items;
 
   return {
-    props: { applicationHistory: applicationHistory, application: application },
+    props: {
+      applicationHistory: applicationHistory,
+      application: application,
+      ...(await serverSideTranslations(locale ?? "en", [
+        "pageTitles",
+        "signIn",
+        "applicationLog",
+      ])),
+    },
   };
 };
 
@@ -34,6 +45,7 @@ export default function ApplicationLog({
 }: Props) {
   const router = useRouter();
   const { id } = router.query;
+  const { t } = useTranslation("applicationLog");
 
   const [logHistory, setLogHistory] = useState<AdminLog | undefined>(undefined);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
@@ -100,9 +112,11 @@ export default function ApplicationLog({
       <PageComponent title={"ApplicationLog"}>
         <div>
           <div className="mb-8 ">
-            <div className="text-2xl font-semibold ">Application Log</div>
+            <div className="text-2xl font-semibold ">
+              {t("applicationLogTitle")}
+            </div>
             <div className="text-base font-medium text-gray-500 ">
-              Application ID: {id}
+              {t("application")} ID: {id}
             </div>
           </div>
 
@@ -116,7 +130,9 @@ export default function ApplicationLog({
                 ✕
               </label>
               <div className="p-4 mb-4 ">
-                <div className="text-lg font-bold">Application Snapshot</div>
+                <div className="text-lg font-bold">
+                  {t("applicationSnapshot")}
+                </div>
                 <div>
                   <div>
                     {logHistory && (
@@ -146,10 +162,10 @@ export default function ApplicationLog({
                 <table className="table w-full ">
                   <thead className=" border rounded-xl border-nccGray-100">
                     <tr>
-                      <th>Name</th>
-                      <th>CPR</th>
-                      <th>Date</th>
-                      <th>Reason</th>
+                      <th>{t("name")}</th>
+                      <th>{t("cpr")}</th>
+                      <th>{t("date")}</th>
+                      <th>{t("reason")}</th>
                       <th></th>
                     </tr>
                   </thead>
@@ -180,7 +196,7 @@ export default function ApplicationLog({
                                   }}
                                 >
                                   <BsFillEyeFill />
-                                  View
+                                  {t("view")}
                                 </div>
                               </div>
                             </button>

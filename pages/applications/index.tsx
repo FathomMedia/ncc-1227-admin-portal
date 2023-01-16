@@ -1,4 +1,7 @@
 import { Field, Form, Formik } from "formik";
+import { GetStaticProps } from "next";
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { CSVLink } from "react-csv";
@@ -20,7 +23,22 @@ interface InitialFilterValues {
   program: string;
 }
 
-export default function Applications() {
+export const getStaticProps: GetStaticProps = async (ctx) => {
+  const { locale } = ctx;
+
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? "en", [
+        "applications",
+        "pageTitles",
+        "signIn",
+        "applicationLog",
+      ])),
+    },
+  };
+};
+
+const Applications = () => {
   const initialFilterValues: InitialFilterValues = {
     search: "",
     applicationStatus: "",
@@ -31,6 +49,7 @@ export default function Applications() {
   const { applications, students, dateRange, updateDateRange } = useStudent();
   const { universityList, programsList } = useEducation();
   const { push } = useRouter();
+  const { t } = useTranslation("applications");
 
   // Table Data Pagination
   const elementPerPage = 10;
@@ -153,9 +172,9 @@ export default function Applications() {
       <Toaster />
       <div className="flex flex-wrap items-center justify-between mb-8 ">
         <div className="">
-          <div className="text-2xl font-semibold ">Applications</div>
+          <div className="text-2xl font-semibold ">{t("applicationTitle")}</div>
           <div className="text-base font-medium text-gray-500 ">
-            View all student applications.
+            {t("applicationSubtitle")}
           </div>
         </div>
         <DateRangeComponent
@@ -178,7 +197,7 @@ export default function Applications() {
                 {/* Search Bar */}
                 <div>
                   <div className="text-sm font-semibold text-gray-500 ">
-                    Search for applicants
+                    {t("search")}
                   </div>
                   <div>
                     <Field
@@ -195,7 +214,7 @@ export default function Applications() {
                 {/* Status filter */}
                 <div>
                   <div className="text-sm font-semibold text-gray-500 ">
-                    Status
+                    {t("searchStatus")}
                   </div>
                   <div>
                     <Field
@@ -219,7 +238,7 @@ export default function Applications() {
                 {/* University filter */}
                 <div>
                   <div className="text-sm font-semibold text-gray-500 ">
-                    University
+                    {t("searchUniversity")}
                   </div>
                   <div>
                     <Field
@@ -242,7 +261,7 @@ export default function Applications() {
                 {/* Program filter */}
                 <div>
                   <div className="text-sm font-semibold text-gray-500 ">
-                    Program
+                    {t("searchProgram")}
                   </div>
                   <div>
                     <Field
@@ -267,7 +286,7 @@ export default function Applications() {
                     type="submit"
                     className={`min-w-[8rem] px-4 py-2 border-2 border-anzac-400 btn btn-primary btn-md bg-anzac-400 text-white text-xs font-bold hover:cursor-pointer`}
                   >
-                    Apply Filters
+                    {t("applyFilters")}
                   </button>
                   <div
                     onClick={() => {
@@ -276,7 +295,7 @@ export default function Applications() {
                     }}
                     className=" btn btn-ghost min-w-fit"
                   >
-                    Reset filters
+                    {t("resetFilters")}
                   </div>
                 </div>
               </Form>
@@ -295,7 +314,7 @@ export default function Applications() {
                   {StudentsTableHeaders.map((title, index) =>
                     index !== 0 ? (
                       <th className=" bg-nccGray-100" key={index}>
-                        {title}
+                        {t(title)}
                       </th>
                     ) : selectedApplication.length > 0 ? (
                       <th className=" bg-nccGray-100" key={index}>
@@ -496,4 +515,6 @@ export default function Applications() {
       )}
     </PageComponent>
   );
-}
+};
+
+export default Applications;

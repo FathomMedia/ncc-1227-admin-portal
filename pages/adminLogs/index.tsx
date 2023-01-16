@@ -5,10 +5,27 @@ import { AdminLog } from "../../src/API";
 import Link from "next/link";
 import { Toaster } from "react-hot-toast";
 import { useRouter } from "next/router";
+import { useTranslation } from "react-i18next";
+import { GetStaticProps } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
-export default function AdminLogs() {
+export const getStaticProps: GetStaticProps = async (ctx) => {
+  const { locale } = ctx;
+
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? "en", [
+        "adminLog",
+        "pageTitles",
+        "signIn",
+      ])),
+    },
+  };
+};
+
+const AdminLogs = () => {
   const [adminsLogs, setAdminsLogs] = useState<AdminLog[]>([]);
-
+  const { t } = useTranslation("adminLog");
   const { push } = useRouter();
 
   useEffect(() => {
@@ -27,19 +44,19 @@ export default function AdminLogs() {
     <PageComponent title={"Admin Logs"}>
       <Toaster />
       <div className="mb-8 ">
-        <div className="text-2xl font-semibold ">Admin Log History</div>
+        <div className="text-2xl font-semibold ">{t("adminLogTitle")}</div>
         <div className="text-base font-medium text-gray-500 ">
-          View all logs made by other admins.
+          {t("adminLogSubtitle")}
         </div>
       </div>
       {adminsLogs.length > 0 ? (
         <table className="table w-full ">
           <thead className=" border rounded-xl border-nccGray-100">
             <tr>
-              <th>Name</th>
-              <th>CPR</th>
-              <th>Date</th>
-              <th>History</th>
+              <th>{t("tableAdminLogName")}</th>
+              <th>{t("tableAdminLogCPR")}</th>
+              <th>{t("tableAdminLogDate")}</th>
+              <th>{t("tableAdminLogHistory")}</th>
             </tr>
           </thead>
           <tbody>
@@ -82,4 +99,6 @@ export default function AdminLogs() {
       )}
     </PageComponent>
   );
-}
+};
+
+export default AdminLogs;

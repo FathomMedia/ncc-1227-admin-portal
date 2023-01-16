@@ -8,16 +8,33 @@ import SecondaryButton from "../../components/secondary-button";
 import { Formik, Form, Field } from "formik";
 import * as yup from "yup";
 import toast, { Toaster } from "react-hot-toast";
-import { B } from "chart.js/dist/chunks/helpers.core";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { GetStaticProps } from "next";
+import { useTranslation } from "react-i18next";
 
 interface InitialFilterValues {
   search: string;
   activeStatus: string;
 }
 
-export default function Education() {
+export const getStaticProps: GetStaticProps = async (ctx) => {
+  const { locale } = ctx;
+
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? "en", [
+        "education",
+        "pageTitles",
+        "signIn",
+      ])),
+    },
+  };
+};
+
+const Education = () => {
   const { universityList, addNewUniversity, syncUniList } = useEducation();
   const { push } = useRouter();
+  const { t } = useTranslation("education");
 
   // const [searchValue, setSearchValue] = useState("");
   const [resultList, setResultList] = useState<any>([]);
@@ -137,9 +154,9 @@ export default function Education() {
     <PageComponent title={"Education"}>
       <Toaster />
       <div className="mb-8 ">
-        <div className="text-2xl font-semibold ">Education</div>
+        <div className="text-2xl font-semibold ">{t("educationTitle")}</div>
         <div className="text-base font-medium text-gray-500 ">
-          View a list of universities or programs.
+          {t("educationSubtitle")}
         </div>
       </div>
 
@@ -192,7 +209,7 @@ export default function Education() {
                 }`}
                 disabled={isSubmitting || !isValid}
               >
-                Apply
+                {t("applyButton")}
               </button>
               <div className="flex gap-4 ">
                 <div className="h-full w-[1px] bg-gray-300"></div>
@@ -200,10 +217,10 @@ export default function Education() {
                   className="min-w-[8rem] px-4 py-2 border-2 border-anzac-400 rounded-xl bg-anzac-400 text-white text-xs font-bold hover:cursor-pointer"
                   onClick={() => setIsSubmitted(!isSubmitted)}
                 >
-                  Add University
+                  {t("addUniversityButton")}
                 </div>
                 <SecondaryButton
-                  name={"Add Programs"}
+                  name={t("addProgramsButton")}
                   buttonClick={() => {
                     push("/education/programs/addProgram");
                   }}
@@ -224,7 +241,7 @@ export default function Education() {
             ✕
           </label>
           <div className="p-4 mb-4 ">
-            <div className="text-lg font-bold">Add New University</div>
+            <div className="text-lg font-bold">{t("addUniversityButton")}</div>
             <div>
               <Formik
                 initialValues={initialValues}
@@ -289,7 +306,7 @@ export default function Education() {
                 }) => (
                   <Form className="flex flex-col gap-3 p-4">
                     <div className="flex flex-col">
-                      <label className="label">University Name</label>
+                      <label className="label">{t("addUniversityName")}</label>
                       <Field
                         name="universityName"
                         type="text"
@@ -329,7 +346,7 @@ export default function Education() {
               <tr>
                 {EducationTableHeaders.map((title, index) => (
                   <th className=" bg-nccGray-100" key={index}>
-                    {title}
+                    {t(title)}
                   </th>
                 ))}
               </tr>
@@ -420,4 +437,6 @@ export default function Education() {
       </div>
     </PageComponent>
   );
-}
+};
+
+export default Education;

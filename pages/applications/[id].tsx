@@ -8,6 +8,9 @@ import { Application } from "../../src/API";
 import ViewApplication from "../../components/application-view-component";
 import StudentInfoComponent from "../../components/student-info-component";
 import ParentsInfoComponent from "../../components/parents-info-component";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { t } from "chart.js/dist/chunks/helpers.core";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   application: Application;
@@ -15,19 +18,26 @@ interface Props {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { id } = ctx.query;
+  const { locale } = ctx;
 
   const res = await getApplicationByIdAPI(`${id}`);
 
   return {
     props: {
       application: res,
+      ...(await serverSideTranslations(locale ?? "en", [
+        "pageTitles",
+        "signIn",
+        "applications",
+        "applicationLog",
+      ])),
     },
   };
 };
 
 const ApplicationInfo: FC<Props> = (props) => {
   const router = useRouter();
-
+  const { t } = useTranslation("applications");
   const { id } = router.query;
 
   return (
@@ -35,9 +45,9 @@ const ApplicationInfo: FC<Props> = (props) => {
       <PageComponent title={"ApplicationInfo"}>
         <Toaster />
         <div className=" ">
-          <div className=" text-2xl font-semibold">View Applications</div>
+          <div className=" text-2xl font-semibold">{t("viewApplications")}</div>
           <div className=" text-base font-medium text-gray-500">
-            Application ID: {id}
+            {t("application")} ID: {id}
           </div>
         </div>
         <ViewApplication
@@ -57,7 +67,7 @@ const ApplicationInfo: FC<Props> = (props) => {
         <div>
           <div className=" mt-10">
             <div className=" text-base font-medium text-gray-500">
-              Student Information
+              {t("studentInformation")}
             </div>
           </div>
           <StudentInfoComponent
@@ -70,7 +80,7 @@ const ApplicationInfo: FC<Props> = (props) => {
         <div className=" mb-4">
           <div className=" mt-10">
             <div className=" text-base font-medium text-gray-500">
-              Parents Information
+              {t("parentsInformation")}
             </div>
           </div>
           <ParentsInfoComponent

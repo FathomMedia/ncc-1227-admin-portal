@@ -2,6 +2,7 @@ import { Formik, Form, Field } from "formik";
 import { useRouter } from "next/router";
 import React from "react";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import * as yup from "yup";
 import { useEducation } from "../context/EducationContext";
 import { Program, UpdateProgramMutationVariables } from "../src/API";
@@ -18,7 +19,7 @@ interface Props {
 
 export default function ProgramFormComponent({ program }: Props) {
   const { push, back } = useRouter();
-
+  const { t } = useTranslation("education");
   const { universityList, addProgramToUni, getProgramsFromUniID, syncUniList } =
     useEducation();
 
@@ -130,7 +131,7 @@ export default function ProgramFormComponent({ program }: Props) {
         }) => (
           <Form className="flex flex-col gap-3 p-4">
             <div className="flex flex-col">
-              <label className="label">Program Name</label>
+              <label className="label">{t("programName")}</label>
               <Field
                 name="programName"
                 type="text"
@@ -149,7 +150,7 @@ export default function ProgramFormComponent({ program }: Props) {
             </div>
 
             <div className="flex flex-col">
-              <label className="label">University ID</label>
+              <label className="label">{t("universityID")}</label>
               <Field
                 disabled={program}
                 as="select"
@@ -180,7 +181,7 @@ export default function ProgramFormComponent({ program }: Props) {
 
             <div className="flex justify-between gap-4 ">
               <div className="flex flex-col grow">
-                <label className="label">Availability</label>
+                <label className="label">{t("availability")}</label>
                 <Field
                   name="availability"
                   type="number"
@@ -199,7 +200,7 @@ export default function ProgramFormComponent({ program }: Props) {
                 </label>
               </div>
               <div className="flex flex-col items-center justify-between">
-                <label className="label">Deactivate?</label>
+                <label className="label">{t("deactivate")}</label>
                 <Field
                   name="isDeactivated"
                   type="checkbox"
@@ -220,7 +221,7 @@ export default function ProgramFormComponent({ program }: Props) {
 
             <div className="form-control">
               <label className="label">
-                <span className="label-text">Program Requirements</span>
+                <span className="label-text">{t("programRequirements")}</span>
               </label>
               <textarea
                 className="h-24 textarea textarea-bordered"
@@ -241,7 +242,7 @@ export default function ProgramFormComponent({ program }: Props) {
               className={`btn btn-primary ${isSubmitting && "loading"}`}
               disabled={isSubmitting || !isValid}
             >
-              {program ? "Save Changes" : "Submit"}
+              {program ? t("saveButton") : t("submitButton")}
             </button>
           </Form>
         )}

@@ -7,6 +7,7 @@ import { useAuth } from "../hooks/use-auth";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import { useAppContext } from "../context/AppContext";
+import { useTranslation } from "react-i18next";
 
 export interface ISignUpForm {
   cpr: string;
@@ -18,6 +19,7 @@ export default function SignUpFormComponent() {
   const { push } = useRouter();
   const { checkIfCprExist } = useAuth();
   const { admins, syncAdmins } = useAppContext();
+  const { t } = useTranslation("users");
 
   const initialValues: ISignUpForm = {
     cpr: "",
@@ -73,7 +75,7 @@ export default function SignUpFormComponent() {
     <PageComponent title={"Add Admin User"}>
       <div>
         <div className="flex flex-col justify-between">
-          <div className="mb-8 text-xl font-bold ">Sign Up New Admin</div>
+          <div className="mb-8 text-xl font-bold ">{t("signUpAdmin")}</div>
           <div className="">
             <Formik
               initialValues={initialValues}
@@ -97,7 +99,7 @@ export default function SignUpFormComponent() {
               {({ errors, touched, isSubmitting }) => (
                 <Form className="flex flex-col gap-3 p-4">
                   <div className="flex flex-col">
-                    <label className="label">CPR</label>
+                    <label className="label">{t("cpr")}</label>
                     <Field
                       name="cpr"
                       type="text"
@@ -109,7 +111,7 @@ export default function SignUpFormComponent() {
                     </label>
                   </div>
                   <div className="flex flex-col">
-                    <label className="label">Full Name</label>
+                    <label className="label">{t("fullName")}</label>
                     <Field
                       name="fullName"
                       type="text"
@@ -121,7 +123,7 @@ export default function SignUpFormComponent() {
                     </label>
                   </div>
                   <div className="flex flex-col">
-                    <label className="label">Email</label>
+                    <label className="label">{t("email")}</label>
                     <Field
                       name="email"
                       type="text"
@@ -138,7 +140,7 @@ export default function SignUpFormComponent() {
                     className={`btn btn-primary ${isSubmitting && "loading"}`}
                     disabled={isSubmitting}
                   >
-                    Add Admin
+                    {t("addAdminButton")}
                   </button>
                 </Form>
               )}

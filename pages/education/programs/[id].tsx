@@ -5,6 +5,8 @@ import { getProgramById } from "../../../src/CustomAPI";
 import { Program } from "../../../src/API";
 import { Toaster } from "react-hot-toast";
 import ProgramFormComponent from "../../../components/program-form-component";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   program: Program;
@@ -12,22 +14,34 @@ interface Props {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { id } = ctx.query; // your fetch function here
+  const { locale } = ctx;
 
   let program = await getProgramById(`${id}`);
 
   return {
-    props: { program: program },
+    props: {
+      program: program,
+      ...(await serverSideTranslations(locale ?? "en", [
+        "education",
+        "pageTitles",
+        "signIn",
+      ])),
+    },
   };
 };
 export default function ProgramInfo({ program }: Props) {
+  const { t } = useTranslation("education");
+
   return (
     <div>
       <PageComponent title={"ProgramInfo"}>
         <Toaster />
         <div className="mb-8 ">
-          <div className="text-2xl font-semibold ">Program: {program.name}</div>
+          <div className="text-2xl font-semibold ">
+            {t("programTitle")}: {program.name}
+          </div>
           <div className="text-base font-medium text-gray-500 ">
-            Program ID: {program.id}
+            {t("programTitle")} ID: {program.id}
           </div>
         </div>
         <div>
