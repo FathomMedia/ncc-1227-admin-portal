@@ -1,15 +1,15 @@
 {
-  "dashboardTitle": "Application Summary",
-  "dashboardSubtitle": "An overview of enrollment for current batch.",
-  "allApplicationsButton": "All Applications",
-  "exportCSV": "Export CSV",
-  "totalApplications": "Total applications",
-  "applicationsThisMonth": "Applications this month",
-  "pendingApplications": "Pending applications",
-  "reportsAndGraphsTitle": "Reports & Graphs",
-  "reportsAndGraphsSubtitle": "An overview of all data.",
-  "weeklySummary": "Weekly Summary",
-  "topUniversities": "Top Universities",
-  "gpaSummary": "GPA Summary",
-  "topProgram": "Top Programs"
+  "dashboardTitle": "ملخص الطلبات",
+  "dashboardSubtitle": "نظرة عامة على التسجيل للدفعة الحالية.",
+  "allApplicationsButton": "جميع الطلبات",
+  "exportCSV": "تصدير CSV",
+  "totalApplications": "إجمالي الطلبات",
+  "applicationsThisMonth": "طلبات هذا الشهر",
+  "pendingApplications": "الطلبات المعلقة",
+  "reportsAndGraphsTitle": "التقارير والرسوم البيانية",
+  "reportsAndGraphsSubtitle": "نظرة عامة على جميع البيانات.",
+  "weeklySummary": "ملخص أسبوعي",
+  "topUniversities": "أفضل الجامعات",
+  "gpaSummary": "ملخص المعدل التراكمي",
+  "topProgram": "أفضل البرامج"
 }

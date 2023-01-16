@@ -1,11 +1,11 @@
 {
-  "adminTitle": "Administrators",
-  "adminSubtitle": "View a list of users.",
-  "search": "Search",
-  "addUser": "+ Add User",
-  "signUpAdmin": "Sign Up New Admin",
-  "cpr": "CPR",
-  "fullName": "Full Name",
-  "email": "Email",
-  "addAdminButton": "Add Admin"
+  "adminTitle": "المسؤولين",
+  "adminSubtitle": "عرض قائمة المستخدمين.",
+  "search": "ابحث",
+  "addUser": "+ إضافة مستخدم",
+  "signUpAdmin": "تسجيل مسؤول جديد",
+  "cpr": "الرقم الشخصي",
+  "fullName": "الاسم بالكامل",
+  "email": "بريد إلكتروني",
+  "addAdminButton": "إضافة مسؤول"
 }
