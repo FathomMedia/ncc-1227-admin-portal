@@ -1,5 +1,6 @@
 import { Formik, Form, Field } from "formik";
 import React, { FC } from "react";
+import { useTranslation } from "react-i18next";
 
 import * as yup from "yup";
 import { IDateRange } from "../src/Helpers";
@@ -11,9 +12,10 @@ interface Props {
 
 export const DateRangeComponent: FC<Props> = ({ dateRange, updateRange }) => {
   let initialValues: IDateRange = dateRange;
+  const { t } = useTranslation("applications");
 
   return (
-    <div className="">
+    <div dir="ltr" className="">
       <Formik
         initialValues={initialValues}
         validationSchema={yup.object({
@@ -58,7 +60,7 @@ export const DateRangeComponent: FC<Props> = ({ dateRange, updateRange }) => {
                   dateRange.end === values.end)
               }
             >
-              Apply
+              {t("apply")}
             </button>
           </Form>
         )}

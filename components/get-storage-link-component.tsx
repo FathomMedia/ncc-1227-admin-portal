@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Storage } from "aws-amplify";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   storageKey: string | undefined | null;
@@ -9,6 +10,7 @@ interface Props {
 export default function GetStorageLinkComponent({ storageKey }: Props) {
   const [link, setLink] = useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { t } = useTranslation("applications");
 
   async function getLink(key: string) {
     setIsLoading(true);
@@ -28,14 +30,16 @@ export default function GetStorageLinkComponent({ storageKey }: Props) {
             }`}
             onClick={() => getLink(storageKey)}
           >
-            {isLoading ? "Loading..." : "Get Link"}
+            {isLoading ? t("loading") : t("getLink")}
           </button>
         ) : (
           <Link className="link link-success" target="_blank" href={link}>
-            View Document
+            {t("viewDocument")}
           </Link>
         ))}
-      {!storageKey && <div className="text-error">Document Not Submitted</div>}
+      {!storageKey && (
+        <div className="text-error">{t("documentNotSubmitted")}</div>
+      )}
     </div>
   );
 }

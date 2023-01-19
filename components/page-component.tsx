@@ -6,6 +6,7 @@ import NavbarComponent from "./navbar-component";
 import SignInFormComponent from "./sign-in-form-component";
 
 import Image from "next/image";
+import { LangSwitcher } from "./langSwitcher";
 
 interface Props {
   title: string;
@@ -17,6 +18,7 @@ export const PageComponent: FC<PropsWithChildren<Props>> = (props) => {
   return (
     <div>
       <Toaster />
+
       <div className="fixed top-0 left-0 z-50 shadow-lg navbar lg:hidden bg-nccGray-50 shadow-black/5">
         <div className="flex-none">
           <label
@@ -37,6 +39,7 @@ export const PageComponent: FC<PropsWithChildren<Props>> = (props) => {
           className="drawer-toggle"
           title="pageComponent"
         />
+
         <div className="m-4 drawer-content">
           {!isSignedIn ? (
             <SignInFormComponent></SignInFormComponent>

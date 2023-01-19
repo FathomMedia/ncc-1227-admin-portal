@@ -136,7 +136,7 @@ export default function UniversityFormComponent({ university }: Props) {
             </div>
 
             <div className="text-base font-medium">{t("tableUniPrograms")}</div>
-            <div>
+            <div dir="ltr">
               <div className="overflow-x-auto">
                 <table className="table w-full">
                   <thead>

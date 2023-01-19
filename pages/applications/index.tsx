@@ -13,7 +13,7 @@ import { PageComponent } from "../../components/page-component";
 import { StudentsTableHeaders } from "../../constants/table-headers";
 import { useEducation } from "../../context/EducationContext";
 import { useStudent } from "../../context/StudentContext";
-import { Application, Status } from "../../src/API";
+import { Application, ProgramChoice, Status } from "../../src/API";
 import { getStatusOrder } from "../../src/Helpers";
 
 interface InitialFilterValues {
@@ -48,7 +48,7 @@ const Applications = () => {
 
   const { applications, students, dateRange, updateDateRange } = useStudent();
   const { universityList, programsList } = useEducation();
-  const { push } = useRouter();
+  const { push, locale } = useRouter();
   const { t } = useTranslation("applications");
 
   // Table Data Pagination
@@ -201,6 +201,7 @@ const Applications = () => {
                   </div>
                   <div>
                     <Field
+                      dir="ltr"
                       className="input input-bordered"
                       type="text"
                       name="search"
@@ -218,7 +219,8 @@ const Applications = () => {
                   </div>
                   <div>
                     <Field
-                      className="input input-bordered"
+                      dir="ltr"
+                      className="input input-bordered min-w-[10rem]"
                       as="select"
                       name="applicationStatus"
                       onChange={handleChange}
@@ -228,7 +230,7 @@ const Applications = () => {
 
                       {Object.keys(Status).map((status) => (
                         <option value={status} key={status}>
-                          {status.replace("_", " ")}
+                          {t(status)}
                         </option>
                       ))}
                     </Field>
@@ -242,6 +244,7 @@ const Applications = () => {
                   </div>
                   <div>
                     <Field
+                      dir="ltr"
                       className="input input-bordered"
                       as="select"
                       name="university"
@@ -265,6 +268,7 @@ const Applications = () => {
                   </div>
                   <div>
                     <Field
+                      dir="ltr"
                       className="input input-bordered"
                       as="select"
                       name="program"
@@ -307,7 +311,7 @@ const Applications = () => {
       {/* applications table with pagination*/}
       {(shownData?.length ?? 0) > 0 ? (
         <div>
-          <div className="w-full h-screen overflow-x-auto">
+          <div dir="ltr" className="w-full h-screen overflow-x-auto">
             <table className="table w-full ">
               <thead className="border rounded-xl border-nccGray-100">
                 <tr>
@@ -323,12 +327,12 @@ const Applications = () => {
                           filename={`${new Date().getFullYear()}-Applications-${new Date().toISOString()}.csv`}
                           data={[
                             ...selectedApplication.map((app, index) => {
-                              let sortedProgramChoices =
-                                app.programs?.items?.sort(
-                                  (a, b) =>
-                                    (a?.choiceOrder ?? 0) -
-                                    (b?.choiceOrder ?? 0)
-                                );
+                              let sortedProgramChoices:
+                                | (ProgramChoice | null)[]
+                                | undefined = app.programs?.items?.sort(
+                                (a, b) =>
+                                  (a?.choiceOrder ?? 0) - (b?.choiceOrder ?? 0)
+                              );
 
                               return {
                                 row: index + 1,
@@ -414,7 +418,7 @@ const Applications = () => {
                           "text-info-content badge-info"
                         }
                         mr-2`}
-                      >{`${datum.status?.replace("_", " ")}`}</div>
+                      >{`${t(datum.status)}`}</div>
                     </td>
                     <td>
                       <div className="flex justify-between ">{datum.gpa}</div>
@@ -433,16 +437,22 @@ const Applications = () => {
                       </div>
                     </td>
                     <td>
-                      <div className="flex justify-between ">{`${Intl.DateTimeFormat(
-                        "en",
-                        { timeStyle: "short", dateStyle: "medium" }
-                      ).format(new Date(datum.createdAt))}`}</div>
+                      <div
+                        dir={locale === "en" ? "ltr" : "rtl"}
+                        className="flex justify-between "
+                      >{`${Intl.DateTimeFormat(locale ?? "en", {
+                        timeStyle: "short",
+                        dateStyle: "medium",
+                      }).format(new Date(datum.createdAt))}`}</div>
                     </td>
                     <td>
-                      <div className="flex justify-between ">{`${Intl.DateTimeFormat(
-                        "en",
-                        { timeStyle: "short", dateStyle: "medium" }
-                      ).format(new Date(datum.updatedAt))}`}</div>
+                      <div
+                        dir={locale === "en" ? "ltr" : "rtl"}
+                        className="flex justify-between "
+                      >{`${Intl.DateTimeFormat(locale ?? "en", {
+                        timeStyle: "short",
+                        dateStyle: "medium",
+                      }).format(new Date(datum.updatedAt))}`}</div>
                     </td>
 
                     <td>
@@ -457,7 +467,7 @@ const Applications = () => {
                               }}
                             >
                               <BsFillEyeFill />
-                              View
+                              {t("view")}
                             </div>
                             <div
                               className="flex justify-start w-24 gap-2 btn btn-ghost btn-xs hover:bg-anzac-100 hover:cursor-pointer hover:text-anzac-500"
@@ -468,7 +478,7 @@ const Applications = () => {
                               }}
                             >
                               <HiOutlineClipboardList />
-                              History
+                              {t("history")}
                             </div>
                           </div>
                         </button>
@@ -508,9 +518,7 @@ const Applications = () => {
         </div>
       ) : (
         <div className="flex items-center justify-center p-8 border border-nccGray-100 rounded-xl bg-nccGray-100">
-          <div className="text-base font-medium ">
-            Sorry! No data to display
-          </div>
+          <div className="text-base font-medium ">{t("noData")}</div>
         </div>
       )}
     </PageComponent>

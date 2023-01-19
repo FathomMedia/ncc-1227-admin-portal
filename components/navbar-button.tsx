@@ -15,7 +15,7 @@ export default function NavBarButton({ name, icon, linkTo, target }: Props) {
       className="flex justify-start px-4 py-2 text-sm w-52 text-gray rounded-xl hover:bg-anzac-100 hover:border-anzac-100 hover:text-anzac-500 hover:cursor-pointer"
     >
       <div>{icon}</div>
-      <div className="pl-4 ">{name}</div>
+      <div className="ltr:pl-4 rtl:pr-4 ">{name}</div>
     </Link>
   );
 }

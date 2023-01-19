@@ -158,7 +158,7 @@ export default function ApplicationLog({
           {/* application table */}
           {applicationHistory.length > 0 ? (
             <div>
-              <div className="overflow-x-auto w-full h-screen">
+              <div dir="ltr" className="overflow-x-auto w-full h-screen">
                 <table className="table w-full ">
                   <thead className=" border rounded-xl border-nccGray-100">
                     <tr>

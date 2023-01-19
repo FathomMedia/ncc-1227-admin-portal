@@ -35,7 +35,7 @@ export default function StudentLogs() {
           View all logs made by the student for this application.
         </div>
       </div>
-      <table className="table w-full ">
+      <table dir="ltr" className="table w-full ">
         <thead className="border rounded-xl border-nccGray-100">
           <tr>
             <th>Reason</th>

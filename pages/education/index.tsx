@@ -179,6 +179,7 @@ const Education = () => {
             <div className="flex flex-wrap items-center justify-between w-full gap-4 p-4 my-8 border md:flex-row border-nccGray-100 rounded-xl bg-nccGray-100">
               <div className="grow">
                 <Field
+                  dir="ltr"
                   className="w-full input input-bordered"
                   type="text"
                   name="search"
@@ -190,6 +191,7 @@ const Education = () => {
               <div>
                 <div>
                   <Field
+                    dir="ltr"
                     className="input input-bordered"
                     as="select"
                     name="activeStatus"
@@ -339,7 +341,7 @@ const Education = () => {
       </div>
 
       {/* Education Table */}
-      <div>
+      <div dir="ltr">
         <div className="w-full h-screen overflow-x-auto">
           <table className="table w-full table-auto">
             <thead className="">
