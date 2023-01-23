@@ -50,7 +50,7 @@ const AdminLogs = () => {
         </div>
       </div>
       {adminsLogs.length > 0 ? (
-        <table className="table w-full ">
+        <table dir="ltr" className="table w-full ">
           <thead className=" border rounded-xl border-nccGray-100">
             <tr>
               <th>{t("tableAdminLogName")}</th>

@@ -1,9 +1,9 @@
 {
-  "Dashboard": "Dashboard",
-  "Applications": "Applications",
-  "Education": "Education",
-  "Users": "Users",
-  "Logs": "Logs",
-  "Support": "Support",
-  "signOut": "Sign out"
+  "Dashboard": "الصفحة الرئيسية",
+  "Applications": "الطلبات",
+  "Education": "التعليم",
+  "Users": "المستخدمون",
+  "Logs": "السجلات",
+  "Support": "الدعم",
+  "signOut": "تسجيل خروج"
 }

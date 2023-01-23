@@ -58,6 +58,7 @@ export default function ViewApplication({
   const { push } = useRouter();
   const { syncApplications } = useStudent();
   const { t } = useTranslation("applicationLog");
+  const tA = useTranslation("applications");
 
   let emailData: ISendEmail = {
     status:
@@ -76,7 +77,7 @@ export default function ViewApplication({
         <div>
           {application.status === Status.APPROVED && (
             <PrimaryButton
-              name="Send Email"
+              name={tA.t("sendEmail")}
               buttonClick={async () => {
                 await toast.promise(
                   fetch("../../api/sendEmail", {
@@ -95,7 +96,7 @@ export default function ViewApplication({
         </div>
         {!readOnly && (
           <PrimaryButton
-            name={!isEditing ? "Edit" : "Close"}
+            name={!isEditing ? tA.t("edit") : tA.t("close")}
             buttonClick={function (): void {
               setIsEditing(!isEditing);
             }}
@@ -176,7 +177,7 @@ export default function ViewApplication({
           isSubmitting,
           isValid,
         }) => (
-          <Form>
+          <Form dir="ltr">
             <table className="table w-full mb-4 table-fixed">
               <thead>
                 <tr>
@@ -200,8 +201,8 @@ export default function ViewApplication({
                     <div className="flex items-center gap-8 ">
                       <div className="text-sm font-semibold ">
                         {application.status === Status.ELIGIBLE
-                          ? Status.REVIEW
-                          : application.status}
+                          ? tA.t(Status.REVIEW)
+                          : tA.t(`${application.status}`)}
                       </div>
                       {isEditing && (
                         <Field
@@ -212,11 +213,17 @@ export default function ViewApplication({
                           onBlur={handleBlur}
                         >
                           <option disabled value={Status.REVIEW}>
-                            REVIEW
+                            {tA.t("REVIEW")}
                           </option>
-                          <option value={Status.ELIGIBLE}>ELIGIBLE</option>
-                          <option value={Status.APPROVED}>APPROVED</option>
-                          <option value={Status.REJECTED}>REJECTED</option>
+                          <option value={Status.ELIGIBLE}>
+                            {tA.t("ELIGIBLE")}
+                          </option>
+                          <option value={Status.APPROVED}>
+                            {tA.t("APPROVED")}
+                          </option>
+                          <option value={Status.REJECTED}>
+                            {tA.t("REJECTED")}
+                          </option>
                         </Field>
                       )}
                     </div>

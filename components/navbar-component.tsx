@@ -11,6 +11,7 @@ import NavBarButton from "./navbar-button";
 import Image from "next/image";
 import { useAuth } from "../hooks/use-auth";
 import { useTranslation } from "react-i18next";
+import { LangSwitcher } from "./langSwitcher";
 
 export default function NavbarComponent() {
   const { signOut, isSignedIn } = useAuth();
@@ -19,7 +20,7 @@ export default function NavbarComponent() {
   return (
     <div className="flex flex-col justify-between p-4 py-24 bg-nccGray-50">
       <div className="flex flex-col gap-4">
-        <div className=" mb-8 max-w-[200px]">
+        <div className=" max-w-[200px]">
           <Image
             className=""
             src="/logo.svg"
@@ -27,6 +28,9 @@ export default function NavbarComponent() {
             width={200}
             height={100}
           />
+        </div>
+        <div className="max-w-[200px] flex justify-center">
+          <LangSwitcher></LangSwitcher>
         </div>
         <NavBarButton
           name={t("Dashboard")}
@@ -76,16 +80,18 @@ export default function NavbarComponent() {
       {!isSignedIn ? (
         <></>
       ) : (
-        <div className="flex justify-start px-4 py-2 text-sm w-52 text-gray rounded-xl hover:cursor-pointer">
-          <Image
-            src={"/logout_icon.svg"}
-            alt={"Log out icon"}
-            width={20}
-            height={20}
-          />
-          <button className="pl-4" onClick={signOut}>
-            {t("signOut")}
-          </button>
+        <div className="flex flex-col">
+          <div className="flex justify-start px-4 py-2 text-sm w-52 text-gray rounded-xl hover:cursor-pointer">
+            <Image
+              src={"/logout_icon.svg"}
+              alt={"Log out icon"}
+              width={20}
+              height={20}
+            />
+            <button className="ltr:pl-4 rtl:pr-4" onClick={signOut}>
+              {t("signOut")}
+            </button>
+          </div>
         </div>
       )}
     </div>

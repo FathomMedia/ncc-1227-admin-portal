@@ -152,6 +152,7 @@ export default function ProgramFormComponent({ program }: Props) {
             <div className="flex flex-col">
               <label className="label">{t("universityID")}</label>
               <Field
+                dir="ltr"
                 disabled={program}
                 as="select"
                 name="universityID"
@@ -199,7 +200,10 @@ export default function ProgramFormComponent({ program }: Props) {
                     errors.availability}
                 </label>
               </div>
-              <div className="flex flex-col items-center justify-between">
+              <div
+                dir="ltr"
+                className="flex flex-col items-center justify-between"
+              >
                 <label className="label">{t("deactivate")}</label>
                 <Field
                   name="isDeactivated"
