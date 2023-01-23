@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { PageComponent } from "../../components/page-component";
 import { listAllAdminsLogs } from "../../src/CustomAPI";
 import { AdminLog } from "../../src/API";
@@ -6,14 +6,20 @@ import Link from "next/link";
 import { Toaster } from "react-hot-toast";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
-import { GetStaticProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { GetServerSideProps } from "next";
 
-export const getStaticProps: GetStaticProps = async (ctx) => {
+interface Props {
+  adminsLogs: AdminLog[];
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { locale } = ctx;
+  const res = await listAllAdminsLogs();
 
   return {
     props: {
+      adminsLogs: res,
       ...(await serverSideTranslations(locale ?? "en", [
         "adminLog",
         "pageTitles",
@@ -23,22 +29,9 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
   };
 };
 
-const AdminLogs = () => {
-  const [adminsLogs, setAdminsLogs] = useState<AdminLog[]>([]);
+const AdminLogs: FC<Props> = ({ adminsLogs }) => {
   const { t } = useTranslation("adminLog");
   const { push } = useRouter();
-
-  useEffect(() => {
-    getAdminsLogsList();
-
-    return () => {};
-  }, []);
-
-  async function getAdminsLogsList() {
-    let res = await listAllAdminsLogs();
-    setAdminsLogs(res);
-    return res;
-  }
 
   return (
     <PageComponent title={"Admin Logs"}>
@@ -51,7 +44,7 @@ const AdminLogs = () => {
       </div>
       {adminsLogs.length > 0 ? (
         <table dir="ltr" className="table w-full ">
-          <thead className=" border rounded-xl border-nccGray-100">
+          <thead className="border rounded-xl border-nccGray-100">
             <tr>
               <th>{t("tableAdminLogName")}</th>
               <th>{t("tableAdminLogCPR")}</th>
@@ -91,8 +84,8 @@ const AdminLogs = () => {
           <tfoot></tfoot>
         </table>
       ) : (
-        <div className=" flex justify-center items-center border border-nccGray-100 rounded-xl bg-nccGray-100 p-8">
-          <div className=" text-base font-medium">
+        <div className="flex items-center justify-center p-8 border border-nccGray-100 rounded-xl bg-nccGray-100">
+          <div className="text-base font-medium ">
             Sorry! No data to display
           </div>
         </div>
