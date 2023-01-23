@@ -4,9 +4,9 @@ import { adminEmail } from "../constants/constants";
 import config from "../src/aws-exports";
 
 AWS.config.update({
-  accessKeyId: process.env.AWS_ACCESS_KEY,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  region: config.aws_appsync_region,
+  accessKeyId: process.env.CONFIG_ACCESS_KEY_ID,
+  secretAccessKey: process.env.CONFIG_SECRET_ACCESS_KEY,
+  region: config.aws_project_region,
 });
 
 AWS.config.getCredentials(function (error) {
@@ -201,10 +201,21 @@ export const sendApprovalMail = async (userEmail: string, userName: string) => {
 
 `,
     });
-    console.log(response);
-    return response?.messageId
-      ? { ok: true }
-      : { ok: false, msg: "Failed to send email" };
+
+    if (response.accepted) {
+      console.log("success ");
+      return response?.messageId
+        ? { ok: true }
+        : { ok: false, msg: "Failed to send email" };
+    }
+
+    if (response.rejected) {
+      throw new Error("Failed to send email");
+    }
+
+    // return response?.messageId
+    //   ? { ok: true }
+    //   : { ok: false, msg: "Failed to send email" };
   } catch (error) {
     console.log("ERROR", error);
     return { ok: false, msg: "Failed to send email" };

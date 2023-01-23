@@ -13,11 +13,11 @@ export interface ISendEmail {
   id: string;
 }
 
-AWS.config.update({
-  accessKeyId: process.env.CONFIG_ACCESS_KEY_ID,
-  secretAccessKey: process.env.CONFIG_SECRET_ACCESS_KEY,
-  region: aws.aws_project_region,
-});
+// AWS.config.update({
+//   accessKeyId: process.env.CONFIG_ACCESS_KEY_ID,
+//   secretAccessKey: process.env.CONFIG_SECRET_ACCESS_KEY,
+//   region: aws.aws_project_region,
+// });
 
 export default async function handler(
   req: NextApiRequest,
@@ -27,13 +27,15 @@ export default async function handler(
 
   try {
     if (data === null || data === undefined) {
-      throw new Error(
-        "Failed to send an email to the given user. Please try again later."
-      );
+      return res
+        .status(500)
+        .json(
+          "Failed to send an email to the given user. Please try again later."
+        );
     }
 
     if (data.status === undefined) {
-      throw new Error("Could not get application status");
+      return res.status(500).json("Could not get application status");
     }
 
     if (data.status === Status.REJECTED) {
