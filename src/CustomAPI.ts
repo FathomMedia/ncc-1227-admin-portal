@@ -478,7 +478,7 @@ export async function listAllAdminsLogs() {
     `;
 
   let res = (await API.graphql(graphqlOperation(q))) as GraphQLResult<any>; // your fetch function here
-  let adminsLogs = res.data?.listAdminLogs.items as AdminLog[];
+  let adminsLogs = res.data ? (res.data.listAdminLogs.items as AdminLog[]) : [];
   return adminsLogs;
 }
 
