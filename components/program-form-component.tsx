@@ -129,7 +129,7 @@ export default function ProgramFormComponent({ program }: Props) {
           isSubmitting,
           isValid,
         }) => (
-          <Form className="flex flex-col gap-3 p-4">
+          <Form className="flex flex-col gap-3">
             <div className="flex flex-col">
               <label className="label">{t("programName")}</label>
               <Field
@@ -233,6 +233,7 @@ export default function ProgramFormComponent({ program }: Props) {
                 name="requirements"
                 onChange={handleChange}
                 onBlur={handleBlur}
+                value={program?.requirements ?? ""}
               ></textarea>
               <label className="label-text-alt text-error">
                 {errors.requirements &&
