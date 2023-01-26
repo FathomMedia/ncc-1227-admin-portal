@@ -6,7 +6,6 @@ import Link from "next/link";
 import { Toaster } from "react-hot-toast";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
-import { GetStaticProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import { GetServerSideProps } from "next";

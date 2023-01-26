@@ -1,13 +1,13 @@
 {
-  "studentLogHistory": "Student Log History",
-  "studentLogHistorySubtitle": "View all logs made by the student for this application.",
-  "reason": "Reason",
-  "date": "Date",
-  "history": "History",
-  "view": "View",
-  "logHistory": "Log History",
-  "studentInformation": "Student Information",
-  "applicationDetails": "Application Details",
-  "reasonForChange": "Reason for change",
-  "updatedAt": "Updated at"
+  "studentLogHistory": "سجل تعديلات الطلبة",
+  "studentLogHistorySubtitle": "عرض جميع السجلات التي قام بها الطالب لهذا الطلب.",
+  "reason": "السبب",
+  "date": "تاريخ",
+  "history": "التعديلات",
+  "view": "عرض",
+  "logHistory": "سجل التعديلات",
+  "studentInformation": "بيانات الطالب",
+  "applicationDetails": "تفاصيل الطلب",
+  "reasonForChange": "سبب التغيير",
+  "updatedAt": "تم التحديث في"
 }
