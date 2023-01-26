@@ -1,9 +1,6 @@
-import AWS from "aws-sdk";
-
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Status } from "../../src/API";
 
-import aws from "../../src/aws-exports";
 import { sendApprovalMail, sendRefusalEmail } from "../../src/aws-ses";
 
 export interface ISendEmail {
@@ -12,12 +9,6 @@ export interface ISendEmail {
   studentName: string | undefined;
   id: string;
 }
-
-// AWS.config.update({
-//   accessKeyId: process.env.CONFIG_ACCESS_KEY_ID,
-//   secretAccessKey: process.env.CONFIG_SECRET_ACCESS_KEY,
-//   region: aws.aws_project_region,
-// });
 
 export default async function handler(
   req: NextApiRequest,
@@ -35,7 +26,7 @@ export default async function handler(
     }
 
     if (data.status === undefined) {
-      return res.status(500).json("Could not get application status");
+      return res.status(500).json("Application status is undefined");
     }
 
     if (data.status === Status.REJECTED) {
@@ -44,14 +35,21 @@ export default async function handler(
         data.studentName
       );
       return res.json(result);
-    } else {
+    }
+
+    if (data.status === Status.APPROVED) {
       const result = await sendApprovalMail(
         "nccxfthm1227@gmail.com",
         data.studentName
       );
       return res.json(result);
     }
+
+    return res
+      .status(500)
+      .json("Something went wrong. Please try again later.");
   } catch (err) {
+    console.log(err);
     throw err;
   }
 }

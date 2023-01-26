@@ -23,5 +23,6 @@
   "signedContract": "Signed Contract Document",
   "studentLog": "Student Logs",
   "reasonForChange": "Reason for status change",
-  "save": "Save Changes"
+  "save": "Save Changes",
+  "logHistory": "Log History"
 }

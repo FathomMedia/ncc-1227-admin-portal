@@ -187,7 +187,7 @@ export const sendApprovalMail = async (userEmail: string, userName: string) => {
             <div style="text-align: center;">
                 <div style="padding: 2rem">
                     <a href="#"><button
-                            style="cursor: pointer; font-family: inter; font-weight: bold; border: none; background-color: #FECD04; padding: 1rem 2rem; border-radius: 100px;">Contact
+                            style="cursor: pointer; font-family: inter; font-weight: bold; border: none; background-color: #e1ba3d; padding: 1rem 2rem; border-radius: 100px;">Contact
                             Support</button></a>
                 </div>
             </div>
@@ -213,9 +213,9 @@ export const sendApprovalMail = async (userEmail: string, userName: string) => {
       throw new Error("Failed to send email");
     }
 
-    // return response?.messageId
-    //   ? { ok: true }
-    //   : { ok: false, msg: "Failed to send email" };
+    return response?.messageId
+      ? { ok: true }
+      : { ok: false, msg: "Failed to send email" };
   } catch (error) {
     console.log("ERROR", error);
     return { ok: false, msg: "Failed to send email" };
@@ -363,7 +363,7 @@ export const sendRefusalEmail = async (userEmail: string, userName: string) => {
             text-align: center;">
                 <img src="${logo}" alt="logo" width='400' height='100' />
             </div>
-            <h2 style="font-family: inter; color: #243746; ">A decision was made on your application.
+            <h2 style="font-family: inter; color: #243746; text-align: center;">A decision was made on your application.
                             </h2>
                              
                             <p style="color: #243746; font-family: inter;">Dear ${userName}, <br /><br /> Thank you for
@@ -380,7 +380,7 @@ export const sendRefusalEmail = async (userEmail: string, userName: string) => {
             <div style="text-align: center;">
                 <div style="padding: 2rem">
                     <a href="#"><button
-                            style="cursor: pointer; font-family: inter; font-weight: bold; border: none; background-color: #FECD04; padding: 1rem 2rem; border-radius: 100px;">Contact
+                            style="cursor: pointer; font-family: inter; font-weight: bold; border: none; background-color: #e1ba3d; padding: 1rem 2rem; border-radius: 100px;">Contact
                             Support</button></a>
                 </div>
             </div>
@@ -393,7 +393,7 @@ export const sendRefusalEmail = async (userEmail: string, userName: string) => {
 </html>
   `,
     });
-    console.log(response);
+
     return response?.messageId
       ? { ok: true }
       : { ok: false, msg: "Failed to send email" };

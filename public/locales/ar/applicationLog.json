@@ -23,5 +23,6 @@
   "signedContract": "وثيقة العقد الموقع",
   "studentLog": "سجلات الطلاب",
   "reasonForChange": "سبب تغيير الوضع",
-  "save": "حفظ التغييرات"
+  "save": "حفظ التغييرات",
+  "logHistory": "Log History"
 }

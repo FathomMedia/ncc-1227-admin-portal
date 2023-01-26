@@ -164,22 +164,30 @@ export default function ApplicationLog({
                     <tr>
                       <th>{t("name")}</th>
                       <th>{t("cpr")}</th>
-                      <th>{t("date")}</th>
+                      <th>{t("logHistory")}</th>
                       <th>{t("reason")}</th>
+                      <th>{t("date")}</th>
                       <th></th>
                     </tr>
                   </thead>
                   <tbody>
-                    {applicationHistory.map((log) => (
-                      <tr key={log.id}>
-                        <td>{log.admin?.fullName}</td>
-                        <td>{log.adminCPR}</td>
-                        <td>{`${Intl.DateTimeFormat("en", {
-                          timeStyle: "short",
-                          dateStyle: "medium",
-                        }).format(new Date(log.createdAt))}`}</td>
-                        <td>{log.reason}</td>
-                        <td>
+                    {applicationHistory
+                      .sort(
+                        (a, b) =>
+                          new Date(b.createdAt).getTime() -
+                          new Date(a.createdAt).getTime()
+                      )
+                      .map((log) => (
+                        <tr key={log.id}>
+                          <td>{log.admin?.fullName}</td>
+                          <td>{log.adminCPR}</td>
+                          <td>{log.snapshot}</td>
+                          <td>{log.reason}</td>
+                          <td>{`${Intl.DateTimeFormat("en", {
+                            timeStyle: "short",
+                            dateStyle: "medium",
+                          }).format(new Date(log.createdAt))}`}</td>
+                          {/* <td>
                           <div className=" flex justify-end">
                             <button className="btn btn-ghost btn-xs relative group">
                               <HiDotsVertical />
@@ -201,9 +209,9 @@ export default function ApplicationLog({
                               </div>
                             </button>
                           </div>
-                        </td>
-                      </tr>
-                    ))}
+                        </td> */}
+                        </tr>
+                      ))}
                   </tbody>
                   <tfoot></tfoot>
                 </table>

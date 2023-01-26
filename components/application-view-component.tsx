@@ -62,10 +62,7 @@ export default function ViewApplication({
 
   let emailData: ISendEmail = {
     status:
-      application.status === Status.APPROVED ||
-      application.status === Status.REJECTED
-        ? application.status
-        : undefined,
+      application.status === Status.APPROVED ? application.status : undefined,
     email: application.student?.email ?? undefined,
     studentName: application.student?.fullName ?? undefined,
     id: application.id,
@@ -111,6 +108,17 @@ export default function ViewApplication({
         })}
         onSubmit={async (values, actions) => {
           setIsLoading(true);
+          let rejectEmailData: ISendEmail = {
+            status:
+              values.applicationStatus === Status.APPROVED ||
+              values.applicationStatus === Status.REJECTED
+                ? values.applicationStatus
+                : undefined,
+            email: application.student?.email ?? undefined,
+            studentName: application.student?.fullName ?? undefined,
+            id: application.id,
+          };
+
           let updateVariables: UpdateApplicationMutationVariables = {
             input: {
               id: application.id,
@@ -118,51 +126,57 @@ export default function ViewApplication({
               _version: application._version,
             },
           };
-          let res = await toast
-            .promise(updateApplicationInDB(updateVariables), {
-              loading: "Updating...",
-              success: "Application updated successfully",
-              error: "Failed to update application",
-            })
-            .then(async (value) => {
-              setIsEditing(false);
 
-              if (values.applicationStatus === Status.REJECTED) {
-                await toast.promise(
-                  fetch("../../api/sendEmail", {
-                    method: "POST",
-                    body: JSON.stringify(emailData),
-                  }),
-                  {
-                    loading: "Sending email...",
-                    success: "Email sent to user!",
-                    error: "Failed to send email to user",
-                  }
-                );
-              }
+          if (values.applicationStatus === application.status) {
+            toast("No changes were detected!");
+          } else {
+            let res = await toast
+              .promise(updateApplicationInDB(updateVariables), {
+                loading: "Updating...",
+                success: "Application updated successfully",
+                error: "Failed to update application",
+              })
+              .then(async (value) => {
+                setIsEditing(false);
 
-              let createAdminLogVariables: CreateAdminLogMutationVariables = {
-                input: {
-                  applicationID: application.id,
-                  adminCPR: user?.getUsername() ?? "",
-                  dateTime: new Date().toISOString(),
-                  snapshot: JSON.stringify(application),
-                  reason: values.reason,
-                  applicationAdminLogsId: application.id,
-                  adminAdminLogsCpr: user?.getUsername() ?? "",
-                },
-              };
+                if (values.applicationStatus === Status.REJECTED) {
+                  await toast.promise(
+                    fetch("../../api/sendEmail", {
+                      method: "POST",
+                      body: JSON.stringify(rejectEmailData),
+                    }),
+                    {
+                      loading: "Sending email...",
+                      success: "Email sent to user!",
+                      error: "Failed to send email to user",
+                    }
+                  );
+                }
 
-              await createAdminLogInDB(createAdminLogVariables)
-                .then(async (value) => {
-                  syncApplications();
-                  push("/applications");
-                  return value;
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
-            });
+                let createAdminLogVariables: CreateAdminLogMutationVariables = {
+                  input: {
+                    applicationID: application.id,
+                    adminCPR: user?.getUsername() ?? "",
+                    dateTime: new Date().toISOString(),
+                    snapshot: `changed application status from ${application.status} to ${values.applicationStatus}`,
+                    reason: values.reason,
+                    applicationAdminLogsId: application.id,
+                    adminAdminLogsCpr: user?.getUsername() ?? "",
+                  },
+                };
+
+                await createAdminLogInDB(createAdminLogVariables)
+                  .then(async (value) => {
+                    syncApplications();
+                    push("/applications");
+                    return value;
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                    throw err;
+                  });
+              });
+          }
 
           actions.setSubmitting(false);
           setIsLoading(false);
@@ -204,7 +218,7 @@ export default function ViewApplication({
                           ? tA.t(Status.REVIEW)
                           : tA.t(`${application.status}`)}
                       </div>
-                      {isEditing && (
+                      {isEditing && application.status !== Status.WITHDRAWN && (
                         <Field
                           className="border rounded-xl"
                           as="select"
