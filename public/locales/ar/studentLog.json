@@ -9,5 +9,17 @@
   "studentInformation": "بيانات الطالب",
   "applicationDetails": "تفاصيل الطلب",
   "reasonForChange": "سبب التغيير",
-  "updatedAt": "تم التحديث في"
+  "updatedAt": "تم التحديث في",
+  "back": "رجوع",
+
+  "changes": "التغييرات",
+  "field": "حقل",
+  "update": "تحديث",
+  "GPA": "المعدل التراكمي",
+  "primaryProgram": "البرنامج الاول",
+  "secondaryProgram": "البرنامج الثاني",
+  "cprDocument": "وثيقة الرقم الشخصي",
+  "transcriptDocument": "مستند كشف الدرجات",
+  "acceptanceDocument": "وثيقة خطاب القبول",
+  "signedContractDocument": "وثيقة العقد الموقع"
 }

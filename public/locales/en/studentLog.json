@@ -9,5 +9,17 @@
   "studentInformation": "Student Information",
   "applicationDetails": "Application Details",
   "reasonForChange": "Reason for change",
-  "updatedAt": "Updated at"
+  "updatedAt": "Updated at",
+  "back": "Back",
+
+  "changes": "Changes",
+  "field": "Field",
+  "update": "Update",
+  "GPA": "GPA",
+  "primaryProgram": "Primary Program",
+  "secondaryProgram": "Secondary Program",
+  "cprDocument": "CPR Document",
+  "transcriptDocument": "Transcript Document",
+  "acceptanceDocument": "Acceptance Document",
+  "signedContractDocument": "Signed Contract Document"
 }

@@ -25,6 +25,18 @@ export interface WeeklySummaryGraphData {
   count: number;
 }
 
+export interface ApplicationSnapshot {
+  gpa?: string;
+  primaryProgram?: string;
+  secondaryProgram?: string;
+  attachments?: {
+    cpr?: string;
+    transcript?: string;
+    acceptance?: string;
+    signedContract?: string;
+  };
+}
+
 /* -------------------------------------------------------------------------- */
 /*                                  FUNCTIONS                                 */
 /* -------------------------------------------------------------------------- */
