@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren, useState } from "react";
+import { FC, PropsWithChildren } from "react";
 import { Toaster } from "react-hot-toast";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useAuth } from "../hooks/use-auth";
@@ -6,7 +6,6 @@ import NavbarComponent from "./navbar-component";
 import SignInFormComponent from "./sign-in-form-component";
 
 import Image from "next/image";
-import { LangSwitcher } from "./langSwitcher";
 
 interface Props {
   title: string;
@@ -53,10 +52,12 @@ export const PageComponent: FC<PropsWithChildren<Props>> = (props) => {
             )
           )}
         </div>
-        <div className="drawer-side">
-          <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
-          <NavbarComponent></NavbarComponent>
-        </div>
+        {isSignedIn && (
+          <div className="drawer-side">
+            <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
+            <NavbarComponent></NavbarComponent>
+          </div>
+        )}
       </div>
     </div>
   );

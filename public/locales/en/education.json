@@ -17,5 +17,7 @@
   "submitButton": "Submit",
   "saveButton": "Save Changes",
   "universityTitle": "University",
-  "programTitle": "Program"
+  "programTitle": "Program",
+  "inactive": "Inactive",
+  "active": "Active"
 }

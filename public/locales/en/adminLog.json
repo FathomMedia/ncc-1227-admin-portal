@@ -12,5 +12,8 @@
   "sendEmailButton": "Send Email",
   "backButton": "Back",
   "reasonForChange": "Reason for change",
-  "updatedAt": "Updated At"
+  "updatedAt": "Updated At",
+  "loadMoreLogs": "Load more logs",
+  "reachedTheEnd": "Your reached the end of the logs",
+  "noData": "Sorry! No data to display"
 }

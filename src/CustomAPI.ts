@@ -43,13 +43,15 @@ import {
 } from "./graphql/mutations";
 
 /* -------------------------------------------------------------------------- */
-/*                                    ENUMS                                   */
+/*                                 INTERFACES                                 */
 /* -------------------------------------------------------------------------- */
-export enum DocType {
-  CPR,
-  ACCEPTANCE,
-  TRANSCRIPT,
-  SIGNED_CONTRACT,
+interface IlistAllAdminsLogs {
+  nextPageToken: string | null;
+  limit?: number;
+}
+export interface IlistAllAdminsLogsOutput {
+  adminsLogs: AdminLog[];
+  nextToken: string | null;
 }
 
 export interface DownloadLinks {
@@ -57,6 +59,16 @@ export interface DownloadLinks {
   acceptanceLetterDoc?: string | null;
   transcriptDoc?: string | null;
   signedContractDoc?: string | null;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                    ENUMS                                   */
+/* -------------------------------------------------------------------------- */
+export enum DocType {
+  CPR,
+  ACCEPTANCE,
+  TRANSCRIPT,
+  SIGNED_CONTRACT,
 }
 
 /* -------------------------------------------------------------------------- */
@@ -342,6 +354,11 @@ export async function uploadFile(file: File, type: DocType, cpr: string) {
   }
 }
 
+/**
+ * It creates a new admin log in the database
+ * @param {CreateAdminLogMutationVariables} mutationVars - CreateAdminLogMutationVariables
+ * @returns The data from the mutation.
+ */
 export async function createAdminLogInDB(
   mutationVars: CreateAdminLogMutationVariables
 ): Promise<CreateAdminLogMutation | undefined> {
@@ -353,6 +370,11 @@ export async function createAdminLogInDB(
   return res.data;
 }
 
+/**
+ * It returns a list of admin logs for a given application
+ * @param {string} id - string - The id of the application you want to get the admin logs for.
+ * @returns An array of AdminLogs
+ */
 export async function getApplicationLogHistory(
   id: string
 ): Promise<AdminLog[]> {
@@ -394,6 +416,11 @@ export async function getApplicationLogHistory(
   return adminLogs;
 }
 
+/**
+ * It takes a CPR number as input and returns an Admin object
+ * @param {string} id - The id of the admin you want to get.
+ * @returns A promise of an Admin or undefined
+ */
 export async function getAdminByCPR(id: string): Promise<Admin | undefined> {
   let q = `
   query GetAdminByCPR {
@@ -417,6 +444,11 @@ export async function getAdminByCPR(id: string): Promise<Admin | undefined> {
   return admin;
 }
 
+/**
+ * It returns all student logs of a given application
+ * @param {string} applicationID - The ID of the application you want to get the student logs for.
+ * @returns An array of StudentLogs
+ */
 export async function listAllStudentLogsOfApplication(applicationID: string) {
   let q = `
   query GetAllApplicationStudentLogs {
@@ -449,39 +481,56 @@ export async function listAllStudentLogsOfApplication(applicationID: string) {
   return studentLogs;
 }
 
-export async function listAllAdminsLogs() {
+/**
+ * It returns a list of all the admin logs in the database
+ * @param {IlistAllAdminsLogs} input - IlistAllAdminsLogs
+ * @returns IlistAllAdminsLogsOutput
+ */
+export async function listAllAdminsLogs(input: IlistAllAdminsLogs) {
   let q = `
   query ListAllAdminsLogs {
-    listAdminLogs {
-      items {
-        _deleted
-        _lastChangedAt
-        _version
-        admin {
-          cpr
-          email
-          fullName
-        }
-        adminAdminLogsCpr
-        adminCPR
-        applicationAdminLogsId
-        applicationID
-        createdAt
-        dateTime
-        id
-        reason
-        snapshot
-        updatedAt
+  listAdminLogs(limit: ${input.limit ?? 5}, nextToken: ${
+    input.nextPageToken ? `"${input.nextPageToken}"` : null
+  }) {
+    items {
+      _deleted
+      _lastChangedAt
+      _version
+      admin {
+        cpr
+        email
+        fullName
       }
+      adminAdminLogsCpr
+      adminCPR
+      applicationAdminLogsId
+      applicationID
+      createdAt
+      dateTime
+      id
+      reason
+      snapshot
+      updatedAt
     }
-  }  
+    nextToken
+  }
+}
     `;
 
   let res = (await API.graphql(graphqlOperation(q))) as GraphQLResult<any>; // your fetch function here
   let adminsLogs = res.data ? (res.data.listAdminLogs.items as AdminLog[]) : [];
-  return adminsLogs;
+  const output: IlistAllAdminsLogsOutput = {
+    adminsLogs: adminsLogs,
+    nextToken: res.data.listAdminLogs.nextToken,
+  };
+  return output;
 }
 
+/**
+ * It gets a student log by its ID
+ * @param {string} id - string
+ * @returns StudentLog
+ */
 export async function getStudentLogsByLogID(
   id: string
 ): Promise<StudentLog | undefined> {
@@ -522,6 +571,11 @@ export async function getStudentLogsByLogID(
   return studentLog;
 }
 
+/**
+ * It gets an admin log by its ID
+ * @param {string} id - string
+ * @returns AdminLog
+ */
 export async function getAdminLogsByLogID(
   id: string
 ): Promise<AdminLog | undefined> {
@@ -561,6 +615,11 @@ export async function getAdminLogsByLogID(
   return adminLog;
 }
 
+/**
+ * It takes in a program ID and returns a program object
+ * @param {string} id - The id of the program you want to get
+ * @returns A program object
+ */
 export async function getProgramById(id: string): Promise<Program | undefined> {
   let q = `
   query GetProgramLogById {
@@ -596,6 +655,12 @@ export async function getProgramById(id: string): Promise<Program | undefined> {
   return program;
 }
 
+/**
+ * It takes in a `mutationVars` object, and returns a promise that resolves to the
+ * `UpdateProgramMutation` object
+ * @param {UpdateProgramMutationVariables} mutationVars - UpdateProgramMutationVariables
+ * @returns The data from the mutation
+ */
 export async function updateProgramById(
   mutationVars: UpdateProgramMutationVariables
 ): Promise<UpdateProgramMutation | undefined> {
@@ -607,7 +672,11 @@ export async function updateProgramById(
   return res.data;
 }
 
-// get all programs related to uni id
+/**
+ * This function takes in a university ID and returns all programs related to the University
+ * @param {string} [id] - The ID of the university you want to get.
+ * @returns A list of programs
+ */
 export async function getUniversityByID(
   id?: string
 ): Promise<University | undefined> {
@@ -649,6 +718,11 @@ export async function getUniversityByID(
   return tempProgramList;
 }
 
+/**
+ * It takes in a mutation variable object, and returns a promise that resolves to the mutation result
+ * @param {UpdateUniversityMutationVariables} mutationVars - UpdateUniversityMutationVariables
+ * @returns The mutation result.
+ */
 export async function updateUniversityById(
   mutationVars: UpdateUniversityMutationVariables
 ): Promise<UpdateUniversityMutation | undefined> {

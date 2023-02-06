@@ -12,5 +12,8 @@
   "sendEmailButton": "ارسل بريد الكتروني",
   "backButton": "الرجوع",
   "reasonForChange": "سبب التغيير",
-  "updatedAt": "تم التحديث في"
+  "updatedAt": "تم التحديث في",
+  "loadMoreLogs": "تحميل المزيد من السجلات",
+  "reachedTheEnd": "وصلت إلى نهاية السجلات",
+  "noData": "آسف! لا توجد بيانات لعرض"
 }

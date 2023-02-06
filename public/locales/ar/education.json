@@ -17,5 +17,7 @@
   "submitButton": "إرسال",
   "saveButton": "حفظ التغييرات",
   "universityTitle": "جامعة",
-  "programTitle": "برنامج"
+  "programTitle": "برنامج",
+  "inactive": "غير نشط",
+  "active": "نشط"
 }

@@ -179,8 +179,8 @@ export default function UniversityFormComponent({ university }: Props) {
                                   }`}
                                 >
                                   {program?.isDeactivated
-                                    ? "Inactive"
-                                    : "Active"}
+                                    ? t("inactive")
+                                    : t("active")}
                                 </div>
                               </td>
                             </tr>
