@@ -116,6 +116,7 @@ export const createApplication = /* GraphQL */ `
         _lastChangedAt
       }
       dateTime
+      isEmailSent
       createdAt
       updatedAt
       _version
@@ -182,6 +183,7 @@ export const updateApplication = /* GraphQL */ `
         _lastChangedAt
       }
       dateTime
+      isEmailSent
       createdAt
       updatedAt
       _version
@@ -248,6 +250,7 @@ export const deleteApplication = /* GraphQL */ `
         _lastChangedAt
       }
       dateTime
+      isEmailSent
       createdAt
       updatedAt
       _version
@@ -287,6 +290,7 @@ export const createProgramChoice = /* GraphQL */ `
         attachmentID
         studentCPR
         dateTime
+        isEmailSent
         createdAt
         updatedAt
         _version
@@ -335,6 +339,7 @@ export const updateProgramChoice = /* GraphQL */ `
         attachmentID
         studentCPR
         dateTime
+        isEmailSent
         createdAt
         updatedAt
         _version
@@ -383,6 +388,7 @@ export const deleteProgramChoice = /* GraphQL */ `
         attachmentID
         studentCPR
         dateTime
+        isEmailSent
         createdAt
         updatedAt
         _version

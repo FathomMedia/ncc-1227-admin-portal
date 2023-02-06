@@ -96,6 +96,7 @@ export type CreateApplicationInput = {
   attachmentID?: string | null,
   studentCPR: string,
   dateTime: string,
+  isEmailSent?: boolean | null,
   _version?: number | null,
   applicationAttachmentId?: string | null,
 };
@@ -116,6 +117,7 @@ export type ModelApplicationConditionInput = {
   attachmentID?: ModelStringInput | null,
   studentCPR?: ModelStringInput | null,
   dateTime?: ModelStringInput | null,
+  isEmailSent?: ModelBooleanInput | null,
   and?: Array< ModelApplicationConditionInput | null > | null,
   or?: Array< ModelApplicationConditionInput | null > | null,
   not?: ModelApplicationConditionInput | null,
@@ -137,6 +139,13 @@ export type ModelFloatInput = {
 export type ModelStatusInput = {
   eq?: Status | null,
   ne?: Status | null,
+};
+
+export type ModelBooleanInput = {
+  ne?: boolean | null,
+  eq?: boolean | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
 };
 
 export type ModelIDInput = {
@@ -168,6 +177,7 @@ export type Application = {
   programs?: ModelProgramChoiceConnection | null,
   student?: Student | null,
   dateTime: string,
+  isEmailSent?: boolean | null,
   createdAt: string,
   updatedAt: string,
   _version: number,
@@ -374,6 +384,7 @@ export type UpdateApplicationInput = {
   attachmentID?: string | null,
   studentCPR?: string | null,
   dateTime?: string | null,
+  isEmailSent?: boolean | null,
   _version?: number | null,
   applicationAttachmentId?: string | null,
 };
@@ -452,13 +463,6 @@ export type ModelProgramConditionInput = {
   or?: Array< ModelProgramConditionInput | null > | null,
   not?: ModelProgramConditionInput | null,
   universityProgramsId?: ModelIDInput | null,
-};
-
-export type ModelBooleanInput = {
-  ne?: boolean | null,
-  eq?: boolean | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
 };
 
 export type UpdateProgramInput = {
@@ -764,6 +768,7 @@ export type ModelApplicationFilterInput = {
   attachmentID?: ModelStringInput | null,
   studentCPR?: ModelStringInput | null,
   dateTime?: ModelStringInput | null,
+  isEmailSent?: ModelBooleanInput | null,
   and?: Array< ModelApplicationFilterInput | null > | null,
   or?: Array< ModelApplicationFilterInput | null > | null,
   not?: ModelApplicationFilterInput | null,
@@ -969,6 +974,7 @@ export type ModelSubscriptionApplicationFilterInput = {
   attachmentID?: ModelSubscriptionStringInput | null,
   studentCPR?: ModelSubscriptionStringInput | null,
   dateTime?: ModelSubscriptionStringInput | null,
+  isEmailSent?: ModelSubscriptionBooleanInput | null,
   and?: Array< ModelSubscriptionApplicationFilterInput | null > | null,
   or?: Array< ModelSubscriptionApplicationFilterInput | null > | null,
 };
@@ -983,6 +989,11 @@ export type ModelSubscriptionFloatInput = {
   between?: Array< number | null > | null,
   in?: Array< number | null > | null,
   notIn?: Array< number | null > | null,
+};
+
+export type ModelSubscriptionBooleanInput = {
+  ne?: boolean | null,
+  eq?: boolean | null,
 };
 
 export type ModelSubscriptionProgramChoiceFilterInput = {
@@ -1015,11 +1026,6 @@ export type ModelSubscriptionProgramFilterInput = {
   isDeactivated?: ModelSubscriptionBooleanInput | null,
   and?: Array< ModelSubscriptionProgramFilterInput | null > | null,
   or?: Array< ModelSubscriptionProgramFilterInput | null > | null,
-};
-
-export type ModelSubscriptionBooleanInput = {
-  ne?: boolean | null,
-  eq?: boolean | null,
 };
 
 export type ModelSubscriptionUniversityFilterInput = {
@@ -1223,6 +1229,7 @@ export type CreateApplicationMutation = {
       _lastChangedAt: number,
     } | null,
     dateTime: string,
+    isEmailSent?: boolean | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -1296,6 +1303,7 @@ export type UpdateApplicationMutation = {
       _lastChangedAt: number,
     } | null,
     dateTime: string,
+    isEmailSent?: boolean | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -1369,6 +1377,7 @@ export type DeleteApplicationMutation = {
       _lastChangedAt: number,
     } | null,
     dateTime: string,
+    isEmailSent?: boolean | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -1412,6 +1421,7 @@ export type CreateProgramChoiceMutation = {
       attachmentID?: string | null,
       studentCPR: string,
       dateTime: string,
+      isEmailSent?: boolean | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -1464,6 +1474,7 @@ export type UpdateProgramChoiceMutation = {
       attachmentID?: string | null,
       studentCPR: string,
       dateTime: string,
+      isEmailSent?: boolean | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -1516,6 +1527,7 @@ export type DeleteProgramChoiceMutation = {
       attachmentID?: string | null,
       studentCPR: string,
       dateTime: string,
+      isEmailSent?: boolean | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -2440,6 +2452,7 @@ export type GetApplicationQuery = {
       _lastChangedAt: number,
     } | null,
     dateTime: string,
+    isEmailSent?: boolean | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -2466,6 +2479,7 @@ export type ListApplicationsQuery = {
       attachmentID?: string | null,
       studentCPR: string,
       dateTime: string,
+      isEmailSent?: boolean | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -2496,6 +2510,7 @@ export type SyncApplicationsQuery = {
       attachmentID?: string | null,
       studentCPR: string,
       dateTime: string,
+      isEmailSent?: boolean | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -2541,6 +2556,7 @@ export type GetProgramChoiceQuery = {
       attachmentID?: string | null,
       studentCPR: string,
       dateTime: string,
+      isEmailSent?: boolean | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -3314,6 +3330,7 @@ export type ApplicationsByStudentCPRAndGpaQuery = {
       attachmentID?: string | null,
       studentCPR: string,
       dateTime: string,
+      isEmailSent?: boolean | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -3449,6 +3466,7 @@ export type OnCreateApplicationSubscription = {
       _lastChangedAt: number,
     } | null,
     dateTime: string,
+    isEmailSent?: boolean | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -3521,6 +3539,7 @@ export type OnUpdateApplicationSubscription = {
       _lastChangedAt: number,
     } | null,
     dateTime: string,
+    isEmailSent?: boolean | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -3593,6 +3612,7 @@ export type OnDeleteApplicationSubscription = {
       _lastChangedAt: number,
     } | null,
     dateTime: string,
+    isEmailSent?: boolean | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -3635,6 +3655,7 @@ export type OnCreateProgramChoiceSubscription = {
       attachmentID?: string | null,
       studentCPR: string,
       dateTime: string,
+      isEmailSent?: boolean | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -3686,6 +3707,7 @@ export type OnUpdateProgramChoiceSubscription = {
       attachmentID?: string | null,
       studentCPR: string,
       dateTime: string,
+      isEmailSent?: boolean | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -3737,6 +3759,7 @@ export type OnDeleteProgramChoiceSubscription = {
       attachmentID?: string | null,
       studentCPR: string,
       dateTime: string,
+      isEmailSent?: boolean | null,
       createdAt: string,
       updatedAt: string,
       _version: number,

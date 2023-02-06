@@ -18,6 +18,7 @@ type Application @model @auth(rules: [{ allow: public }]) {
   programs: [ProgramChoice] @hasMany
   student: Student @belongsTo(fields: ["studentCPR"])
   dateTime: AWSDateTime!
+  isEmailSent: Boolean @default(value: "false")
 }
 
 type ProgramChoice @model @auth(rules: [{ allow: public }]) {

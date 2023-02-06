@@ -24,5 +24,10 @@
   "studentLog": "Student Logs",
   "reasonForChange": "Reason for status change",
   "save": "Save Changes",
-  "logHistory": "Log History"
+  "logHistory": "Log History",
+  "adminLogs": "Admins Logs",
+  "emailHasBeenSent": "Email has been sent",
+  "yes": "Yes",
+  "no": "No",
+  "noData": "Sorry! There is no data to display"
 }

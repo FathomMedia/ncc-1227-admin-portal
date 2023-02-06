@@ -718,6 +718,32 @@ export async function getUniversityByID(
   return tempProgramList;
 }
 
+interface IUpdateEmailSentToApplication {
+  applicationId: string;
+  version: number;
+  isEmailSent: boolean;
+}
+
+export async function updateEmailSentToApplication(
+  input: IUpdateEmailSentToApplication
+): Promise<boolean> {
+  let query = `
+  mutation UpdateEmailSentToApplication {
+    updateApplication(input: {id: "${input.applicationId}", _version: ${input.version}, isEmailSent: ${input.isEmailSent}}) {
+      id
+      _version
+      isEmailSent
+    }
+  }
+  `;
+
+  let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;
+
+  let tempApplication = res.data.updateApplication as Application;
+
+  return tempApplication.isEmailSent ?? false;
+}
+
 /**
  * It takes in a mutation variable object, and returns a promise that resolves to the mutation result
  * @param {UpdateUniversityMutationVariables} mutationVars - UpdateUniversityMutationVariables

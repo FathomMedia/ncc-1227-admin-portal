@@ -69,7 +69,7 @@ const AdminLogs: FC<Props> = ({ adminsLogsRes }) => {
       </div>
       {adminsLogs.length > 0 ? (
         <div className="h-full">
-          <div className="w-full overflow-x-scroll">
+          <div className="w-full ">
             <table dir="ltr" className="table w-full">
               <thead className="border rounded-xl border-nccGray-100">
                 <tr>

@@ -208,6 +208,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "isEmailSent": {
+                    "name": "isEmailSent",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -1295,5 +1302,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.3.2",
-    "version": "6dc1eb8827a8d45bb835463d143d117c"
+    "version": "a7561ed159635592c5fccb04e42154b3"
 };

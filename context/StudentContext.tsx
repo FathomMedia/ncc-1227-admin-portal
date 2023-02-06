@@ -251,8 +251,10 @@ export async function getApplicationByIdAPI(
       }
       updatedAt
       createdAt
+      isEmailSent
     }
   }
+  
   `;
 
   let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;

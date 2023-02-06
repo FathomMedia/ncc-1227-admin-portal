@@ -2,14 +2,9 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { PageComponent } from "../../../components/page-component";
 import { AdminLog, Application } from "../../../src/API";
-import {
-  getAdminLogsByLogID,
-  getApplicationData,
-} from "../../../src/CustomAPI";
+import { getApplicationData } from "../../../src/CustomAPI";
 
 import { GetServerSideProps } from "next";
-import { BsFillEyeFill } from "react-icons/bs";
-import { HiDotsVertical } from "react-icons/hi";
 import ViewApplication from "../../../components/application-view-component";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "react-i18next";
@@ -41,14 +36,14 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 export default function ApplicationLog({
   applicationHistory,
-  application,
-}: Props) {
+}: // application,
+Props) {
   const router = useRouter();
   const { id } = router.query;
   const { t } = useTranslation("applicationLog");
 
-  const [logHistory, setLogHistory] = useState<AdminLog | undefined>(undefined);
-  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  // const [logHistory, setLogHistory] = useState<AdminLog | undefined>(undefined);
+  // const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
   // Table Data Pagination
   const elementPerPage = 10;
@@ -56,7 +51,7 @@ export default function ApplicationLog({
   const [currentPage, setCurrentPage] = useState(1);
   const [disableForward, setDisableForward] = useState(false);
   const [disableBackward, setDisableBackward] = useState(true);
-  const [shownData, setShownData] = useState<any>([]);
+  const [shownData, setShownData] = useState<AdminLog[]>([]);
 
   useEffect(() => {
     setNumberOfPages(
@@ -103,9 +98,9 @@ export default function ApplicationLog({
   }
   // Table Data Pagination
 
-  function parseApplication(applicationSnapshot: string) {
-    return JSON.parse(applicationSnapshot) as Application;
-  }
+  // function parseApplication(applicationSnapshot: string) {
+  //   return JSON.parse(applicationSnapshot) as Application;
+  // }
 
   return (
     <div>
@@ -121,7 +116,7 @@ export default function ApplicationLog({
           </div>
 
           {/* modal dialogue - adds university to db */}
-          <div className={` modal ${isSubmitted && "modal-open"}`}>
+          {/* <div className={` modal ${isSubmitted && "modal-open"}`}>
             <div className="relative max-w-3xl modal-box">
               <label
                 onClick={() => setIsSubmitted(!isSubmitted)}
@@ -153,10 +148,10 @@ export default function ApplicationLog({
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* application table */}
-          {applicationHistory.length > 0 ? (
+          {shownData.length > 0 ? (
             <div>
               <div dir="ltr" className="overflow-x-auto w-full h-screen">
                 <table className="table w-full ">
@@ -171,7 +166,7 @@ export default function ApplicationLog({
                     </tr>
                   </thead>
                   <tbody>
-                    {applicationHistory
+                    {shownData
                       .sort(
                         (a, b) =>
                           new Date(b.createdAt).getTime() -
@@ -219,6 +214,7 @@ export default function ApplicationLog({
                 <div className=" flex justify-center mt-8">
                   <div className="btn-group">
                     <button
+                      type="button"
                       className="btn btn-accent text-anzac-500"
                       onClick={goPrevPage}
                       disabled={disableBackward}
@@ -226,12 +222,14 @@ export default function ApplicationLog({
                       «
                     </button>
                     <button
+                      type="button"
                       disabled
                       className="btn hover:cursor-auto disabled:btn-accent"
                     >
                       {currentPage}
                     </button>
                     <button
+                      type="button"
                       className="btn btn-accent  text-anzac-500"
                       onClick={goNextPage}
                       disabled={disableForward}
@@ -244,9 +242,7 @@ export default function ApplicationLog({
             </div>
           ) : (
             <div className=" flex justify-center items-center border border-nccGray-100 rounded-xl bg-nccGray-100 p-8">
-              <div className=" text-base font-medium">
-                Sorry! There is no data to display
-              </div>
+              <div className=" text-base font-medium">{t("noData")}</div>
             </div>
           )}
         </div>

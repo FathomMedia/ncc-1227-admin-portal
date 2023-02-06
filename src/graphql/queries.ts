@@ -126,6 +126,7 @@ export const getApplication = /* GraphQL */ `
         _lastChangedAt
       }
       dateTime
+      isEmailSent
       createdAt
       updatedAt
       _version
@@ -149,6 +150,7 @@ export const listApplications = /* GraphQL */ `
         attachmentID
         studentCPR
         dateTime
+        isEmailSent
         createdAt
         updatedAt
         _version
@@ -181,6 +183,7 @@ export const syncApplications = /* GraphQL */ `
         attachmentID
         studentCPR
         dateTime
+        isEmailSent
         createdAt
         updatedAt
         _version
@@ -220,6 +223,7 @@ export const getProgramChoice = /* GraphQL */ `
         attachmentID
         studentCPR
         dateTime
+        isEmailSent
         createdAt
         updatedAt
         _version
@@ -964,6 +968,7 @@ export const applicationsByStudentCPRAndGpa = /* GraphQL */ `
         attachmentID
         studentCPR
         dateTime
+        isEmailSent
         createdAt
         updatedAt
         _version

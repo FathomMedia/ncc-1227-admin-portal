@@ -73,6 +73,7 @@ type EagerApplication = {
   readonly programs?: (ProgramChoice | null)[] | null;
   readonly student?: Student | null;
   readonly dateTime: string;
+  readonly isEmailSent?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly applicationAttachmentId?: string | null;
@@ -94,6 +95,7 @@ type LazyApplication = {
   readonly programs: AsyncCollection<ProgramChoice>;
   readonly student: AsyncItem<Student | undefined>;
   readonly dateTime: string;
+  readonly isEmailSent?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly applicationAttachmentId?: string | null;

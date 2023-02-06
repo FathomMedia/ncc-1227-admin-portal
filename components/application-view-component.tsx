@@ -13,6 +13,7 @@ import * as yup from "yup";
 import {
   createAdminLogInDB,
   updateApplicationInDB,
+  updateEmailSentToApplication,
   updateProgramById,
 } from "../src/CustomAPI";
 import toast from "react-hot-toast";
@@ -41,12 +42,6 @@ interface IApplicationForm {
   readOnly: false;
 }
 
-const initialValues: IApplicationForm = {
-  applicationStatus: Status.REVIEW,
-  reason: undefined,
-  readOnly: false,
-};
-
 export default function ViewApplication({
   application,
   downloadLinks,
@@ -60,6 +55,12 @@ export default function ViewApplication({
   const { t } = useTranslation("applicationLog");
   const tA = useTranslation("applications");
 
+  const initialValues: IApplicationForm = {
+    applicationStatus: application.status ?? Status.REVIEW,
+    reason: undefined,
+    readOnly: false,
+  };
+
   let emailData: ISendEmail = {
     status:
       application.status === Status.APPROVED ? application.status : undefined,
@@ -68,6 +69,51 @@ export default function ViewApplication({
     id: application.id,
   };
 
+  async function sendEmail() {
+    await toast
+      .promise(
+        fetch("../../api/sendEmail", {
+          method: "POST",
+          body: JSON.stringify(emailData),
+        }),
+        {
+          loading: "Sending email...",
+          success: "Email sent to user!",
+          error: "Failed to send email to user",
+        }
+      )
+      .then(async () => {
+        await updateEmailSentToApplication({
+          applicationId: application.id,
+          version: application._version,
+          isEmailSent: true,
+        });
+
+        let createAdminLogVariables: CreateAdminLogMutationVariables = {
+          input: {
+            applicationID: application.id,
+            adminCPR: user?.getUsername() ?? "",
+            dateTime: new Date().toISOString(),
+            snapshot: `Sent an Approved email to ${application.studentCPR}`,
+            reason: "Application is Approved",
+            applicationAdminLogsId: application.id,
+            adminAdminLogsCpr: user?.getUsername() ?? "",
+          },
+        };
+
+        await createAdminLogInDB(createAdminLogVariables)
+          .then(async (value) => {
+            syncApplications();
+            push("/applications");
+            return value;
+          })
+          .catch((err) => {
+            console.log(err);
+            throw err;
+          });
+      });
+  }
+
   return (
     <div className="mx-auto overflow-x-auto">
       <div className="flex justify-end gap-4 m-4">
@@ -75,19 +121,7 @@ export default function ViewApplication({
           {application.status === Status.APPROVED && (
             <PrimaryButton
               name={tA.t("sendEmail")}
-              buttonClick={async () => {
-                await toast.promise(
-                  fetch("../../api/sendEmail", {
-                    method: "POST",
-                    body: JSON.stringify(emailData),
-                  }),
-                  {
-                    loading: "Sending email...",
-                    success: "Email sent to user!",
-                    error: "Failed to send email to user",
-                  }
-                );
-              }}
+              buttonClick={sendEmail}
             ></PrimaryButton>
           )}
         </div>
@@ -130,7 +164,7 @@ export default function ViewApplication({
           if (values.applicationStatus === application.status) {
             toast("No changes were detected!");
           } else {
-            let res = await toast
+            await toast
               .promise(updateApplicationInDB(updateVariables), {
                 loading: "Updating...",
                 success: "Application updated successfully",
@@ -151,6 +185,29 @@ export default function ViewApplication({
                       error: "Failed to send email to user",
                     }
                   );
+
+                  await updateEmailSentToApplication({
+                    applicationId: application.id,
+                    version:
+                      value?.updateApplication?._version ??
+                      application._version,
+
+                    isEmailSent: true,
+                  });
+                }
+
+                if (
+                  (values.applicationStatus === Status.APPROVED ||
+                    values.applicationStatus === Status.ELIGIBLE) &&
+                  application.status === Status.REJECTED
+                ) {
+                  await updateEmailSentToApplication({
+                    applicationId: application.id,
+                    version:
+                      value?.updateApplication?._version ??
+                      application._version,
+                    isEmailSent: false,
+                  });
                 }
 
                 let createAdminLogVariables: CreateAdminLogMutationVariables = {
@@ -201,6 +258,12 @@ export default function ViewApplication({
               </thead>
               <tbody>
                 <tr>
+                  <td>{t("emailHasBeenSent")}</td>
+                  <td>
+                    {application.isEmailSent === true ? t("yes") : t("no")}
+                  </td>
+                </tr>
+                <tr>
                   <td>{t("createdAt")}</td>
                   <td>
                     {Intl.DateTimeFormat("en", {
@@ -229,13 +292,22 @@ export default function ViewApplication({
                           <option disabled value={Status.REVIEW}>
                             {tA.t("REVIEW")}
                           </option>
-                          <option value={Status.ELIGIBLE}>
+                          <option
+                            disabled={application.status === Status.ELIGIBLE}
+                            value={Status.ELIGIBLE}
+                          >
                             {tA.t("ELIGIBLE")}
                           </option>
-                          <option value={Status.APPROVED}>
+                          <option
+                            disabled={application.status === Status.APPROVED}
+                            value={Status.APPROVED}
+                          >
                             {tA.t("APPROVED")}
                           </option>
-                          <option value={Status.REJECTED}>
+                          <option
+                            disabled={application.status === Status.REJECTED}
+                            value={Status.REJECTED}
+                          >
                             {tA.t("REJECTED")}
                           </option>
                         </Field>
@@ -333,6 +405,17 @@ export default function ViewApplication({
                     <Link
                       className="link link-primary"
                       href={`/studentLogs/${application.id}`}
+                    >
+                      {t("view")}
+                    </Link>
+                  </td>
+                </tr>
+                <tr>
+                  <td>{t("adminLogs")}</td>
+                  <td>
+                    <Link
+                      className="link link-primary"
+                      href={`/applications/applicationHistory/${application.id}`}
                     >
                       {t("view")}
                     </Link>
