@@ -1,5 +1,5 @@
 import { Field, Form, Formik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import {
   University,
   UpdateProgramMutationVariables,
@@ -21,6 +21,8 @@ export default function UniversityFormComponent({ university }: Props) {
   const { syncUniList } = useEducation();
   const { t } = useTranslation("education");
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const initialValues = {
     universityName: university?.name ?? "",
     isDeactivated: university?.isDeactivated ?? false,
@@ -34,6 +36,7 @@ export default function UniversityFormComponent({ university }: Props) {
           universityName: yup.string().required("Invalid university name"),
         })}
         onSubmit={async (values, actions) => {
+          setIsLoading(true);
           if (university) {
             let updatedUniDetails: UpdateUniversityMutationVariables = {
               input: {
@@ -79,6 +82,9 @@ export default function UniversityFormComponent({ university }: Props) {
               }
             );
           }
+
+          actions.setSubmitting(false);
+          setIsLoading(false);
         }}
       >
         {({
@@ -98,7 +104,7 @@ export default function UniversityFormComponent({ university }: Props) {
                   <Field
                     name="universityName"
                     type="text"
-                    placeholder="Program Name"
+                    placeholder="University Name"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     className={`input input-bordered input-primary ${
@@ -193,8 +199,10 @@ export default function UniversityFormComponent({ university }: Props) {
 
             <button
               type="submit"
-              className={`btn btn-primary ${isSubmitting && "loading"}`}
-              disabled={isSubmitting || !isValid}
+              className={`btn btn-primary text-white ${
+                isSubmitting && "loading"
+              }`}
+              disabled={isSubmitting || isLoading || !isValid}
             >
               {t("saveButton")}
             </button>

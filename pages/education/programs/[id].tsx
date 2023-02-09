@@ -47,11 +47,11 @@ export default function ProgramInfo({ program }: Props) {
         <div>
           <ProgramFormComponent
             program={program}
-            programName={""}
-            universityID={undefined}
-            availability={0}
-            requirements={""}
-            isDeactivated={false}
+            programName={program.name ?? ""}
+            universityID={program.universityID}
+            availability={program.availability ?? 0}
+            requirements={program.requirements ?? ""}
+            isDeactivated={program.isDeactivated ?? false}
           ></ProgramFormComponent>
         </div>
       </PageComponent>

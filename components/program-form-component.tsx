@@ -229,11 +229,13 @@ export default function ProgramFormComponent({ program }: Props) {
               </label>
               <textarea
                 className="h-24 textarea textarea-bordered"
-                placeholder="Requirements"
+                placeholder={
+                  program?.requirements ?? "Enter the program requirements here"
+                }
                 name="requirements"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={program?.requirements ?? ""}
+                value={values.requirements}
               ></textarea>
               <label className="label-text-alt text-error">
                 {errors.requirements &&
