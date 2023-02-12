@@ -16,6 +16,11 @@ export enum Gender {
   MALE = "MALE"
 }
 
+export enum SchoolType {
+  PRIVATE = "PRIVATE",
+  PUBLIC = "PUBLIC"
+}
+
 export enum Language {
   ARABIC = "ARABIC",
   ENGLISH = "ENGLISH"
@@ -74,6 +79,8 @@ type EagerApplication = {
   readonly student?: Student | null;
   readonly dateTime: string;
   readonly isEmailSent?: boolean | null;
+  readonly schoolName?: string | null;
+  readonly schoolType?: SchoolType | keyof typeof SchoolType | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly applicationAttachmentId?: string | null;
@@ -96,6 +103,8 @@ type LazyApplication = {
   readonly student: AsyncItem<Student | undefined>;
   readonly dateTime: string;
   readonly isEmailSent?: boolean | null;
+  readonly schoolName?: string | null;
+  readonly schoolType?: SchoolType | keyof typeof SchoolType | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly applicationAttachmentId?: string | null;
@@ -234,6 +243,7 @@ type EagerStudent = {
   readonly phone?: string | null;
   readonly gender?: Gender | keyof typeof Gender | null;
   readonly schoolName?: string | null;
+  readonly schoolType?: SchoolType | keyof typeof SchoolType | null;
   readonly specialization?: string | null;
   readonly placeOfBirth?: string | null;
   readonly studentOrderAmongSiblings?: number | null;
@@ -260,6 +270,7 @@ type LazyStudent = {
   readonly phone?: string | null;
   readonly gender?: Gender | keyof typeof Gender | null;
   readonly schoolName?: string | null;
+  readonly schoolType?: SchoolType | keyof typeof SchoolType | null;
   readonly specialization?: string | null;
   readonly placeOfBirth?: string | null;
   readonly studentOrderAmongSiblings?: number | null;

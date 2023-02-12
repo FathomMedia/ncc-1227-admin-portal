@@ -215,6 +215,22 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "schoolName": {
+                    "name": "schoolName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "schoolType": {
+                    "name": "schoolType",
+                    "isArray": false,
+                    "type": {
+                        "enum": "SchoolType"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -658,6 +674,15 @@ export const schema = {
                     "name": "schoolName",
                     "isArray": false,
                     "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "schoolType": {
+                    "name": "schoolType",
+                    "isArray": false,
+                    "type": {
+                        "enum": "SchoolType"
+                    },
                     "isRequired": false,
                     "attributes": []
                 },
@@ -1292,6 +1317,13 @@ export const schema = {
                 "MALE"
             ]
         },
+        "SchoolType": {
+            "name": "SchoolType",
+            "values": [
+                "PRIVATE",
+                "PUBLIC"
+            ]
+        },
         "Language": {
             "name": "Language",
             "values": [
@@ -1302,5 +1334,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.3.2",
-    "version": "a7561ed159635592c5fccb04e42154b3"
+    "version": "602cb86e78608afe001bc846f54536b8"
 };

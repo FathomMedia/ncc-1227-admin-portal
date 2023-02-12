@@ -54,9 +54,8 @@ const Home = () => {
 
   let pendingApprovalGraph = sortedApplications?.filter(
     (element) =>
-      element.status === Status.ELIGIBLE ||
-      element.status === Status.REVIEW ||
-      element.status === Status.NOT_COMPLETED
+      element.status === Status.ELIGIBLE || element.status === Status.REVIEW
+    // || element.status === Status.NOT_COMPLETED
   );
 
   let listOfPrograms = sortedApplications

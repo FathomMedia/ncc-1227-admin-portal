@@ -163,6 +163,8 @@ export async function getApplicationByIdAPI(
   let query = `
   query GetApplicationInfo {
     getApplication(id: "${id}") {
+      schoolType
+      schoolName
       _deleted
       _lastChangedAt
       _version
@@ -275,6 +277,8 @@ export async function getAllApplicationsAPI(
   query ListAllApplications {
     listApplications(filter: {dateTime: {between: ["${dateRange.start}T00:00:00", "${dateRange.end}T00:00:00"]}}) {
       items {
+        schoolType
+        schoolName
         _version
         _deleted
         dateTime

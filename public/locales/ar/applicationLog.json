@@ -13,6 +13,8 @@
   "status": "الحالة",
   "householdIncome": "دخل الأسرة",
   "graduationDate": "تاريخ التخرج",
+  "schoolName": "اسم المدرسة",
+  "schoolType": "نوع المدرسة",
   "schoolSpecialization": "التخصص المدرسي",
   "gpa": "المعدل التراكمي",
   "primaryProgram": "البرنامج الاول",

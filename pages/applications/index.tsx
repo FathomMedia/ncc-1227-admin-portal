@@ -13,12 +13,13 @@ import { PageComponent } from "../../components/page-component";
 import { StudentsTableHeaders } from "../../constants/table-headers";
 import { useEducation } from "../../context/EducationContext";
 import { useStudent } from "../../context/StudentContext";
-import { Application, ProgramChoice, Status } from "../../src/API";
+import { Application, ProgramChoice, SchoolType, Status } from "../../src/API";
 import { getStatusOrder } from "../../src/Helpers";
 
 interface InitialFilterValues {
   search: string;
   applicationStatus: string;
+  schoolType: string;
   university: string;
   program: string;
 }
@@ -42,6 +43,7 @@ const Applications = () => {
   const initialFilterValues: InitialFilterValues = {
     search: "",
     applicationStatus: "",
+    schoolType: "",
     university: "",
     program: "",
   };
@@ -156,7 +158,8 @@ const Applications = () => {
           ? element.programs?.items.find(
               (p) => p?.program?.university?.name === values.university
             )
-          : true)
+          : true) &&
+        (values.schoolType ? element.schoolType === values.schoolType : true)
     );
 
     setShownData(filteredApplications);
@@ -231,6 +234,31 @@ const Applications = () => {
                       {Object.keys(Status).map((status) => (
                         <option value={status} key={status}>
                           {t(status)}
+                        </option>
+                      ))}
+                    </Field>
+                  </div>
+                </div>
+
+                {/* School Type filter */}
+                <div>
+                  <div className="text-sm font-semibold text-gray-500 ">
+                    {t("searchSchoolType")}
+                  </div>
+                  <div>
+                    <Field
+                      dir="ltr"
+                      className="input input-bordered min-w-[10rem]"
+                      as="select"
+                      name="schoolType"
+                      onChange={handleChange}
+                      value={values.schoolType}
+                    >
+                      <option value={""}>All</option>
+
+                      {Object.keys(SchoolType).map((type) => (
+                        <option value={type} key={type}>
+                          {t(type)}
                         </option>
                       ))}
                     </Field>
@@ -359,7 +387,9 @@ const Applications = () => {
                         </CSVLink>
                       </th>
                     ) : (
-                      <th className=" bg-nccGray-100" key={index}></th>
+                      <th className=" bg-nccGray-100" key={index}>
+                        {""}
+                      </th>
                     )
                   )}
                 </tr>
@@ -400,9 +430,9 @@ const Applications = () => {
                       <div
                         className={`badge text-sm font-semibold 
                         ${
-                          (datum.status === Status.NOT_COMPLETED && "") ||
-                          (datum.status === Status.REVIEW &&
-                            "text-primary-content badge-accent")
+                          // (datum.status === Status.NOT_COMPLETED && "") ||
+                          datum.status === Status.REVIEW &&
+                          "text-primary-content badge-accent"
                         } 
                         ${
                           datum.status === Status.WITHDRAWN ||
@@ -420,6 +450,13 @@ const Applications = () => {
                         mr-2`}
                       >{`${t(datum.status)}`}</div>
                     </td>
+
+                    <td>
+                      <div className="flex justify-between ">
+                        {datum.schoolType}
+                      </div>
+                    </td>
+
                     <td>
                       <div className="flex justify-between ">{datum.gpa}</div>
                     </td>
