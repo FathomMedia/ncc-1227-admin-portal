@@ -164,6 +164,8 @@ export async function getApplicationByIdAPI(
   let query = `
   query GetApplicationInfo {
     getApplication(id: "${id}") {
+      schoolType
+      schoolName
       _deleted
       _lastChangedAt
       _version

@@ -111,6 +111,7 @@ export const getApplication = /* GraphQL */ `
         phone
         gender
         schoolName
+        schoolType
         specialization
         placeOfBirth
         studentOrderAmongSiblings
@@ -127,6 +128,8 @@ export const getApplication = /* GraphQL */ `
       }
       dateTime
       isEmailSent
+      schoolName
+      schoolType
       createdAt
       updatedAt
       _version
@@ -151,6 +154,8 @@ export const listApplications = /* GraphQL */ `
         studentCPR
         dateTime
         isEmailSent
+        schoolName
+        schoolType
         createdAt
         updatedAt
         _version
@@ -184,6 +189,8 @@ export const syncApplications = /* GraphQL */ `
         studentCPR
         dateTime
         isEmailSent
+        schoolName
+        schoolType
         createdAt
         updatedAt
         _version
@@ -224,6 +231,8 @@ export const getProgramChoice = /* GraphQL */ `
         studentCPR
         dateTime
         isEmailSent
+        schoolName
+        schoolType
         createdAt
         updatedAt
         _version
@@ -561,6 +570,7 @@ export const getStudentLog = /* GraphQL */ `
         phone
         gender
         schoolName
+        schoolType
         specialization
         placeOfBirth
         studentOrderAmongSiblings
@@ -821,6 +831,7 @@ export const getStudent = /* GraphQL */ `
       phone
       gender
       schoolName
+      schoolType
       specialization
       placeOfBirth
       studentOrderAmongSiblings
@@ -886,6 +897,7 @@ export const listStudents = /* GraphQL */ `
         phone
         gender
         schoolName
+        schoolType
         specialization
         placeOfBirth
         studentOrderAmongSiblings
@@ -925,6 +937,7 @@ export const syncStudents = /* GraphQL */ `
         phone
         gender
         schoolName
+        schoolType
         specialization
         placeOfBirth
         studentOrderAmongSiblings
@@ -969,6 +982,8 @@ export const applicationsByStudentCPRAndGpa = /* GraphQL */ `
         studentCPR
         dateTime
         isEmailSent
+        schoolName
+        schoolType
         createdAt
         updatedAt
         _version

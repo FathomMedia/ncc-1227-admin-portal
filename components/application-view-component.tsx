@@ -326,6 +326,14 @@ export default function ViewApplication({
                       <td>{application.student?.graduationDate}</td>
                     </tr>
                     <tr>
+                      <td>{t("schoolName")}</td>
+                      <td>{application.schoolName}</td>
+                    </tr>
+                    <tr>
+                      <td>{t("schoolType")}</td>
+                      <td>{application.schoolType}</td>
+                    </tr>
+                    <tr>
                       <td>{t("schoolSpecialization")}</td>
                       <td>{application.student?.specialization}</td>
                     </tr>

@@ -13,6 +13,8 @@
   "status": "Status",
   "householdIncome": "Household Income",
   "graduationDate": "Graduation Date",
+  "schoolName": "School Name",
+  "schoolType": "School Type",
   "schoolSpecialization": "School Specialization",
   "gpa": "GPA",
   "primaryProgram": "Primary Program",
