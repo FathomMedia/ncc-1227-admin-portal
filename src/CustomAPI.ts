@@ -41,6 +41,7 @@ import {
   updateProgram,
   updateUniversity,
 } from "./graphql/mutations";
+import { IDateRange } from "./Helpers";
 
 /* -------------------------------------------------------------------------- */
 /*                                 INTERFACES                                 */
@@ -758,4 +759,121 @@ export async function updateUniversityById(
   })) as GraphQLResult<UpdateUniversityMutation>;
 
   return res.data;
+}
+
+/**
+ * It gets all applications from the database
+ * @param {IDateRange} dateRange - IDateRange
+ * @returns An array of applications
+ */
+export async function getAllApplicationsAPI(
+  dateRange: IDateRange
+): Promise<Application[] | undefined> {
+  let query = `
+  query ListAllApplications {
+    listApplications(filter: {dateTime: {between: ["${dateRange.start}T00:00:00", "${dateRange.end}T00:00:00"]}}) {
+      items {
+        _version
+        _deleted
+        dateTime
+        applicationAttachmentId
+        attachmentID
+        gpa
+        id
+        status
+        studentCPR
+        programs {
+          items {
+            _deleted
+            id
+            programID
+            program {
+              id
+              name
+              university {
+                name
+                id
+              }
+            }
+          }
+        }
+        createdAt
+        updatedAt
+        student {
+          householdIncome
+        }
+      }
+      nextToken
+    }
+  }
+  
+  `;
+
+  let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;
+
+  let tempApplicationList = res.data;
+  let temp: Application[] = (tempApplicationList?.listApplications?.items ??
+    []) as Application[];
+
+  if (res.data === null) {
+    throw new Error("Failed to get all applications");
+  }
+
+  return temp;
+}
+
+export async function getAllApprovedApplicationsAPI(
+  dateRange: IDateRange
+): Promise<Application[] | undefined> {
+  let query = `
+  query ListAllApplications {
+    listApplications(filter: {dateTime: {between: ["${dateRange.start}T00:00:00", "${dateRange.end}T00:00:00"]}, and: {status: {eq: APPROVED}}}) {
+      items {
+        _version
+        _deleted
+        dateTime
+        applicationAttachmentId
+        attachmentID
+        gpa
+        id
+        status
+        studentCPR
+        programs {
+          items {
+            _deleted
+            id
+            programID
+            program {
+              id
+              name
+              university {
+                name
+                id
+              }
+            }
+          }
+        }
+        createdAt
+        updatedAt
+        student {
+          householdIncome
+        }
+      }
+      nextToken
+    }
+  }
+  
+  `;
+
+  let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;
+
+  let tempApplicationList = res.data;
+  let temp: Application[] = (tempApplicationList?.listApplications?.items ??
+    []) as Application[];
+
+  if (res.data === null) {
+    throw new Error("Failed to get all applications");
+  }
+
+  return temp;
 }

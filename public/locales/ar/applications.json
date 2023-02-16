@@ -48,5 +48,9 @@
   "getLink": "خذ رابط",
   "documentNotSubmitted": "لم يتم تقديم المستند",
   "loading": "انتظر",
-  "viewDocument": "عرض المستند"
+  "viewDocument": "عرض المستند",
+  "applicationArchiveTitle": "أرشيف الطلبات المعتمدة",
+  "applicationArchiveSubtitle": "سرد جميع الطلبات المعتمدة",
+  "archives": "أرشيف",
+  "exportAllAsCSV": "تصدير الكل CSV"
 }

@@ -7,10 +7,11 @@ import {
   useEffect,
   useState,
 } from "react";
-import { Application, ListApplicationsQuery } from "../src/API";
+import { Application } from "../src/API";
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { Student } from "../src/models";
 import { IDateRange } from "../src/Helpers";
+import { getAllApplicationsAPI } from "../src/CustomAPI";
 
 // interface for all the values & functions
 interface IUseStudentContext {
@@ -266,60 +267,4 @@ export async function getApplicationByIdAPI(
   }
 
   return tempApplication.getApplication as Application;
-}
-
-export async function getAllApplicationsAPI(
-  dateRange: IDateRange
-): Promise<Application[] | undefined> {
-  let query = `
-  query ListAllApplications {
-    listApplications(filter: {dateTime: {between: ["${dateRange.start}T00:00:00", "${dateRange.end}T00:00:00"]}}) {
-      items {
-        _version
-        _deleted
-        dateTime
-        applicationAttachmentId
-        attachmentID
-        gpa
-        id
-        status
-        studentCPR
-        programs {
-          items {
-            _deleted
-            id
-            programID
-            program {
-              id
-              name
-              university {
-                name
-                id
-              }
-            }
-          }
-        }
-        createdAt
-        updatedAt
-        student {
-          householdIncome
-        }
-      }
-      nextToken
-    }
-  }
-  
-  `;
-
-  let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;
-
-  let tempApplicationList = res.data;
-  let temp: Application[] = (tempApplicationList?.listApplications?.items ??
-    []) as Application[];
-
-  if (res.data === null) {
-    throw new Error("Failed to get all applications");
-  }
-
-  return temp;
 }

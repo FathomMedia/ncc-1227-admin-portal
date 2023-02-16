@@ -1,21 +1,17 @@
-import { Field, Form, Formik } from "formik";
-import { GetStaticProps } from "next";
-import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { CSVLink } from "react-csv";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import { BsFillEyeFill } from "react-icons/bs";
 import { HiDotsVertical, HiOutlineClipboardList } from "react-icons/hi";
 import { DateRangeComponent } from "../../components/date-range-component";
 import { PageComponent } from "../../components/page-component";
 import { StudentsTableHeaders } from "../../constants/table-headers";
-import { useEducation } from "../../context/EducationContext";
 import { useStudent } from "../../context/StudentContext";
 import { Application, ProgramChoice, Status } from "../../src/API";
-import { getStatusOrder } from "../../src/Helpers";
+import { getStatusOrder, IDateRange } from "../../src/Helpers";
 
 interface InitialFilterValues {
   search: string;
@@ -24,33 +20,46 @@ interface InitialFilterValues {
   program: string;
 }
 
-export const getStaticProps: GetStaticProps = async (ctx) => {
+// You should use getServerSideProps when:
+// - Only if you need to pre-render a page whose data must be fetched at request time
+import { GetServerSideProps } from "next";
+import { getAllApprovedApplicationsAPI } from "../../src/CustomAPI";
+
+const defaultDateRange = {
+  start: `${new Date().getFullYear()}-01-01`,
+  end: `${new Date().getFullYear() + 1}-01-01`,
+};
+
+interface Props {
+  applications: Application[];
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { locale } = ctx;
+
+  const applications =
+    (await getAllApprovedApplicationsAPI(defaultDateRange)) ?? [];
 
   return {
     props: {
+      applications: applications,
       ...(await serverSideTranslations(locale ?? "en", [
         "applications",
         "pageTitles",
         "signIn",
-        "applicationLog",
       ])),
     },
   };
 };
 
-const Applications = () => {
-  const initialFilterValues: InitialFilterValues = {
-    search: "",
-    applicationStatus: "",
-    university: "",
-    program: "",
-  };
-
-  const { applications, students, dateRange, updateDateRange } = useStudent();
-  const { universityList, programsList } = useEducation();
-  const { push, locale } = useRouter();
+const ArchivePage: FC<Props> = ({ applications: initialApplications }) => {
   const { t } = useTranslation("applications");
+
+  const { students } = useStudent();
+  const { push, locale } = useRouter();
+
+  const [dateRange, setDateRange] = useState<IDateRange>(defaultDateRange);
+  const isInitialMount = useRef(true);
 
   // Table Data Pagination
   const elementPerPage = 10;
@@ -58,12 +67,13 @@ const Applications = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [disableForward, setDisableForward] = useState(false);
   const [disableBackward, setDisableBackward] = useState(true);
+  const [applications, setApplications] = useState<Application[] | undefined>(
+    initialApplications
+  );
   const [shownData, setShownData] = useState<Application[] | undefined>([]);
   const [selectedApplication, setSelectedApplication] = useState<Application[]>(
     []
   );
-
-  // let selectedApplication: Application[] = [];
 
   let sortedApplications = applications
     ?.sort(
@@ -115,6 +125,24 @@ const Applications = () => {
     return () => {};
   }, [sortedApplications, currentPage]);
 
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+    } else {
+      toast
+        .promise(getAllApprovedApplicationsAPI(dateRange), {
+          loading: "loading..",
+          success: "fetched applications successfully",
+          error: "Failed to fetch applications",
+        })
+        .then((newApplications) => {
+          setApplications(newApplications);
+        });
+    }
+
+    return () => {};
+  }, [dateRange]);
+
   function addToSelected(app: Application) {
     setSelectedApplication([...selectedApplication, app]);
   }
@@ -135,193 +163,58 @@ const Applications = () => {
   function findStudentName(id: string) {
     return students?.find((value) => value.cpr === id)?.fullName;
   }
-  // Table Data Pagination
-
-  function filter(values: InitialFilterValues) {
-    let filteredApplications = sortedApplications?.filter(
-      (element) =>
-        (findStudentName(element.studentCPR)
-          ?.toLowerCase()
-          .includes(values.search.toLowerCase()) ||
-          element.studentCPR
-            .toLowerCase()
-            .includes(values.search.toLowerCase())) &&
-        (values.applicationStatus
-          ? element.status === values.applicationStatus
-          : true) &&
-        (values.program
-          ? element.programs?.items.find(
-              (p) => p?.program?.name === values.program
-            )
-          : true) &&
-        (values.university
-          ? element.programs?.items.find(
-              (p) => p?.program?.university?.name === values.university
-            )
-          : true)
-    );
-
-    setShownData(filteredApplications);
-  }
-
-  function resetFilters() {
-    setShownData(sortedApplications);
-    setSelectedApplication([]);
-  }
 
   return (
-    <PageComponent title={"Applications"}>
+    <PageComponent title={"ApplicationsArchive"}>
       <Toaster />
       <div className="flex flex-wrap items-center justify-between mb-8 ">
-        <div className="flex flex-col items-start gap-3 ">
+        <div className="flex flex-col items-start gap-3">
           <div className="">
             <div className="text-2xl font-semibold ">
-              {t("applicationTitle")}
+              {t("applicationArchiveTitle")}
             </div>
-            <div className="text-base font-medium text-gray-500">
-              {t("applicationSubtitle")}
+            <div className="text-base font-medium text-gray-500 ">
+              {t("applicationArchiveSubtitle")}
             </div>
           </div>
-          <Link
-            href="/applications/archive"
-            className="btn btn-ghost btn-sm text-primary hover:bg-primary/30"
+          <CSVLink
+            className="text-xs hover:!text-white btn btn-primary btn-sm btn-outline"
+            filename={`${new Date().getFullYear()}-Applications-${new Date().toISOString()}.csv`}
+            data={[
+              ...(applications ?? []).map((app, index) => {
+                let sortedProgramChoices: (ProgramChoice | null)[] | undefined =
+                  app.programs?.items?.sort(
+                    (a, b) => (a?.choiceOrder ?? 0) - (b?.choiceOrder ?? 0)
+                  );
+
+                return {
+                  row: index + 1,
+                  applicationId: app.id,
+                  gpa: app.gpa,
+                  status: app.status,
+                  studentCPR: app.studentCPR,
+                  dateTime: app.dateTime,
+                  primaryProgramID: sortedProgramChoices?.[0]?.program?.id,
+                  primaryProgram: `${sortedProgramChoices?.[0]?.program?.name}-${sortedProgramChoices?.[0]?.program?.university?.name}`,
+                  secondaryProgramID: sortedProgramChoices?.[1]?.program?.id,
+                  secondaryProgram: `${sortedProgramChoices?.[1]?.program?.name}-${sortedProgramChoices?.[1]?.program?.university?.name}`,
+                };
+              }),
+            ]}
+            onClick={() => {
+              setSelectedApplication([]);
+            }}
           >
-            {t("archives")}
-          </Link>
+            {t("exportAllAsCSV")}
+          </CSVLink>
         </div>
 
         <DateRangeComponent
           dateRange={dateRange}
-          updateRange={updateDateRange}
+          updateRange={setDateRange}
         ></DateRangeComponent>
       </div>
 
-      {/* applications search bar */}
-      <div className="flex items-center w-full p-4 my-8 border border-nccGray-100 rounded-xl bg-nccGray-100">
-        <div className="flex w-full gap-4 ">
-          <Formik
-            initialValues={initialFilterValues}
-            onSubmit={(values) => {
-              filter(values);
-            }}
-          >
-            {({ values, handleChange, handleReset }) => (
-              <Form className="flex flex-wrap items-end gap-3 p-4">
-                {/* Search Bar */}
-                <div>
-                  <div className="text-sm font-semibold text-gray-500 ">
-                    {t("search")}
-                  </div>
-                  <div>
-                    <Field
-                      dir="ltr"
-                      className="input input-bordered"
-                      type="text"
-                      name="search"
-                      placeholder="Search..."
-                      onChange={handleChange}
-                      value={values.search}
-                    ></Field>
-                  </div>
-                </div>
-
-                {/* Status filter */}
-                <div>
-                  <div className="text-sm font-semibold text-gray-500 ">
-                    {t("searchStatus")}
-                  </div>
-                  <div>
-                    <Field
-                      dir="ltr"
-                      className="input input-bordered min-w-[10rem]"
-                      as="select"
-                      name="applicationStatus"
-                      onChange={handleChange}
-                      value={values.applicationStatus}
-                    >
-                      <option value={""}>All</option>
-
-                      {Object.keys(Status).map((status) => (
-                        <option value={status} key={status}>
-                          {t(status)}
-                        </option>
-                      ))}
-                    </Field>
-                  </div>
-                </div>
-
-                {/* University filter */}
-                <div>
-                  <div className="text-sm font-semibold text-gray-500 ">
-                    {t("searchUniversity")}
-                  </div>
-                  <div>
-                    <Field
-                      dir="ltr"
-                      className="input input-bordered"
-                      as="select"
-                      name="university"
-                      onChange={handleChange}
-                      value={values.university}
-                    >
-                      <option value={""}>All</option>
-                      {universityList?.map((uni) => (
-                        <option key={`${uni.id}`} value={`${uni.name}`}>
-                          {uni.name}
-                        </option>
-                      ))}
-                    </Field>
-                  </div>
-                </div>
-
-                {/* Program filter */}
-                <div>
-                  <div className="text-sm font-semibold text-gray-500 ">
-                    {t("searchProgram")}
-                  </div>
-                  <div>
-                    <Field
-                      dir="ltr"
-                      className="input input-bordered"
-                      as="select"
-                      name="program"
-                      onChange={handleChange}
-                      value={values.program}
-                    >
-                      <option value={""}>All</option>
-                      {programsList?.map((program, index) => (
-                        <option key={index} value={`${program.name}`}>
-                          {program.name}
-                        </option>
-                      ))}
-                    </Field>
-                  </div>
-                </div>
-
-                <div className="flex items-end justify-between gap-4 ">
-                  <button
-                    type="submit"
-                    className={`min-w-[8rem] px-4 py-2 border-2 border-anzac-400 btn btn-primary btn-md bg-anzac-400 text-white text-xs font-bold hover:cursor-pointer`}
-                  >
-                    {t("applyFilters")}
-                  </button>
-                  <div
-                    onClick={() => {
-                      handleReset();
-                      resetFilters();
-                    }}
-                    className=" btn btn-ghost min-w-fit"
-                  >
-                    {t("resetFilters")}
-                  </div>
-                </div>
-              </Form>
-            )}
-          </Formik>
-        </div>
-      </div>
-
-      {/* applications table with pagination*/}
       {(shownData?.length ?? 0) > 0 ? (
         <div>
           <div dir="ltr" className="w-full h-screen overflow-x-auto">
@@ -540,4 +433,4 @@ const Applications = () => {
   );
 };
 
-export default Applications;
+export default ArchivePage;

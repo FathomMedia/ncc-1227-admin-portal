@@ -153,16 +153,16 @@ Props) {
           {/* application table */}
           {shownData.length > 0 ? (
             <div>
-              <div dir="ltr" className="overflow-x-auto w-full h-screen">
+              <div dir="ltr" className="w-full h-screen overflow-x-auto">
                 <table className="table w-full ">
-                  <thead className=" border rounded-xl border-nccGray-100">
+                  <thead className="border  rounded-xl border-nccGray-100">
                     <tr>
                       <th>{t("name")}</th>
                       <th>{t("cpr")}</th>
                       <th>{t("logHistory")}</th>
                       <th>{t("reason")}</th>
                       <th>{t("date")}</th>
-                      <th></th>
+                      <th>{""}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -183,12 +183,12 @@ Props) {
                             dateStyle: "medium",
                           }).format(new Date(log.createdAt))}`}</td>
                           {/* <td>
-                          <div className=" flex justify-end">
-                            <button className="btn btn-ghost btn-xs relative group">
+                          <div className="flex justify-end ">
+                            <button className="relative btn btn-ghost btn-xs group">
                               <HiDotsVertical />
-                              <div className=" hidden absolute right-6 top-5 bg-white shadow-lg p-1 rounded-lg group-focus:flex flex-col min-w-min">
+                              <div className="absolute flex-col hidden p-1 bg-white rounded-lg shadow-lg  right-6 top-5 group-focus:flex min-w-min">
                                 <div
-                                  className="btn btn-ghost btn-xs hover:bg-anzac-100 hover:cursor-pointer hover:text-anzac-500 flex justify-start w-24 gap-2"
+                                  className="flex justify-start w-24 gap-2 btn btn-ghost btn-xs hover:bg-anzac-100 hover:cursor-pointer hover:text-anzac-500"
                                   onClick={async () => {
                                     await getAdminLogsByLogID(log.id).then(
                                       (value) => {
@@ -211,7 +211,7 @@ Props) {
                   <tfoot></tfoot>
                 </table>
                 {/* fake pagination */}
-                <div className=" flex justify-center mt-8">
+                <div className="flex justify-center mt-8 ">
                   <div className="btn-group">
                     <button
                       type="button"
@@ -230,7 +230,7 @@ Props) {
                     </button>
                     <button
                       type="button"
-                      className="btn btn-accent  text-anzac-500"
+                      className="btn btn-accent text-anzac-500"
                       onClick={goNextPage}
                       disabled={disableForward}
                     >
@@ -241,8 +241,8 @@ Props) {
               </div>
             </div>
           ) : (
-            <div className=" flex justify-center items-center border border-nccGray-100 rounded-xl bg-nccGray-100 p-8">
-              <div className=" text-base font-medium">{t("noData")}</div>
+            <div className="flex items-center justify-center p-8 border  border-nccGray-100 rounded-xl bg-nccGray-100">
+              <div className="text-base font-medium ">{t("noData")}</div>
             </div>
           )}
         </div>

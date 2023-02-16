@@ -48,5 +48,9 @@
   "getLink": "Get Link",
   "documentNotSubmitted": "Document Not Submitted",
   "loading": "Loading...",
-  "viewDocument": "View Document"
+  "viewDocument": "View Document",
+  "applicationArchiveTitle": "Approved Application Archive",
+  "applicationArchiveSubtitle": "List all the approved applications",
+  "archives": "Archives",
+  "exportAllAsCSV": "Export All as CSV"
 }
