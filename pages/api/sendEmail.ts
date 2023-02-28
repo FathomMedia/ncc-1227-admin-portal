@@ -1,7 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Status } from "../../src/API";
+import nodemailer from "nodemailer";
+import NextCors from "nextjs-cors";
 
-import { sendApprovalMail, sendRefusalEmail } from "../../src/aws-ses";
+import {
+  nccApprovedEmailTemplate,
+  nccRejectedEmailTemplate,
+} from "../../src/ncc-email-templates";
 
 export interface ISendEmail {
   status: Status.APPROVED | Status.REJECTED | undefined;
@@ -14,7 +19,27 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const logo =
+    "https://res.cloudinary.com/dqg2db5gf/image/upload/v1672816898/Ncc/logo_siywsu.png";
+
+  await NextCors(req, res, {
+    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+    origin: "http://localhost:3000", //! TODO add correct url for portion web
+    optionsSuccessStatus: 200,
+  });
+
+  const transporter = nodemailer.createTransport({
+    port: 465,
+    host: "smtp.gmail.com",
+    auth: {
+      user: process.env.GMAIL_USERNAME,
+      pass: process.env.GMAIL_APP_PASSWORD,
+    },
+    secure: true,
+  });
+
   let data = JSON.parse(req.body);
+  console.log(data);
 
   try {
     if (data === null || data === undefined) {
@@ -25,29 +50,48 @@ export default async function handler(
         );
     }
 
-    if (data.status === undefined) {
-      return res.status(500).json("Application status is undefined");
-    }
+    if (data !== null)
+      if (data.status === undefined) {
+        return res.status(500).json("Application status is undefined");
+      }
 
     if (data.status === Status.REJECTED) {
-      const result = await sendRefusalEmail(
-        "nccxfthm1227@gmail.com",
-        data.studentName
-      );
-      return res.json(result);
+      const mailData = {
+        from: process.env.GMAIL_USERNAME,
+        to: data.email,
+        subject: `A decision was made with your application`,
+        html: await nccRejectedEmailTemplate(logo, data.studentName),
+      };
+
+      transporter.sendMail(mailData, function (err, info) {
+        if (err) {
+          res.status(500);
+          res.json({ message: err.message });
+        } else {
+          res.status(200);
+          res.json({ message: info.response });
+        }
+      });
     }
 
     if (data.status === Status.APPROVED) {
-      const result = await sendApprovalMail(
-        "nccxfthm1227@gmail.com",
-        data.studentName
-      );
-      return res.json(result);
-    }
+      const mailData = {
+        from: process.env.GMAIL_USERNAME,
+        to: data.email,
+        subject: `A decision was made with your application`,
+        html: nccApprovedEmailTemplate(logo, data.studentName),
+      };
 
-    return res
-      .status(500)
-      .json("Something went wrong. Please try again later.");
+      transporter.sendMail(mailData, function (err, info) {
+        if (err) {
+          res.status(500);
+          res.json({ message: err.message });
+        } else {
+          res.status(200);
+          res.json({ message: info.envelope });
+        }
+      });
+    }
   } catch (err) {
     console.log(err);
     throw err;

@@ -70,48 +70,47 @@ export default function ViewApplication({
   };
 
   async function sendEmail() {
-    await toast
-      .promise(
-        fetch("../../api/sendEmail", {
-          method: "POST",
-          body: JSON.stringify(emailData),
-        }),
-        {
-          loading: "Sending email...",
-          success: "Email sent to user!",
-          error: "Failed to send email to user",
-        }
-      )
-      .then(async () => {
-        await updateEmailSentToApplication({
-          applicationId: application.id,
-          version: application._version,
-          isEmailSent: true,
-        });
+    await toast.promise(
+      fetch("../../api/sendEmail", {
+        method: "POST",
+        body: JSON.stringify(emailData),
+      }),
+      {
+        loading: "Sending email...",
+        success: "Email sent to user!",
+        error: "Failed to send email to user",
+      }
+    );
+    // .then(async () => {
+    //   await updateEmailSentToApplication({
+    //     applicationId: application.id,
+    //     version: application._version,
+    //     isEmailSent: true,
+    //   });
 
-        let createAdminLogVariables: CreateAdminLogMutationVariables = {
-          input: {
-            applicationID: application.id,
-            adminCPR: user?.getUsername() ?? "",
-            dateTime: new Date().toISOString(),
-            snapshot: `Sent an Approved email to ${application.studentCPR}`,
-            reason: "Application is Approved",
-            applicationAdminLogsId: application.id,
-            adminAdminLogsCpr: user?.getUsername() ?? "",
-          },
-        };
+    //   let createAdminLogVariables: CreateAdminLogMutationVariables = {
+    //     input: {
+    //       applicationID: application.id,
+    //       adminCPR: user?.getUsername() ?? "",
+    //       dateTime: new Date().toISOString(),
+    //       snapshot: `Sent an Approved email to ${application.studentCPR}`,
+    //       reason: "Application is Approved",
+    //       applicationAdminLogsId: application.id,
+    //       adminAdminLogsCpr: user?.getUsername() ?? "",
+    //     },
+    //   };
 
-        await createAdminLogInDB(createAdminLogVariables)
-          .then(async (value) => {
-            syncApplications();
-            push("/applications");
-            return value;
-          })
-          .catch((err) => {
-            console.log(err);
-            throw err;
-          });
-      });
+    //   await createAdminLogInDB(createAdminLogVariables)
+    //     .then(async (value) => {
+    //       syncApplications();
+    //       push("/applications");
+    //       return value;
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //       throw err;
+    //     });
+    // });
   }
 
   return (
