@@ -210,13 +210,6 @@ const Home = () => {
                 {t("reportsAndGraphsSubtitle")}
               </div>
             </div>
-            <div className="flex items-center justify-end h-10 gap-4 m-4 "></div>
-            <div className=" h-10">
-              <PrimaryButton
-                name={t("createReport")}
-                buttonClick={() => push("/manualReport")}
-              ></PrimaryButton>
-            </div>
           </div>
           {/* large graphs */}
           <div className="grid items-center justify-center w-full h-full grid-cols-2 gap-x-8 gap-y-10 [grid-auto-rows:1fr]">

@@ -2,6 +2,7 @@ import { Field, FieldArray, Form, Formik } from "formik";
 import { useState } from "react";
 import { CSVLink } from "react-csv";
 import { useTranslation } from "react-i18next";
+import Spreadsheet, { Matrix } from "react-spreadsheet";
 import * as yup from "yup";
 import { useAuth } from "../hooks/use-auth";
 interface IManualReportForm {
@@ -21,9 +22,41 @@ interface IManualReportForm {
 }
 
 export default function ManualReportFormComponent() {
-  const auth = useAuth();
   const { t } = useTranslation("manualReport");
   const [csvData, setCsvData] = useState<IManualReportForm | null>(null);
+
+  const [data, setData] = useState<
+    Matrix<{
+      value: string;
+    }>
+  >([
+    [{ value: "Average GPA" }, { value: "" }],
+    [{ value: "" }],
+    [{ value: "Gender Ratio" }],
+    [{ value: "Male" }, { value: "" }],
+    [{ value: "Female" }, { value: "" }],
+    [{ value: "" }],
+    [{ value: "Weekly Summary" }],
+    [{ value: "Sunday" }, { value: "" }],
+    [{ value: "Monday" }, { value: "" }],
+    [{ value: "Tuesday" }, { value: "" }],
+    [{ value: "Wednesday" }, { value: "" }],
+    [{ value: "Thursday" }, { value: "" }],
+    [{ value: "Friday" }, { value: "" }],
+    [{ value: "Saturday" }, { value: "" }],
+    [{ value: "" }],
+    [{ value: "Top Universities" }],
+    [{ value: "Uni 1" }, { value: "" }],
+    [{ value: "Uni 2" }, { value: "" }],
+    [{ value: "Uni 3" }, { value: "" }],
+    [{ value: "Uni 4" }, { value: "" }],
+    [{ value: "" }],
+    [{ value: "Top Programs" }],
+    [{ value: "Program 1 - Uni" }, { value: "" }],
+    [{ value: "Program 2 - Uni" }, { value: "" }],
+    [{ value: "Program 3 - Uni" }, { value: "" }],
+    [{ value: "Program 4 - Uni" }, { value: "" }],
+  ]);
 
   const initialValues: IManualReportForm = {
     averageGPA: "",
@@ -43,13 +76,19 @@ export default function ManualReportFormComponent() {
 
   return (
     <div>
-      <div className=" rounded-xl bg-nccGray-50 min-w-min p-4">
+      <Spreadsheet data={data} onChange={setData} />
+      <div className="p-4 rounded-xl bg-nccGray-50 min-w-min">
         <div className="flex flex-col items-center">
-          <div className=" text-xl font-bold ">{t("manualReport")}</div>
+          <div className="text-xl font-bold ">{t("manualReport")}</div>
           <Formik
             initialValues={initialValues}
             validationSchema={yup.object({})}
             onSubmit={async (values, actions) => {
+              console.log(
+                "🚀 ~ file: manual-report-component.tsx:53 ~ onSubmit={ ~ values",
+                values
+              );
+
               setCsvData(values);
               actions.setSubmitting(false);
             }}
@@ -253,7 +292,7 @@ export default function ManualReportFormComponent() {
                           values.topUniversities.length > 0 ? (
                             values.topUniversities.map((uni, index) => (
                               <div key={index}>
-                                <div className=" p-2 flex gap-2">
+                                <div className="flex gap-2 p-2 ">
                                   <Field
                                     className={`input input-bordered input-primary ${
                                       errors.topUniversities && "input-error"
@@ -268,14 +307,14 @@ export default function ManualReportFormComponent() {
                                   />
                                 </div>
                                 <button
-                                  className=" p-4 font-bold"
+                                  className="p-4 font-bold "
                                   type="button"
                                   onClick={() => arrayHelpers.remove(index)} // remove a friend from the list
                                 >
                                   -
                                 </button>
                                 <button
-                                  className=" p-4"
+                                  className="p-4 "
                                   type="button"
                                   onClick={() => arrayHelpers.insert(index, "")} // insert an empty string at a position
                                 >
@@ -309,7 +348,7 @@ export default function ManualReportFormComponent() {
                           values.topPrograms.length > 0 ? (
                             values.topPrograms.map((uni, index) => (
                               <div key={index}>
-                                <div className=" p-2 flex gap-2">
+                                <div className="flex gap-2 p-2 ">
                                   <Field
                                     className={`input input-bordered input-primary ${
                                       errors.topPrograms && "input-error"
@@ -324,14 +363,14 @@ export default function ManualReportFormComponent() {
                                   />
                                 </div>
                                 <button
-                                  className=" p-4"
+                                  className="p-4 "
                                   type="button"
                                   onClick={() => arrayHelpers.remove(index)} // remove a friend from the list
                                 >
                                   -
                                 </button>
                                 <button
-                                  className=" p-4"
+                                  className="p-4 "
                                   type="button"
                                   onClick={() => arrayHelpers.insert(index, "")} // insert an empty string at a position
                                 >
@@ -356,7 +395,7 @@ export default function ManualReportFormComponent() {
                     />
                   </div>
                 </div>
-                <div className=" flex justify-center mt-10">
+                <div className="flex justify-center mt-10 ">
                   <button
                     type="submit"
                     className={`btn btn-primary text-white w-full ${
@@ -374,8 +413,6 @@ export default function ManualReportFormComponent() {
                           averageGPA: csvData.averageGPA,
                         },
                         csvData.weeklySum,
-                        // [csvData.topUniversities],
-                        // [csvData.topPrograms],
                         csvData.genderSummary,
                       ]}
                       className="text-xs text-white btn btn-primary btn-sm"
