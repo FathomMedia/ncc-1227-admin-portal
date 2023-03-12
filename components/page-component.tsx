@@ -39,12 +39,12 @@ export const PageComponent: FC<PropsWithChildren<Props>> = (props) => {
           title="pageComponent"
         />
 
-        <div className="m-4 drawer-content">
+        <div className="drawer-content">
           {!isSignedIn ? (
             <SignInFormComponent></SignInFormComponent>
           ) : (
             user?.challengeName !== "NEW_PASSWORD_REQUIRED" && (
-              <div>
+              <div className="m-4">
                 <div className="container px-6 mx-auto mt-24 md:px-10 lg:px-16 ">
                   {props.children}
                 </div>

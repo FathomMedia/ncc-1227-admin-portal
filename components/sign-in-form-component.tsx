@@ -2,6 +2,8 @@ import { Field, Form, Formik } from "formik";
 import { useTranslation } from "react-i18next";
 import * as yup from "yup";
 import { useAuth } from "../hooks/use-auth";
+import Image from "next/image";
+
 interface ISignInForm {
   cpr: string;
   password: string;
@@ -18,10 +20,23 @@ export default function SignInFormComponent() {
 
   return (
     <div>
-      <div className=" min-h-screen flex justify-center items-center">
-        <div className=" border rounded-xl min-w-min p-4">
-          <div className="flex flex-col items-center">
-            <div className=" text-xl font-bold ">{t("signIn")}</div>
+      <div className="flex flex-col items-center justify-center h-screen gap-10 p-8 lg:flex-row bg-amber-50">
+        <div className="flex flex-col items-center justify-center gap-3 lg:flex-row lg:justify-start">
+          <div className="flex flex-col text-center">
+            <Image
+              className=""
+              src="/logo-no-sides.svg"
+              alt="logo"
+              width={200}
+              height={100}
+            />
+            <h1 className="text-xl font-medium text-anzac-900">Welcome back</h1>
+            <p className="text-sm text-primary-focus">NCC dashboard</p>
+          </div>
+        </div>
+        <div className="flex flex-col w-full max-w-md p-10 bg-white shadow-2xl rounded-2xl shadow-primary-focus/20">
+          <div className="flex flex-col items-center w-full gap-6">
+            <div className="text-xl font-bold ">{t("signIn")}</div>
             <Formik
               initialValues={initialValues}
               validationSchema={yup.object({
@@ -42,7 +57,7 @@ export default function SignInFormComponent() {
                 isSubmitting,
                 isValid,
               }) => (
-                <Form className="flex flex-col gap-3 p-4">
+                <Form className="flex flex-col w-full gap-6 ">
                   <div className="flex flex-col">
                     <label className="label">{t("cpr")}</label>
                     <Field
