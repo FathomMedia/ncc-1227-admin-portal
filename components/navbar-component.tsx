@@ -20,7 +20,7 @@ export default function NavbarComponent() {
   return (
     <div className="flex flex-col justify-between p-4 py-24 bg-nccGray-50">
       <div className="flex flex-col gap-4">
-        <div className=" max-w-[200px]">
+        <div className=" max-w-[200px] ">
           <Image
             className=""
             src="/logo.svg"

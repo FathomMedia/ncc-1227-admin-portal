@@ -28,7 +28,13 @@ export const PageComponent: FC<PropsWithChildren<Props>> = (props) => {
           </label>
         </div>
         <div className="flex-1">
-          <Image src="/logo.svg" alt="logo" width={200} height={100} />
+          <Image
+            className="h-16"
+            src="/logo.svg"
+            alt="logo"
+            width={200}
+            height={100}
+          />
         </div>
       </div>
       <div className="drawer drawer-mobile min-w-[277px]">

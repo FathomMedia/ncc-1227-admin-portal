@@ -48,6 +48,10 @@ module.exports = {
           100: "#F8F8F8",
         },
       },
+      fontFamily: {
+        IBM: ["IBM Plex Sans", "sans-serif"],
+        IBMArabic: ["IBM Plex Sans Arabic", "sans-serif"],
+      },
     },
   },
   daisyui: {

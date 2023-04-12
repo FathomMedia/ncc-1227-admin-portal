@@ -47,7 +47,7 @@ function App({ Component, pageProps }: AppProps) {
 
   const dir = locale === "ar" ? "rtl" : "ltr";
   return (
-    <div dir={dir}>
+    <div dir={dir} className={locale === "ar" ? "font-IBMArabic" : "font-IBM"}>
       <AuthProvider>
         <AppProvider>
           {/* <AdminProvider> */}

@@ -25,12 +25,14 @@ export default function SignInFormComponent() {
           <div className="flex flex-col text-center">
             <Image
               className=""
-              src="/logo-no-sides.svg"
+              src="/logo.svg"
               alt="logo"
               width={200}
               height={100}
             />
-            <h1 className="text-xl font-medium text-anzac-900">Welcome back</h1>
+            <h1 className="text-xl font-medium text-anzac-900 mt-4">
+              Welcome back
+            </h1>
             <p className="text-sm text-primary-focus">NCC dashboard</p>
           </div>
         </div>
