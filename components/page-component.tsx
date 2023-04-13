@@ -30,7 +30,7 @@ export const PageComponent: FC<PropsWithChildren<Props>> = (props) => {
         <div className="flex-1">
           <Image
             className="h-16"
-            src="/logo.svg"
+            src="/logo-no-bottom.svg"
             alt="logo"
             width={200}
             height={100}

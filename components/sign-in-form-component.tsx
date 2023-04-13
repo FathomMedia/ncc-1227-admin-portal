@@ -25,7 +25,7 @@ export default function SignInFormComponent() {
           <div className="flex flex-col text-center">
             <Image
               className=""
-              src="/logo.svg"
+              src="/logo-no-bottom.svg"
               alt="logo"
               width={200}
               height={100}
