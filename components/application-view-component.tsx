@@ -81,36 +81,6 @@ export default function ViewApplication({
         error: "Failed to send email to user",
       }
     );
-    // .then(async () => {
-    //   await updateEmailSentToApplication({
-    //     applicationId: application.id,
-    //     version: application._version,
-    //     isEmailSent: true,
-    //   });
-
-    //   let createAdminLogVariables: CreateAdminLogMutationVariables = {
-    //     input: {
-    //       applicationID: application.id,
-    //       adminCPR: user?.getUsername() ?? "",
-    //       dateTime: new Date().toISOString(),
-    //       snapshot: `Sent an Approved email to ${application.studentCPR}`,
-    //       reason: "Application is Approved",
-    //       applicationAdminLogsId: application.id,
-    //       adminAdminLogsCpr: user?.getUsername() ?? "",
-    //     },
-    //   };
-
-    //   await createAdminLogInDB(createAdminLogVariables)
-    //     .then(async (value) => {
-    //       syncApplications();
-    //       push("/applications");
-    //       return value;
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //       throw err;
-    //     });
-    // });
   }
 
   return (

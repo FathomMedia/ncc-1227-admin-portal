@@ -91,6 +91,7 @@ export function giveMeApplicationsThisMonth(
   applications: Application[] | undefined
 ) {
   return applications
+
     ?.filter((app) => {
       const orderDate = new Date(app.dateTime);
       const today = new Date();
@@ -100,8 +101,7 @@ export function giveMeApplicationsThisMonth(
       return isThisYear && isThisMonth;
     })
     .sort(
-      (a, b) =>
-        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      (a, b) => new Date(a.dateTime).getTime() - new Date(b.dateTime).getTime()
     );
 }
 

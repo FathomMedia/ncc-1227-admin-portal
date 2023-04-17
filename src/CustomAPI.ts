@@ -187,29 +187,29 @@ export async function getApplicationData(
  */
 export async function listAllPrograms() {
   let q = `
-    query ListAllPrograms {
-      listPrograms {
-        items {
+  query ListAllPrograms {
+    listPrograms(limit: 999) {
+      items {
+        id
+        name
+        requirements
+        universityID
+        universityProgramsId
+        updatedAt
+        createdAt
+        availability
+        _version
+        _lastChangedAt
+        _deleted
+        university {
           id
-          name
-          requirements
-          universityID
-          universityProgramsId
-          updatedAt
-          createdAt
-          availability
-          _version
-          _lastChangedAt
           _deleted
-          university {
-            id
-            _deleted
-            _version
-            name
-          }
+          _version
+          name
         }
       }
     }
+  }
     `;
 
   let res = (await API.graphql(graphqlOperation(q))) as GraphQLResult<any>; // your fetch function here
@@ -775,6 +775,8 @@ export async function getAllApplicationsAPI(
       items {
         _version
         _deleted
+        schoolType
+        batch
         dateTime
         applicationAttachmentId
         attachmentID
@@ -805,9 +807,8 @@ export async function getAllApplicationsAPI(
       }
       nextToken
     }
-  }
-  
-  `;
+  }  
+`;
 
   let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;
 

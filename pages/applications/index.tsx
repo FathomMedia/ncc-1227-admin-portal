@@ -358,9 +358,18 @@ const Applications = () => {
                 <tr>
                   {StudentsTableHeaders.map((title, index) =>
                     index !== 0 ? (
-                      <th className=" bg-nccGray-100" key={index}>
-                        {t(title)}
-                      </th>
+                      index === StudentsTableHeaders.length - 1 ? (
+                        <th
+                          key={index}
+                          className="sticky right-0 bg-nccGray-100"
+                        >
+                          {""}
+                        </th>
+                      ) : (
+                        <th className=" bg-nccGray-100" key={index}>
+                          {t(title)}
+                        </th>
+                      )
                     ) : selectedApplication.length > 0 ? (
                       <th className=" bg-nccGray-100" key={index}>
                         <CSVLink
@@ -493,7 +502,7 @@ const Applications = () => {
                       >{`${Intl.DateTimeFormat(locale ?? "en", {
                         timeStyle: "short",
                         dateStyle: "medium",
-                      }).format(new Date(datum.createdAt))}`}</div>
+                      }).format(new Date(datum.dateTime))}`}</div>
                     </td>
                     <td>
                       <div
@@ -505,7 +514,7 @@ const Applications = () => {
                       }).format(new Date(datum.updatedAt))}`}</div>
                     </td>
 
-                    <td>
+                    <td className="sticky right-0">
                       <div className="flex justify-end ">
                         <button className="relative btn btn-ghost btn-xs group">
                           <HiDotsVertical />

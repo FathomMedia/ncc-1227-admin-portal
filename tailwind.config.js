@@ -59,21 +59,13 @@ module.exports = {
       {
         nccTheme: {
           primary: "#e1ba3d",
-
           secondary: "#F1492C",
-
           accent: "#f0e398",
-
           neutral: "#7F7E86",
-
           "base-100": "#FFFFFF",
-
           info: "#3ABFF8",
-
           success: "#36D399",
-
           warning: "#FBBD23",
-
           error: "#F87272",
         },
       },
