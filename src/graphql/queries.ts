@@ -9,7 +9,10 @@ export const getAttachment = /* GraphQL */ `
       cprDoc
       acceptanceLetterDoc
       transcriptDoc
+      lastYearGPA
       signedContractDoc
+      proofOfFamilyIncome
+      certificateOfPrivateEducation
       createdAt
       updatedAt
       _version
@@ -30,7 +33,10 @@ export const listAttachments = /* GraphQL */ `
         cprDoc
         acceptanceLetterDoc
         transcriptDoc
+        lastYearGPA
         signedContractDoc
+        proofOfFamilyIncome
+        certificateOfPrivateEducation
         createdAt
         updatedAt
         _version
@@ -60,7 +66,10 @@ export const syncAttachments = /* GraphQL */ `
         cprDoc
         acceptanceLetterDoc
         transcriptDoc
+        lastYearGPA
         signedContractDoc
+        proofOfFamilyIncome
+        certificateOfPrivateEducation
         createdAt
         updatedAt
         _version
@@ -93,7 +102,10 @@ export const getApplication = /* GraphQL */ `
         cprDoc
         acceptanceLetterDoc
         transcriptDoc
+        lastYearGPA
         signedContractDoc
+        proofOfFamilyIncome
+        certificateOfPrivateEducation
         createdAt
         updatedAt
         _version
@@ -110,12 +122,14 @@ export const getApplication = /* GraphQL */ `
         email
         phone
         gender
+        nationality
         schoolName
         schoolType
         specialization
         placeOfBirth
         studentOrderAmongSiblings
         householdIncome
+        familyIncome
         preferredLanguage
         graduationDate
         address
@@ -573,12 +587,14 @@ export const getStudentLog = /* GraphQL */ `
         email
         phone
         gender
+        nationality
         schoolName
         schoolType
         specialization
         placeOfBirth
         studentOrderAmongSiblings
         householdIncome
+        familyIncome
         preferredLanguage
         graduationDate
         address
@@ -834,12 +850,14 @@ export const getStudent = /* GraphQL */ `
       email
       phone
       gender
+      nationality
       schoolName
       schoolType
       specialization
       placeOfBirth
       studentOrderAmongSiblings
       householdIncome
+      familyIncome
       preferredLanguage
       graduationDate
       address
@@ -900,12 +918,14 @@ export const listStudents = /* GraphQL */ `
         email
         phone
         gender
+        nationality
         schoolName
         schoolType
         specialization
         placeOfBirth
         studentOrderAmongSiblings
         householdIncome
+        familyIncome
         preferredLanguage
         graduationDate
         address
@@ -940,12 +960,14 @@ export const syncStudents = /* GraphQL */ `
         email
         phone
         gender
+        nationality
         schoolName
         schoolType
         specialization
         placeOfBirth
         studentOrderAmongSiblings
         householdIncome
+        familyIncome
         preferredLanguage
         graduationDate
         address
