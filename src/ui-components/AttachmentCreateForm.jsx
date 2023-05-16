@@ -25,13 +25,13 @@ export default function AttachmentCreateForm(props) {
   } = props;
   const initialValues = {
     cprDoc: undefined,
-    acceptanceLetterDoc: undefined,
+    schoolCertificate: undefined,
     transcriptDoc: undefined,
     signedContractDoc: undefined,
   };
   const [cprDoc, setCprDoc] = React.useState(initialValues.cprDoc);
-  const [acceptanceLetterDoc, setAcceptanceLetterDoc] = React.useState(
-    initialValues.acceptanceLetterDoc
+  const [schoolCertificate, setSchoolCertificate] = React.useState(
+    initialValues.schoolCertificate
   );
   const [transcriptDoc, setTranscriptDoc] = React.useState(
     initialValues.transcriptDoc
@@ -42,14 +42,14 @@ export default function AttachmentCreateForm(props) {
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setCprDoc(initialValues.cprDoc);
-    setAcceptanceLetterDoc(initialValues.acceptanceLetterDoc);
+    setSchoolCertificate(initialValues.schoolCertificate);
     setTranscriptDoc(initialValues.transcriptDoc);
     setSignedContractDoc(initialValues.signedContractDoc);
     setErrors({});
   };
   const validations = {
     cprDoc: [],
-    acceptanceLetterDoc: [],
+    schoolCertificate: [],
     transcriptDoc: [],
     signedContractDoc: [],
   };
@@ -72,7 +72,7 @@ export default function AttachmentCreateForm(props) {
         event.preventDefault();
         let modelFields = {
           cprDoc,
-          acceptanceLetterDoc,
+          schoolCertificate,
           transcriptDoc,
           signedContractDoc,
         };
@@ -124,7 +124,7 @@ export default function AttachmentCreateForm(props) {
           if (onChange) {
             const modelFields = {
               cprDoc: value,
-              acceptanceLetterDoc,
+              schoolCertificate,
               transcriptDoc,
               signedContractDoc,
             };
@@ -150,24 +150,24 @@ export default function AttachmentCreateForm(props) {
           if (onChange) {
             const modelFields = {
               cprDoc,
-              acceptanceLetterDoc: value,
+              schoolCertificate: value,
               transcriptDoc,
               signedContractDoc,
             };
             const result = onChange(modelFields);
-            value = result?.acceptanceLetterDoc ?? value;
+            value = result?.schoolCertificate ?? value;
           }
-          if (errors.acceptanceLetterDoc?.hasError) {
-            runValidationTasks("acceptanceLetterDoc", value);
+          if (errors.schoolCertificate?.hasError) {
+            runValidationTasks("schoolCertificate", value);
           }
-          setAcceptanceLetterDoc(value);
+          setSchoolCertificate(value);
         }}
         onBlur={() =>
-          runValidationTasks("acceptanceLetterDoc", acceptanceLetterDoc)
+          runValidationTasks("schoolCertificate", schoolCertificate)
         }
-        errorMessage={errors.acceptanceLetterDoc?.errorMessage}
-        hasError={errors.acceptanceLetterDoc?.hasError}
-        {...getOverrideProps(overrides, "acceptanceLetterDoc")}
+        errorMessage={errors.schoolCertificate?.errorMessage}
+        hasError={errors.schoolCertificate?.hasError}
+        {...getOverrideProps(overrides, "schoolCertificate")}
       ></TextField>
       <TextField
         label="Transcript doc"
@@ -178,7 +178,7 @@ export default function AttachmentCreateForm(props) {
           if (onChange) {
             const modelFields = {
               cprDoc,
-              acceptanceLetterDoc,
+              schoolCertificate,
               transcriptDoc: value,
               signedContractDoc,
             };
@@ -204,7 +204,7 @@ export default function AttachmentCreateForm(props) {
           if (onChange) {
             const modelFields = {
               cprDoc,
-              acceptanceLetterDoc,
+              schoolCertificate,
               transcriptDoc,
               signedContractDoc: value,
             };

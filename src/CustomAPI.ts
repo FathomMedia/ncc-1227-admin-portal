@@ -57,7 +57,7 @@ export interface IlistAllAdminsLogsOutput {
 
 export interface DownloadLinks {
   cprDoc?: string | null;
-  acceptanceLetterDoc?: string | null;
+  schoolCertificate?: string | null;
   transcriptDoc?: string | null;
   signedContractDoc?: string | null;
 }
@@ -102,7 +102,7 @@ export async function getApplicationData(
                   transcriptDoc
                   signedContractDoc
                   cprDoc
-                  acceptanceLetterDoc
+                  schoolCertificate
                   _version
                   _deleted
                   _lastChangedAt
@@ -113,6 +113,7 @@ export async function getApplicationData(
                   items {
                     id
                     choiceOrder
+                    acceptanceLetterDoc
                     applicationID
                     applicationProgramsId
                     programApplicationsId
