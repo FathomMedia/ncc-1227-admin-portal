@@ -48,14 +48,14 @@ export default function AdminLogHistoryInfo({ adminLog }: Props) {
   return (
     <PageComponent title={"AdminLogHistory"}>
       <Toaster />
-      <div className=" flex flex-col justify-between p-4 ">
-        <div className=" p-4 ">
-          <div className=" mb-8 flex justify-between items-center ">
+      <div className="flex flex-col justify-between p-4 ">
+        <div className="p-4 ">
+          <div className="flex items-center justify-between mb-8 ">
             <div>
-              <div className=" text-2xl font-semibold">
+              <div className="text-2xl font-semibold ">
                 {t("adminLogTitle")}
               </div>
-              <div className=" text-base font-medium text-gray-500">{id}</div>
+              <div className="text-base font-medium text-gray-500 ">{id}</div>
             </div>
             <PrimaryButton
               name={t("backButton")}
@@ -65,17 +65,17 @@ export default function AdminLogHistoryInfo({ adminLog }: Props) {
             ></PrimaryButton>
           </div>
           {/* body */}
-          <div className=" flex flex-col justify-between gap-4">
+          <div className="flex flex-col justify-between gap-4 ">
             <div>
-              <div className=" text-xl font-semibold">
+              <div className="text-xl font-semibold ">
                 {t("adminInformation")}
               </div>
               <div>{adminLog.admin?.fullName}</div>
               <div>{adminLog.admin?.email}</div>
               <div>{adminLog.admin?.cpr}</div>
             </div>
-            <div className=" ">
-              <div className=" text-xl font-semibold">
+            <div className="">
+              <div className="text-xl font-semibold ">
                 {t("applicationDetails")}
               </div>
               {snapshot && (
@@ -83,8 +83,7 @@ export default function AdminLogHistoryInfo({ adminLog }: Props) {
                   application={snapshot}
                   downloadLinks={{
                     cprDoc: snapshot.attachment?.cprDoc,
-                    acceptanceLetterDoc:
-                      snapshot.attachment?.acceptanceLetterDoc,
+                    schoolCertificate: snapshot.attachment?.schoolCertificate,
                     transcriptDoc: snapshot.attachment?.transcriptDoc,
                     signedContractDoc: snapshot.attachment?.signedContractDoc,
                   }}
@@ -93,13 +92,13 @@ export default function AdminLogHistoryInfo({ adminLog }: Props) {
               )}
             </div>
             <div>
-              <div className=" text-xl font-semibold">
+              <div className="text-xl font-semibold ">
                 {t("reasonForChange")}
               </div>
               <div>{adminLog.reason}</div>
             </div>
             <div>
-              <div className=" text-xl font-semibold">{t("updatedAt")}</div>
+              <div className="text-xl font-semibold ">{t("updatedAt")}</div>
               <div>{`${Intl.DateTimeFormat("en", {
                 timeStyle: "short",
                 dateStyle: "medium",
