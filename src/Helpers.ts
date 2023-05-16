@@ -28,11 +28,13 @@ export interface WeeklySummaryGraphData {
 export interface ApplicationSnapshot {
   gpa?: string;
   primaryProgram?: string;
+  primaryProgramAcceptanceLetter?: string;
   secondaryProgram?: string;
+  secondaryProgramAcceptanceLetter?: string;
   attachments?: {
     cpr?: string;
     transcript?: string;
-    acceptance?: string;
+    schoolCertificate?: string;
     signedContract?: string;
   };
 }

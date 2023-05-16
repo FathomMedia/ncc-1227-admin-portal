@@ -104,11 +104,27 @@ const StudentLogHistoryInfo = ({ studentLog }: Props) => {
                         </td>
                       </tr>
                     )}
+                    {snapshot.primaryProgramAcceptanceLetter && (
+                      <tr>
+                        <td>{t("primaryProgramAcceptanceLetter")}</td>
+                        <td className="overflow-x-scroll">
+                          {snapshot.primaryProgramAcceptanceLetter}
+                        </td>
+                      </tr>
+                    )}
                     {snapshot.secondaryProgram && (
                       <tr>
                         <td>{t("secondaryProgram")}</td>
                         <td className="overflow-x-scroll">
                           {snapshot.secondaryProgram}
+                        </td>
+                      </tr>
+                    )}
+                    {snapshot.secondaryProgramAcceptanceLetter && (
+                      <tr>
+                        <td>{t("secondaryProgramAcceptanceLetter")}</td>
+                        <td className="overflow-x-scroll">
+                          {snapshot.secondaryProgramAcceptanceLetter}
                         </td>
                       </tr>
                     )}
@@ -129,11 +145,11 @@ const StudentLogHistoryInfo = ({ studentLog }: Props) => {
                         </td>
                       </tr>
                     )}
-                    {snapshot.attachments?.acceptance && (
+                    {snapshot.attachments?.schoolCertificate && (
                       <tr>
-                        <td>{t("acceptanceDocument")}</td>
+                        <td>{t("schoolCertificate")}</td>
                         <td className="overflow-x-scroll">
-                          {snapshot.attachments.acceptance}
+                          {snapshot.attachments.schoolCertificate}
                         </td>
                       </tr>
                     )}
