@@ -29,7 +29,7 @@ interface Props {
   application: Application;
   downloadLinks: {
     cprDoc?: string | null;
-    acceptanceLetterDoc?: string | null;
+    schoolCertificate?: string | null;
     transcriptDoc?: string | null;
     signedContractDoc?: string | null;
   };
@@ -54,6 +54,13 @@ export default function ViewApplication({
   const { syncApplications } = useStudent();
   const { t } = useTranslation("applicationLog");
   const tA = useTranslation("applications");
+
+  const primaryProgram = application.programs?.items?.sort(
+    (a, b) => (a?.choiceOrder ?? 0) - (b?.choiceOrder ?? 0)
+  )[0];
+  const secondaryProgram = application.programs?.items?.sort(
+    (a, b) => (a?.choiceOrder ?? 0) - (b?.choiceOrder ?? 0)
+  )[1];
 
   const initialValues: IApplicationForm = {
     applicationStatus: application.status ?? Status.REVIEW,
@@ -314,27 +321,31 @@ export default function ViewApplication({
                 </tr>
                 <tr>
                   <td>{t("primaryProgram")}</td>
-                  <td>{`${
-                    application.programs?.items?.sort(
-                      (a, b) => (a?.choiceOrder ?? 0) - (b?.choiceOrder ?? 0)
-                    )[0]?.program?.name
-                  } - ${
-                    application.programs?.items?.sort(
-                      (a, b) => (a?.choiceOrder ?? 0) - (b?.choiceOrder ?? 0)
-                    )[0]?.program?.university?.name
-                  }`}</td>
+                  <td className="flex flex-col gap-2">
+                    <div>
+                      {`${primaryProgram?.program?.name} - ${primaryProgram?.program?.university?.name}`}
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <p className="stat-desc">{t("acceptanceLetter")}</p>
+                      <GetStorageLinkComponent
+                        storageKey={primaryProgram?.acceptanceLetterDoc}
+                      ></GetStorageLinkComponent>
+                    </div>
+                  </td>
                 </tr>
                 <tr>
                   <td>{t("secondaryProgram")}</td>
-                  <td>{`${
-                    application.programs?.items?.sort(
-                      (a, b) => (a?.choiceOrder ?? 0) - (b?.choiceOrder ?? 0)
-                    )[1]?.program?.name
-                  } - ${
-                    application.programs?.items?.sort(
-                      (a, b) => (a?.choiceOrder ?? 0) - (b?.choiceOrder ?? 0)
-                    )[1]?.program?.university?.name
-                  }`}</td>
+                  <td className="flex flex-col gap-2">
+                    <div>
+                      {`${secondaryProgram?.program?.name} - ${secondaryProgram?.program?.university?.name}`}
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <p className="stat-desc">{t("acceptanceLetter")}</p>
+                      <GetStorageLinkComponent
+                        storageKey={secondaryProgram?.acceptanceLetterDoc}
+                      ></GetStorageLinkComponent>
+                    </div>
+                  </td>
                 </tr>
                 <tr>
                   <td>{t("cprDocument")}</td>
@@ -347,11 +358,11 @@ export default function ViewApplication({
                   </td>
                 </tr>
                 <tr>
-                  <td>{t("acceptanceLetter")}</td>
+                  <td>{t("schoolCertificate")}</td>
                   <td>
                     {
                       <GetStorageLinkComponent
-                        storageKey={downloadLinks.acceptanceLetterDoc}
+                        storageKey={downloadLinks.schoolCertificate}
                       ></GetStorageLinkComponent>
                     }
                   </td>

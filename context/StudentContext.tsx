@@ -179,7 +179,7 @@ export async function getApplicationByIdAPI(
         }
       }
       attachment {
-        acceptanceLetterDoc
+        schoolCertificate
         cprDoc
         id
         signedContractDoc
@@ -193,6 +193,7 @@ export async function getApplicationByIdAPI(
         items {
           choiceOrder
           programID
+          acceptanceLetterDoc
           program {
             name
             university {

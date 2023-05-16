@@ -44,29 +44,16 @@ const ApplicationInfo: FC<Props> = (props) => {
     <div>
       <PageComponent title={"ApplicationInfo"}>
         <Toaster />
-        <div className=" ">
-          <div className=" text-2xl font-semibold">{t("viewApplications")}</div>
-          <div className=" text-base font-medium text-gray-500">
+        <div className="">
+          <div className="text-2xl font-semibold ">{t("viewApplications")}</div>
+          <div className="text-base font-medium text-gray-500 ">
             {t("application")} ID: {id}
           </div>
         </div>
-        <ViewApplication
-          application={props.application}
-          downloadLinks={{
-            cprDoc: props.application.attachment?.cprDoc,
-            acceptanceLetterDoc:
-              props.application.attachment?.acceptanceLetterDoc,
-            transcriptDoc: props.application.attachment?.transcriptDoc,
-            signedContractDoc: props.application.attachment?.signedContractDoc,
-          }}
-          readOnly={false}
-        ></ViewApplication>
-
-        <div className=" divider"></div>
 
         <div>
-          <div className=" mt-10">
-            <div className=" text-base font-medium text-gray-500">
+          <div className="mt-10 ">
+            <div className="text-base font-medium text-gray-500 ">
               {t("studentInformation")}
             </div>
           </div>
@@ -76,10 +63,21 @@ const ApplicationInfo: FC<Props> = (props) => {
         </div>
 
         <div className=" divider"></div>
+        <ViewApplication
+          application={props.application}
+          downloadLinks={{
+            cprDoc: props.application.attachment?.cprDoc,
+            schoolCertificate: props.application.attachment?.schoolCertificate,
+            transcriptDoc: props.application.attachment?.transcriptDoc,
+            signedContractDoc: props.application.attachment?.signedContractDoc,
+          }}
+          readOnly={false}
+        ></ViewApplication>
 
-        <div className=" mb-4">
-          <div className=" mt-10">
-            <div className=" text-base font-medium text-gray-500">
+        <div className="divider"></div>
+        <div className="mb-4">
+          <div className="mt-10">
+            <div className="text-base font-medium text-gray-500 ">
               {t("parentsInformation")}
             </div>
           </div>

@@ -10,12 +10,9 @@ export const createAttachment = /* GraphQL */ `
     createAttachment(input: $input, condition: $condition) {
       id
       cprDoc
-      acceptanceLetterDoc
-      transcriptDoc
-      lastYearGPA
       signedContractDoc
-      proofOfFamilyIncome
-      certificateOfPrivateEducation
+      transcriptDoc
+      schoolCertificate
       createdAt
       updatedAt
       _version
@@ -32,12 +29,9 @@ export const updateAttachment = /* GraphQL */ `
     updateAttachment(input: $input, condition: $condition) {
       id
       cprDoc
-      acceptanceLetterDoc
-      transcriptDoc
-      lastYearGPA
       signedContractDoc
-      proofOfFamilyIncome
-      certificateOfPrivateEducation
+      transcriptDoc
+      schoolCertificate
       createdAt
       updatedAt
       _version
@@ -54,12 +48,9 @@ export const deleteAttachment = /* GraphQL */ `
     deleteAttachment(input: $input, condition: $condition) {
       id
       cprDoc
-      acceptanceLetterDoc
-      transcriptDoc
-      lastYearGPA
       signedContractDoc
-      proofOfFamilyIncome
-      certificateOfPrivateEducation
+      transcriptDoc
+      schoolCertificate
       createdAt
       updatedAt
       _version
@@ -90,12 +81,9 @@ export const createApplication = /* GraphQL */ `
       attachment {
         id
         cprDoc
-        acceptanceLetterDoc
-        transcriptDoc
-        lastYearGPA
         signedContractDoc
-        proofOfFamilyIncome
-        certificateOfPrivateEducation
+        transcriptDoc
+        schoolCertificate
         createdAt
         updatedAt
         _version
@@ -120,6 +108,7 @@ export const createApplication = /* GraphQL */ `
         studentOrderAmongSiblings
         householdIncome
         familyIncome
+        familyIncomeProofDoc
         preferredLanguage
         graduationDate
         address
@@ -166,12 +155,9 @@ export const updateApplication = /* GraphQL */ `
       attachment {
         id
         cprDoc
-        acceptanceLetterDoc
-        transcriptDoc
-        lastYearGPA
         signedContractDoc
-        proofOfFamilyIncome
-        certificateOfPrivateEducation
+        transcriptDoc
+        schoolCertificate
         createdAt
         updatedAt
         _version
@@ -196,6 +182,7 @@ export const updateApplication = /* GraphQL */ `
         studentOrderAmongSiblings
         householdIncome
         familyIncome
+        familyIncomeProofDoc
         preferredLanguage
         graduationDate
         address
@@ -242,12 +229,9 @@ export const deleteApplication = /* GraphQL */ `
       attachment {
         id
         cprDoc
-        acceptanceLetterDoc
-        transcriptDoc
-        lastYearGPA
         signedContractDoc
-        proofOfFamilyIncome
-        certificateOfPrivateEducation
+        transcriptDoc
+        schoolCertificate
         createdAt
         updatedAt
         _version
@@ -272,6 +256,7 @@ export const deleteApplication = /* GraphQL */ `
         studentOrderAmongSiblings
         householdIncome
         familyIncome
+        familyIncomeProofDoc
         preferredLanguage
         graduationDate
         address
@@ -338,6 +323,7 @@ export const createProgramChoice = /* GraphQL */ `
         applicationAttachmentId
       }
       choiceOrder
+      acceptanceLetterDoc
       createdAt
       updatedAt
       _version
@@ -390,6 +376,7 @@ export const updateProgramChoice = /* GraphQL */ `
         applicationAttachmentId
       }
       choiceOrder
+      acceptanceLetterDoc
       createdAt
       updatedAt
       _version
@@ -442,6 +429,7 @@ export const deleteProgramChoice = /* GraphQL */ `
         applicationAttachmentId
       }
       choiceOrder
+      acceptanceLetterDoc
       createdAt
       updatedAt
       _version
@@ -742,6 +730,7 @@ export const createStudentLog = /* GraphQL */ `
         studentOrderAmongSiblings
         householdIncome
         familyIncome
+        familyIncomeProofDoc
         preferredLanguage
         graduationDate
         address
@@ -788,6 +777,7 @@ export const updateStudentLog = /* GraphQL */ `
         studentOrderAmongSiblings
         householdIncome
         familyIncome
+        familyIncomeProofDoc
         preferredLanguage
         graduationDate
         address
@@ -834,6 +824,7 @@ export const deleteStudentLog = /* GraphQL */ `
         studentOrderAmongSiblings
         householdIncome
         familyIncome
+        familyIncomeProofDoc
         preferredLanguage
         graduationDate
         address
@@ -1014,6 +1005,7 @@ export const createStudent = /* GraphQL */ `
       studentOrderAmongSiblings
       householdIncome
       familyIncome
+      familyIncomeProofDoc
       preferredLanguage
       graduationDate
       address
@@ -1072,6 +1064,7 @@ export const updateStudent = /* GraphQL */ `
       studentOrderAmongSiblings
       householdIncome
       familyIncome
+      familyIncomeProofDoc
       preferredLanguage
       graduationDate
       address
@@ -1130,6 +1123,7 @@ export const deleteStudent = /* GraphQL */ `
       studentOrderAmongSiblings
       householdIncome
       familyIncome
+      familyIncomeProofDoc
       preferredLanguage
       graduationDate
       address

@@ -843,6 +843,7 @@ export async function getAllApprovedApplicationsAPI(
           items {
             _deleted
             id
+            acceptanceLetterDoc
             programID
             program {
               id
