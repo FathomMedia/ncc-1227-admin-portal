@@ -1,7 +1,5 @@
 import React, { FC, PropsWithChildren } from "react";
 import { Bar } from "react-chartjs-2";
-import { CSVLink } from "react-csv";
-import PrimaryButton from "./../primary-button";
 
 interface Props {
   title: string;
@@ -12,18 +10,6 @@ interface Props {
   labels: string[];
   data: number[];
 }
-
-// export default function LargeBarGraphInfo({
-//   title,
-//   barLabel,
-//   subBarLabel,
-//   min,
-//   max,
-//   labels,
-//   data,
-// }: Props) {
-
-// }
 
 export const LargeBarGraphInfo: FC<PropsWithChildren<Props>> = ({
   title,

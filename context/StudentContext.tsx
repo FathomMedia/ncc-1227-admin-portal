@@ -19,8 +19,8 @@ interface IUseStudentContext {
   applications: Application[] | undefined;
   applicationById: Application | undefined;
   getApplicationByID: (id: string) => void;
-  dateRange: IDateRange;
-  updateDateRange: (newDateRange: IDateRange) => void;
+  batch: number;
+  updateBatch: (batch: number) => void;
   syncApplications: () => Promise<void>;
 }
 
@@ -30,11 +30,8 @@ const defaultState: IUseStudentContext = {
   applications: undefined,
   applicationById: undefined,
   getApplicationByID: () => {},
-  dateRange: {
-    start: `${new Date().getFullYear()}-01-01`,
-    end: `${new Date().getFullYear() + 1}-01-01`,
-  },
-  updateDateRange: function (): void {
+  batch: new Date().getFullYear(),
+  updateBatch: function (): void {
     throw new Error("Function not implemented.");
   },
   syncApplications: function (): Promise<void> {
@@ -68,9 +65,7 @@ function useProviderStudent() {
     defaultState.applications
   );
 
-  const [dateRange, setDateRange] = useState<IDateRange>(
-    defaultState.dateRange
-  );
+  const [batch, setBatch] = useState<number>(defaultState.batch);
 
   const [applicationById, setApplicationById] = useState<
     Application | undefined
@@ -85,18 +80,18 @@ function useProviderStudent() {
   useEffect(
     () => {
       // Run this
-      getAllApplications(dateRange);
+      getAllApplications(batch);
 
       // on destroy
       return () => {};
     },
 
     // Re-run whenever anything here changes
-    [dateRange]
+    [batch]
   );
 
-  function updateDateRange(newDateRange: IDateRange) {
-    setDateRange(newDateRange);
+  function updateBatch(newBatch: number) {
+    setBatch(newBatch);
   }
 
   async function getStudents(): Promise<Student[] | undefined> {
@@ -125,9 +120,9 @@ function useProviderStudent() {
 
   // add programs to uni
   async function getAllApplications(
-    newDateR: IDateRange
+    batch: number
   ): Promise<Application[] | undefined> {
-    let tempApplicationList = await getAllApplicationsAPI(newDateR);
+    let tempApplicationList = await getAllApplicationsAPI(batch);
     setApplications(tempApplicationList);
     return tempApplicationList;
   }
@@ -143,7 +138,7 @@ function useProviderStudent() {
   }
 
   async function syncApplications() {
-    await getAllApplications(dateRange);
+    await getAllApplications(batch);
   }
 
   // NOTE: return all the values & functions you want to export
@@ -152,8 +147,8 @@ function useProviderStudent() {
     applications,
     applicationById,
     getApplicationByID,
-    dateRange,
-    updateDateRange,
+    batch: batch,
+    updateBatch: updateBatch,
     syncApplications,
   };
 }

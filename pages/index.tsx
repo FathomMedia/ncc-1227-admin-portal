@@ -23,8 +23,8 @@ import {
   giveMeTopUniversities,
 } from "../src/Helpers";
 import { LargeDonutGraphInfo } from "../components/graphs/large-donut-graph-info";
-import { DateRangeComponent } from "../components/date-range-component";
 import { GetStaticProps } from "next";
+import { BatchSelectorComponent } from "../components/batch-selector-component";
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const { locale } = ctx;
@@ -42,7 +42,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 
 const Home = () => {
   const { push } = useRouter();
-  const { applications, dateRange, updateDateRange } = useStudent();
+  const { applications, batch, updateBatch } = useStudent();
   const { t } = useTranslation("common");
 
   let sortedApplications = applications?.sort(
@@ -78,29 +78,26 @@ const Home = () => {
             <div className="mb-5 ">
               <div>
                 <h1 className="text-3xl font-semibold ">
-                  {new Date(dateRange.start).getFullYear()}{" "}
-                  {t("dashboardTitle")}
+                  {batch} {t("dashboardTitle")}
                 </h1>
               </div>
               <div className="text-base font-medium text-gray-500 ">
-                {/* An overview of enrollment for current batch. */}
                 {t("dashboardSubtitle")}
               </div>
             </div>
           </div>
-          {/* TODO - dashboard buttons here  */}
           <div className="flex flex-wrap items-center justify-end gap-4 my-4">
-            <DateRangeComponent
-              dateRange={dateRange}
-              updateRange={updateDateRange}
-            ></DateRangeComponent>
+            <BatchSelectorComponent
+              batch={batch}
+              updateBatch={updateBatch}
+            ></BatchSelectorComponent>
             <PrimaryButton
               name={t("allApplicationsButton")}
               buttonClick={() => push("/applications")}
             ></PrimaryButton>
 
             <CSVLink
-              filename={`${new Date().getFullYear()}-Applications-Summary-${new Date().toISOString()}.csv`}
+              filename={`${batch}-Applications-Summary-${new Date().toISOString()}.csv`}
               data={
                 sortedApplications
                   ? [

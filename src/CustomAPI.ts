@@ -763,16 +763,18 @@ export async function updateUniversityById(
 }
 
 /**
- * It gets all applications from the database
- * @param {IDateRange} dateRange - IDateRange
- * @returns An array of applications
+ * This is a TypeScript function that retrieves all applications from a GraphQL API based on a
+ * specified batch number.
+ * @param {number} batch - The batch parameter is a number that is used to filter the applications
+ * returned by the API call. It specifies the batch number of the applications to retrieve.
+ * @returns a Promise that resolves to an array of Application objects or undefined.
  */
 export async function getAllApplicationsAPI(
-  dateRange: IDateRange
+  batch: number
 ): Promise<Application[] | undefined> {
   let query = `
   query ListAllApplications {
-    listApplications(filter: {dateTime: {between: ["${dateRange.start}T00:00:00", "${dateRange.end}T00:00:00"]}}) {
+    applicationsByBatchAndStatus(batch: ${batch}, limit: 999999999) {
       items {
         _version
         _deleted
@@ -806,30 +808,35 @@ export async function getAllApplicationsAPI(
           householdIncome
         }
       }
-      nextToken
     }
-  }  
+  }
+  
 `;
 
   let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;
-
-  let tempApplicationList = res.data;
-  let temp: Application[] = (tempApplicationList?.listApplications?.items ??
-    []) as Application[];
 
   if (res.data === null) {
     throw new Error("Failed to get all applications");
   }
 
+  let tempApplicationList = res.data;
+  let temp: Application[] = (tempApplicationList?.applicationsByBatchAndStatus
+    ?.items ?? []) as Application[];
+
   return temp;
 }
 
+/**
+ * This function retrieves all approved applications for a given batch from a GraphQL API.
+ * @param {number} batch - The batch number for which to retrieve all approved applications.
+ * @returns a Promise that resolves to an array of Application objects or undefined.
+ */
 export async function getAllApprovedApplicationsAPI(
-  dateRange: IDateRange
+  batch: number
 ): Promise<Application[] | undefined> {
   let query = `
-  query ListAllApplications {
-    listApplications(filter: {dateTime: {between: ["${dateRange.start}T00:00:00", "${dateRange.end}T00:00:00"]}, and: {status: {eq: APPROVED}}}) {
+  query ListAllApprovedApplications {
+    applicationsByBatchAndStatus(batch: ${batch}, status: {eq: "APPROVED"}, limit: 999999999) {
       items {
         _version
         _deleted
@@ -840,6 +847,7 @@ export async function getAllApprovedApplicationsAPI(
         id
         status
         studentCPR
+        batch
         programs {
           items {
             _deleted
@@ -862,21 +870,19 @@ export async function getAllApprovedApplicationsAPI(
           householdIncome
         }
       }
-      nextToken
     }
-  }
-  
+  }  
   `;
 
   let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;
 
-  let tempApplicationList = res.data;
-  let temp: Application[] = (tempApplicationList?.listApplications?.items ??
-    []) as Application[];
-
   if (res.data === null) {
-    throw new Error("Failed to get all applications");
+    throw new Error("Failed to get all APPROVED applications");
   }
+
+  let tempApplicationList = res.data;
+  let temp: Application[] = (tempApplicationList?.applicationsByBatchAndStatus
+    ?.items ?? []) as Application[];
 
   return temp;
 }

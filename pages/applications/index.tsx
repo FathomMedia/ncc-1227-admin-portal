@@ -9,13 +9,13 @@ import { CSVLink } from "react-csv";
 import { Toaster } from "react-hot-toast";
 import { BsFillEyeFill } from "react-icons/bs";
 import { HiDotsVertical, HiOutlineClipboardList } from "react-icons/hi";
-import { DateRangeComponent } from "../../components/date-range-component";
 import { PageComponent } from "../../components/page-component";
 import { StudentsTableHeaders } from "../../constants/table-headers";
 import { useEducation } from "../../context/EducationContext";
 import { useStudent } from "../../context/StudentContext";
 import { Application, ProgramChoice, SchoolType, Status } from "../../src/API";
 import { getStatusOrder } from "../../src/Helpers";
+import { BatchSelectorComponent } from "../../components/batch-selector-component";
 
 interface InitialFilterValues {
   search: string;
@@ -49,7 +49,7 @@ const Applications = () => {
     program: "",
   };
 
-  const { applications, students, dateRange, updateDateRange } = useStudent();
+  const { applications, students, batch, updateBatch } = useStudent();
   const { universityList, programsList } = useEducation();
   const { push, locale } = useRouter();
   const { t } = useTranslation("applications");
@@ -193,10 +193,10 @@ const Applications = () => {
           </Link>
         </div>
 
-        <DateRangeComponent
-          dateRange={dateRange}
-          updateRange={updateDateRange}
-        ></DateRangeComponent>
+        <BatchSelectorComponent
+          batch={batch}
+          updateBatch={updateBatch}
+        ></BatchSelectorComponent>
       </div>
 
       {/* applications search bar */}
@@ -374,7 +374,7 @@ const Applications = () => {
                       <th className=" bg-nccGray-100" key={index}>
                         <CSVLink
                           className="text-xs hover:!text-white btn btn-primary btn-sm btn-outline"
-                          filename={`${new Date().getFullYear()}-Applications-${new Date().toISOString()}.csv`}
+                          filename={`${batch}-Applications-${new Date().toISOString()}.csv`}
                           data={[
                             ...selectedApplication.map((app, index) => {
                               let sortedProgramChoices:

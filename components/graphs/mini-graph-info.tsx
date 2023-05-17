@@ -21,7 +21,6 @@ export default function MiniGraphInfo({
   graph,
   color,
 }: Props) {
-  //! TODO - sample data pull actual data from db
   const data = graph;
 
   const options = {

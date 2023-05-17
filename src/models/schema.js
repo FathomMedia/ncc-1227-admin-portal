@@ -295,7 +295,7 @@ export const schema = {
                         "name": "byBatch",
                         "fields": [
                             "batch",
-                            "dateTime"
+                            "status"
                         ]
                     }
                 },
@@ -1359,9 +1359,9 @@ export const schema = {
         "Status": {
             "name": "Status",
             "values": [
+                "APPROVED",
                 "ELIGIBLE",
                 "REVIEW",
-                "APPROVED",
                 "NOT_COMPLETED",
                 "REJECTED",
                 "WITHDRAWN"

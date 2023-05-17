@@ -6,7 +6,6 @@ import toast, { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { BsFillEyeFill } from "react-icons/bs";
 import { HiDotsVertical, HiOutlineClipboardList } from "react-icons/hi";
-import { DateRangeComponent } from "../../components/date-range-component";
 import { PageComponent } from "../../components/page-component";
 import { StudentsTableHeaders } from "../../constants/table-headers";
 import { useStudent } from "../../context/StudentContext";
@@ -24,11 +23,9 @@ interface InitialFilterValues {
 // - Only if you need to pre-render a page whose data must be fetched at request time
 import { GetServerSideProps } from "next";
 import { getAllApprovedApplicationsAPI } from "../../src/CustomAPI";
+import { BatchSelectorComponent } from "../../components/batch-selector-component";
 
-const defaultDateRange = {
-  start: `${new Date().getFullYear()}-01-01`,
-  end: `${new Date().getFullYear() + 1}-01-01`,
-};
+const defaultBatch = new Date().getFullYear();
 
 interface Props {
   applications: Application[];
@@ -38,7 +35,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { locale } = ctx;
 
   const applications =
-    (await getAllApprovedApplicationsAPI(defaultDateRange)) ?? [];
+    (await getAllApprovedApplicationsAPI(defaultBatch)) ?? [];
 
   return {
     props: {
@@ -58,7 +55,7 @@ const ArchivePage: FC<Props> = ({ applications: initialApplications }) => {
   const { students } = useStudent();
   const { push, locale } = useRouter();
 
-  const [dateRange, setDateRange] = useState<IDateRange>(defaultDateRange);
+  const [batch, setBatch] = useState<number>(defaultBatch);
   const isInitialMount = useRef(true);
 
   // Table Data Pagination
@@ -130,7 +127,7 @@ const ArchivePage: FC<Props> = ({ applications: initialApplications }) => {
       isInitialMount.current = false;
     } else {
       toast
-        .promise(getAllApprovedApplicationsAPI(dateRange), {
+        .promise(getAllApprovedApplicationsAPI(batch), {
           loading: "loading..",
           success: "fetched applications successfully",
           error: "Failed to fetch applications",
@@ -141,7 +138,7 @@ const ArchivePage: FC<Props> = ({ applications: initialApplications }) => {
     }
 
     return () => {};
-  }, [dateRange]);
+  }, [batch]);
 
   function addToSelected(app: Application) {
     setSelectedApplication([...selectedApplication, app]);
@@ -179,7 +176,7 @@ const ArchivePage: FC<Props> = ({ applications: initialApplications }) => {
           </div>
           <CSVLink
             className="text-xs hover:!text-white btn btn-primary btn-sm btn-outline"
-            filename={`${new Date().getFullYear()}-Applications-${new Date().toISOString()}.csv`}
+            filename={`${batch}-Applications-${new Date().toISOString()}.csv`}
             data={[
               ...(applications ?? []).map((app, index) => {
                 let sortedProgramChoices: (ProgramChoice | null)[] | undefined =
@@ -208,11 +205,10 @@ const ArchivePage: FC<Props> = ({ applications: initialApplications }) => {
             {t("exportAllAsCSV")}
           </CSVLink>
         </div>
-
-        <DateRangeComponent
-          dateRange={dateRange}
-          updateRange={setDateRange}
-        ></DateRangeComponent>
+        <BatchSelectorComponent
+          batch={batch}
+          updateBatch={setBatch}
+        ></BatchSelectorComponent>
       </div>
 
       {(shownData?.length ?? 0) > 0 ? (
@@ -230,7 +226,7 @@ const ArchivePage: FC<Props> = ({ applications: initialApplications }) => {
                       <th className=" bg-nccGray-100" key={index}>
                         <CSVLink
                           className="text-xs hover:!text-white btn btn-primary btn-sm btn-outline"
-                          filename={`${new Date().getFullYear()}-Applications-${new Date().toISOString()}.csv`}
+                          filename={`${batch}-Applications-${new Date().toISOString()}.csv`}
                           data={[
                             ...selectedApplication.map((app, index) => {
                               let sortedProgramChoices:
