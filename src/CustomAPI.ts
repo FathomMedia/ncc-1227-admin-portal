@@ -1,6 +1,5 @@
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { API, graphqlOperation, Storage } from "aws-amplify";
-import { idText } from "typescript";
 import {
   Admin,
   AdminLog,
@@ -41,7 +40,6 @@ import {
   updateProgram,
   updateUniversity,
 } from "./graphql/mutations";
-import { IDateRange } from "./Helpers";
 
 /* -------------------------------------------------------------------------- */
 /*                                 INTERFACES                                 */
@@ -189,7 +187,7 @@ export async function getApplicationData(
 export async function listAllPrograms() {
   let q = `
   query ListAllPrograms {
-    listPrograms(limit: 999) {
+    listPrograms(limit: 9999999) {
       items {
         id
         name

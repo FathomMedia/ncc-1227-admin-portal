@@ -47,7 +47,9 @@ function useProviderApp() {
   }, []);
 
   async function getAdmins() {
-    let queryInput: ListAdminsQueryVariables = {};
+    let queryInput: ListAdminsQueryVariables = {
+      limit: 999999,
+    };
 
     let res = (await API.graphql({
       query: listAdmins,

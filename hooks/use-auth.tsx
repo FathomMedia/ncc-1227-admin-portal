@@ -66,9 +66,12 @@ function useProvideAuth() {
   }, [user]);
 
   /**
-   * It checks if a CPR number is already in use by a student
-   * @param {string} cpr - string - The CPR number of the student
-   * @returns A boolean value.
+   * This function checks if a given CPR number exists in a GraphQL query and returns a boolean value.
+   * @param {string} cpr - The `cpr` parameter is a string representing a CPR number, which is a unique
+   * identification number assigned to individuals. The function `checkIfCprExist` takes this
+   * parameter and checks if there is an existing record in the database with the same CPR number.
+   * @returns The function `checkIfCprExist` returns a Promise that resolves to a boolean value. The
+   * boolean value indicates whether or not a record with the given CPR number exists in the database.
    */
   async function checkIfCprExist(cpr: string): Promise<boolean> {
     let queryInput: GetAdminQueryVariables = {

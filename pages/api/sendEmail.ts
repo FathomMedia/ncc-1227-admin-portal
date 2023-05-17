@@ -24,7 +24,7 @@ export default async function handler(
 
   await NextCors(req, res, {
     methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
-    origin: "http://localhost:3000", //! TODO add correct url for portion web
+    origin: "https://singular-otter-890024.netlify.app", //! TODO add correct url
     optionsSuccessStatus: 200,
   });
 

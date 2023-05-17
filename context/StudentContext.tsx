@@ -97,14 +97,14 @@ function useProviderStudent() {
   async function getStudents(): Promise<Student[] | undefined> {
     let query = `
     query ListStudents {
-      listStudents {
+      listStudents(limit: 99999999) {
         items {
           cpr
           email
           fullName
         }
       }
-    }    
+    }       
     `;
 
     let res = (await API.graphql(
@@ -253,7 +253,6 @@ export async function getApplicationByIdAPI(
       isEmailSent
     }
   }
-  
   `;
 
   let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;

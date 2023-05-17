@@ -84,7 +84,7 @@ function useProviderEducation() {
   async function getUniList(): Promise<University[] | undefined> {
     let q = `
     query ListAllUni {
-      listUniversities {
+      listUniversities(limit: 99999999) {
         items {
           id
           _version
@@ -112,7 +112,8 @@ function useProviderEducation() {
           }
         }
       }
-    }`;
+    }
+    `;
 
     let res = (await API.graphql(
       graphqlOperation(q)
@@ -131,7 +132,7 @@ function useProviderEducation() {
   async function listAllPrograms(): Promise<Program[] | undefined> {
     let query = `
     query ListAllPrograms {
-      listPrograms {
+      listPrograms(limit: 99999999) {
         items {
           name
           id
@@ -139,7 +140,7 @@ function useProviderEducation() {
           universityProgramsId
         }
       }
-    }
+    }    
     `;
 
     let res = (await API.graphql(
