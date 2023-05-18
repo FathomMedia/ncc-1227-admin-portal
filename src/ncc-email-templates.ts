@@ -13,7 +13,7 @@ export function nccApprovedEmailTemplate(logo: string, userName: string) {
       <table align="center" border="0" cellPadding="0" cellSpacing="0" role="presentation" width="100%" style="margin-left:auto;margin-right:auto;max-width:36rem;border-radius:0.75rem;background-color:rgb(255,255,255);padding:2.5rem;box-shadow:0 0 #0000, 0 0 #0000, 0 1px 3px 0 rgb(0,0,0,0.1), 0 1px 2px -1px rgb(0,0,0,0.1)">
         <tbody>
           <tr>
-            <td><img alt="Ncc" src="${logo}" style="margin-left:auto;margin-right:auto;max-width:32rem;display:block;outline:none;border:none;text-decoration:none" />
+            <td><img alt="Ncc" src="${logo}" style="margin-left:auto;margin-right:auto;max-width:12rem;display:block;outline:none;border:none;text-decoration:none" />
               <p style="margin-left:auto;margin-right:auto;width:100%;padding-top:2.5rem;text-align:center;font-size:18px;line-height:24px;font-weight:600;color:rgb(31,41,55);margin:16px 0">A decision was made on your application.</p>
               <table align="center" role="presentation" cellSpacing="0" cellPadding="0" border="0" width="100%" style="width:100%;border-radius:5px;background-color:rgb(249,250,251);padding:0.75rem;max-width:37.5em;border:1px solid #eee">
                 <tr style="width:100%">
@@ -25,7 +25,7 @@ export function nccApprovedEmailTemplate(logo: string, userName: string) {
                   </td>
                 </tr>
               </table>
-              <hr style="margin-top:1.5rem;margin-bottom:1.5rem;width:100%;border:none;border-top:1px solid #eaeaea" /><a href="mailto:nccxfthm1227@gmail.com" target="_blank" style="margin-left:auto;margin-right:auto;display:inline-block;width:100%;border-radius:0.375rem;background-color:rgb(225,186,61);color:#fff;font-size:16px;font-weight:bold;text-decoration:none;text-align:center;padding:0px 0px;line-height:100%;max-width:100%"><span></span><span style="color:#fff;font-size:16px;font-weight:bold;text-decoration:none;text-align:center;display:inline-block;padding:10px 0px;max-width:100%;line-height:120%;text-transform:none;mso-padding-alt:0px;mso-text-raise:0">Contact Support</span><span></span></a>
+              <hr style="margin-top:1.5rem;margin-bottom:1.5rem;width:100%;border:none;border-top:1px solid #eaeaea" /><a href="mailto:nccxfthm1227@gmail.com" target="_blank" style="margin-left:auto;margin-right:auto;display:inline-block;width:100%;border-radius:0.375rem;background-color:rgb(201, 141, 75);color:#fff;font-size:16px;font-weight:bold;text-decoration:none;text-align:center;padding:0px 0px;line-height:100%;max-width:100%"><span></span><span style="color:#fff;font-size:16px;font-weight:bold;text-decoration:none;text-align:center;display:inline-block;padding:10px 0px;max-width:100%;line-height:120%;text-transform:none;mso-padding-alt:0px;mso-text-raise:0">Contact Support</span><span></span></a>
             </td>
           </tr>
         </tbody>
@@ -51,7 +51,7 @@ export function nccRejectedEmailTemplate(logo: string, userName: string) {
       <table align="center" border="0" cellPadding="0" cellSpacing="0" role="presentation" width="100%" style="margin-left:auto;margin-right:auto;max-width:36rem;border-radius:0.75rem;background-color:rgb(255,255,255);padding:2.5rem;box-shadow:0 0 #0000, 0 0 #0000, 0 1px 3px 0 rgb(0,0,0,0.1), 0 1px 2px -1px rgb(0,0,0,0.1)">
         <tbody>
           <tr>
-            <td><img alt="Ncc" src="${logo}" style="margin-left:auto;margin-right:auto;max-width:32rem;display:block;outline:none;border:none;text-decoration:none" />
+            <td><img alt="Ncc" src="${logo}" style="margin-left:auto;margin-right:auto;max-width:12rem;display:block;outline:none;border:none;text-decoration:none" />
               <p style="margin-left:auto;margin-right:auto;width:100%;padding-top:2.5rem;text-align:center;font-size:18px;line-height:24px;font-weight:600;color:rgb(31,41,55);margin:16px 0">A decision was made on your application.</p>
               <table align="center" role="presentation" cellSpacing="0" cellPadding="0" border="0" width="100%" style="width:100%;border-radius:5px;background-color:rgb(249,250,251);padding:0.75rem;max-width:37.5em;border:1px solid #eee">
                 <tr style="width:100%">
@@ -63,7 +63,7 @@ export function nccRejectedEmailTemplate(logo: string, userName: string) {
                   </td>
                 </tr>
               </table>
-              <hr style="margin-top:1.5rem;margin-bottom:1.5rem;width:100%;border:none;border-top:1px solid #eaeaea" /><a href="mailto:nccxfthm1227@gmail.com" target="_blank" style="margin-left:auto;margin-right:auto;display:inline-block;width:100%;border-radius:0.375rem;background-color:rgb(225,186,61);color:#fff;font-size:16px;font-weight:bold;text-decoration:none;text-align:center;padding:0px 0px;line-height:100%;max-width:100%"><span></span><span style="color:#fff;font-size:16px;font-weight:bold;text-decoration:none;text-align:center;display:inline-block;padding:10px 0px;max-width:100%;line-height:120%;text-transform:none;mso-padding-alt:0px;mso-text-raise:0">Contact Support</span><span></span></a>
+              <hr style="margin-top:1.5rem;margin-bottom:1.5rem;width:100%;border:none;border-top:1px solid #eaeaea" /><a href="mailto:nccxfthm1227@gmail.com" target="_blank" style="margin-left:auto;margin-right:auto;display:inline-block;width:100%;border-radius:0.375rem;background-color:rgb(201, 141, 75);color:#fff;font-size:16px;font-weight:bold;text-decoration:none;text-align:center;padding:0px 0px;line-height:100%;max-width:100%"><span></span><span style="color:#fff;font-size:16px;font-weight:bold;text-decoration:none;text-align:center;display:inline-block;padding:10px 0px;max-width:100%;line-height:120%;text-transform:none;mso-padding-alt:0px;mso-text-raise:0">Contact Support</span><span></span></a>
             </td>
           </tr>
         </tbody>
