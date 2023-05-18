@@ -20,11 +20,11 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const logo =
-    "https://res.cloudinary.com/dqg2db5gf/image/upload/v1672816898/Ncc/logo_siywsu.png";
+    "https://res.cloudinary.com/dqg2db5gf/image/upload/v1684390827/Ncc/IBS_Logo_-_Vertical_-_Gold_hfynaq.png";
 
   await NextCors(req, res, {
     methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
-    origin: "https://singular-otter-890024.netlify.app", //! TODO add correct url
+    origin: "https://graceful-medovik-220176.netlify.app", //! TODO add correct url
     optionsSuccessStatus: 200,
   });
 
