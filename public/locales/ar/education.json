@@ -1,9 +1,9 @@
 {
   "educationTitle": "التعليم",
   "educationSubtitle": "عرض قائمة الجامعات أو البرامج.",
-  "applyButton": "تعيين",
+  "applyButton": "تطبيق",
   "addUniversityButton": "اضافة جامعة",
-  "addProgramsButton": "إضافة البرنامج",
+  "addProgramsButton": "إضافة برنامج",
   "addNewUniversity": "اضافة جامعة جديدة",
   "addUniversityName": "اسم الجامعة",
   "tableUniName": "الاسم",
@@ -16,8 +16,12 @@
   "programRequirements": "متطلبات البرنامج",
   "submitButton": "إرسال",
   "saveButton": "حفظ التغييرات",
-  "universityTitle": "جامعة",
-  "programTitle": "برنامج",
+  "universityTitle": "الجامعة",
+  "programTitle": "البرنامج",
   "inactive": "غير نشط",
-  "active": "نشط"
+  "active": "نشط",
+  "all":"الكل",
+  "aUniversityAlreadyExistsWithTheSameName":"يوجد بالفعل جامعة بنفس هذا الاسم",
+  "universitySuccessfullyAdded":"تم اضافة الجامعة بنجاح",
+  "search":"بحث"
 }

@@ -44,6 +44,7 @@ const Home = () => {
   const { push } = useRouter();
   const { applications, batch, updateBatch } = useStudent();
   const { t } = useTranslation("common");
+  const { t:application } = useTranslation("applications");
 
   let sortedApplications = applications?.sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
