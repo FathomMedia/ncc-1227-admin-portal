@@ -1,12 +1,11 @@
 import { Field, Form, Formik } from "formik";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Application,
   CreateAdminLogMutationVariables,
   Status,
   UpdateApplicationMutationVariables,
-  UpdateProgramMutationVariables,
 } from "../src/API";
 import PrimaryButton from "./primary-button";
 import * as yup from "yup";
@@ -14,14 +13,12 @@ import {
   createAdminLogInDB,
   updateApplicationInDB,
   updateEmailSentToApplication,
-  updateProgramById,
 } from "../src/CustomAPI";
 import toast from "react-hot-toast";
 import { useAuth } from "../hooks/use-auth";
 import { useRouter } from "next/router";
 import GetStorageLinkComponent from "./get-storage-link-component";
 import { ISendEmail } from "../pages/api/sendEmail";
-import Applications from "../pages/applications";
 import { useStudent } from "../context/StudentContext";
 import { useTranslation } from "react-i18next";
 
@@ -90,6 +87,29 @@ export default function ViewApplication({
     );
   }
 
+  async function sendApprovedEmail() {
+    await toast.promise(
+      fetch("../../api/sendEmail", {
+        method: "POST",
+        body: JSON.stringify(emailData),
+      }).then(async (res) => {
+        if (res.status === 200) {
+          await updateEmailSentToApplication({
+            applicationId: application.id,
+            version: application._version,
+
+            isEmailSent: true,
+          });
+        }
+      }),
+      {
+        loading: "Sending email...",
+        success: "Email sent to user!",
+        error: "Failed to send email to user",
+      }
+    );
+  }
+
   return (
     <div className="mx-auto overflow-x-auto">
       <div className="flex justify-end gap-4 m-4">
@@ -97,7 +117,7 @@ export default function ViewApplication({
           {application.status === Status.APPROVED && (
             <PrimaryButton
               name={tA.t("sendEmail")}
-              buttonClick={sendEmail}
+              buttonClick={sendApprovedEmail}
             ></PrimaryButton>
           )}
         </div>
