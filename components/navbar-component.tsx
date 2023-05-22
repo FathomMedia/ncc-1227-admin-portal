@@ -23,7 +23,7 @@ export default function NavbarComponent() {
         <div className=" max-w-[200px] ">
           <Image
             className=""
-            src="/logo-no-bottom.svg"
+            src="/logo.svg"
             alt="logo"
             width={200}
             height={100}

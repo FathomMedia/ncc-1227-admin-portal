@@ -1399,10 +1399,6 @@ export const schema = {
         }
     },
     "nonModels": {},
-<<<<<<< Updated upstream
     "codegenVersion": "3.4.2",
-=======
-    "codegenVersion": "3.4.3",
->>>>>>> Stashed changes
     "version": "282d10467afde43d78d360c200fdae1d"
 };

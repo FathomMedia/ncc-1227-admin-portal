@@ -514,33 +514,39 @@ const Applications = () => {
                       }).format(new Date(datum.updatedAt))}`}</div>
                     </td>
 
-                    <td className="sticky right-0">
-                      <div className="flex justify-end ">
-                        <button className="relative btn btn-ghost btn-xs group">
-                          <HiDotsVertical />
-                          <div className="absolute flex-col hidden p-1 bg-white rounded-lg shadow-lg right-6 top-5 group-focus:flex min-w-min">
-                            <div
-                              className="flex justify-start w-24 gap-2 btn btn-ghost btn-xs hover:bg-anzac-100 hover:cursor-pointer hover:text-anzac-500"
-                              onClick={() => {
-                                push(`/applications/${datum.id}`);
-                              }}
-                            >
-                              <BsFillEyeFill />
-                              {t("view")}
-                            </div>
-                            <div
-                              className="flex justify-start w-24 gap-2 btn btn-ghost btn-xs hover:bg-anzac-100 hover:cursor-pointer hover:text-anzac-500"
-                              onClick={() => {
-                                push(
-                                  `/applications/applicationHistory/${datum.id}`
-                                );
-                              }}
-                            >
-                              <HiOutlineClipboardList />
-                              {t("history")}
-                            </div>
+                    <td className="sticky right-0 min-w-fit">
+                      <div className="flex flex-col justify-center">
+                        <div className="flex flex-col p-1 bg-white rounded-lg ">
+                          <div
+                            className="flex justify-start gap-2 btn btn-ghost btn-xs hover:bg-anzac-100 hover:cursor-pointer hover:text-anzac-500"
+                            onClick={() => {
+                              push(`/applications/${datum.id}`);
+                            }}
+                          >
+                            <BsFillEyeFill />
+                            {t("view")}
                           </div>
-                        </button>
+                          <div
+                            className="flex !flex-nowrap justify-start gap-2 btn btn-ghost btn-xs hover:bg-anzac-100 hover:cursor-pointer hover:text-anzac-500"
+                            onClick={() => {
+                              push(
+                                `/applications/applicationHistory/${datum.id}`
+                              );
+                            }}
+                          >
+                            <HiOutlineClipboardList />
+                            <p>{`${t("admin")} ${t("logs")}`}</p>
+                          </div>
+                          <div
+                            className="flex !flex-nowrap justify-start gap-2 btn btn-ghost btn-xs hover:bg-anzac-100 hover:cursor-pointer hover:text-anzac-500"
+                            onClick={() => {
+                              push(`/studentLogs/${datum.id}`);
+                            }}
+                          >
+                            <HiOutlineClipboardList />
+                            <p>{`${t("student")} ${t("logs")}`}</p>
+                          </div>
+                        </div>
                       </div>
                     </td>
                   </tr>
