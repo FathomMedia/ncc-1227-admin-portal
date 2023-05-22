@@ -73,19 +73,19 @@ export default function ViewApplication({
     id: application.id,
   };
 
-  async function sendEmail() {
-    await toast.promise(
-      fetch("../../api/sendEmail", {
-        method: "POST",
-        body: JSON.stringify(emailData),
-      }),
-      {
-        loading: "Sending email...",
-        success: "Email sent to user!",
-        error: "Failed to send email to user",
-      }
-    );
-  }
+  // async function sendEmail() {
+  //   await toast.promise(
+  //     fetch("../../api/sendEmail", {
+  //       method: "POST",
+  //       body: JSON.stringify(emailData),
+  //     }),
+  //     {
+  //       loading: "Sending email...",
+  //       success: "Email sent to user!",
+  //       error: "Failed to send email to user",
+  //     }
+  //   );
+  // }
 
   async function sendApprovedEmail() {
     await toast.promise(
@@ -113,22 +113,14 @@ export default function ViewApplication({
   return (
     <div className="mx-auto overflow-x-auto">
       <div className="flex justify-end gap-4 m-4">
-        <div>
-          {application.status === Status.APPROVED && (
-            <PrimaryButton
-              name={tA.t("sendEmail")}
-              buttonClick={sendApprovedEmail}
-            ></PrimaryButton>
-          )}
-        </div>
-        {!readOnly && (
+        {/* {!readOnly && (
           <PrimaryButton
             name={!isEditing ? tA.t("edit") : tA.t("close")}
             buttonClick={function (): void {
               setIsEditing(!isEditing);
             }}
           ></PrimaryButton>
-        )}
+        )} */}
       </div>
 
       <Formik
@@ -255,8 +247,16 @@ export default function ViewApplication({
               <tbody>
                 <tr>
                   <td>{t("emailHasBeenSent")}</td>
-                  <td>
+                  <td className="flex items-center gap-8">
                     {application.isEmailSent === true ? t("yes") : t("no")}
+                    <div>
+                      {application.status === Status.APPROVED && (
+                        <PrimaryButton
+                          name={tA.t("sendEmail")}
+                          buttonClick={sendApprovedEmail}
+                        ></PrimaryButton>
+                      )}
+                    </div>
                   </td>
                 </tr>
                 <tr>
@@ -307,6 +307,14 @@ export default function ViewApplication({
                             {tA.t("REJECTED")}
                           </option>
                         </Field>
+                      )}
+                      {!readOnly && (
+                        <PrimaryButton
+                          name={!isEditing ? tA.t("edit") : tA.t("close")}
+                          buttonClick={function (): void {
+                            setIsEditing(!isEditing);
+                          }}
+                        ></PrimaryButton>
                       )}
                     </div>
                   </td>
