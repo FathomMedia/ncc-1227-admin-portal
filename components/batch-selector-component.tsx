@@ -1,3 +1,4 @@
+
 import { Formik, Form, Field } from "formik";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
@@ -16,7 +17,7 @@ export const BatchSelectorComponent: FC<Props> = ({
   let initialValues = {
     batch: passedBatch,
   };
-  const { t } = useTranslation("applications");
+  const { t } = useTranslation("common");
 
   return (
     <div dir="ltr" className="">

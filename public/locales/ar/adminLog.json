@@ -1,19 +1,19 @@
 {
   "adminLogTitle": "محفوظات سجل المسؤول",
   "adminLogSubtitle": "عرض جميع السجلات التي قدمها المسؤولون الآخرون.",
-  "tableAdminLogName": "اسم",
+  "tableAdminLogName": "الاسم",
   "tableAdminLogCPR": "الرقم الشخصي",
-  "tableAdminLogDate": "تاريخ",
-  "tableAdminLogHistory": "سجل",
+  "tableAdminLogDate": "التاريخ",
+  "tableAdminLogHistory": "السجل",
   "adminInformation": "معلومات المسؤول",
-  "applicationDetails": "تفاصيل التطبيق",
+  "applicationDetails": "تفاصيل الطلب",
   "tableApplicationField": "خانة",
   "tableApplicationValue": "القيمة",
   "sendEmailButton": "ارسل بريد الكتروني",
-  "backButton": "الرجوع",
+  "backButton": "رجوع",
   "reasonForChange": "سبب التغيير",
   "updatedAt": "تم التحديث في",
   "loadMoreLogs": "تحميل المزيد من السجلات",
-  "reachedTheEnd": "وصلت إلى نهاية السجلات",
-  "noData": "آسف! لا توجد بيانات لعرض"
+  "reachedTheEnd": "نهاية السجلات",
+  "noData": "نأسف! لا توجد بيانات للعرض"
 }

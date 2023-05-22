@@ -12,5 +12,8 @@
   "topUniversities": "Top Universities",
   "gpaSummary": "GPA Summary",
   "topProgram": "Top Programs",
-  "createReport": "Create Report"
+  "createReport": "Create Report",
+  "search":"Search",
+  "all":"All",
+  "apply":"Apply"
 }

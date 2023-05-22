@@ -19,5 +19,9 @@
   "universityTitle": "University",
   "programTitle": "Program",
   "inactive": "Inactive",
-  "active": "Active"
+  "active": "Active",
+  "all":"All",
+  "aUniversityAlreadyExistsWithTheSameName":"A university already exists with the same name",
+  "universitySuccessfullyAdded":"University successfully added",
+  "search":"Search"
 }

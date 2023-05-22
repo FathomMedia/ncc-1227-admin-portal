@@ -35,6 +35,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
         "pageTitles",
         "signIn",
         "applicationLog",
+        "common",
       ])),
     },
   };
@@ -53,6 +54,7 @@ const Applications = () => {
   const { universityList, programsList } = useEducation();
   const { push, locale } = useRouter();
   const { t } = useTranslation("applications");
+  const { t: common } = useTranslation("common");
 
   // Table Data Pagination
   const elementPerPage = 10;
@@ -213,15 +215,15 @@ const Applications = () => {
                 {/* Search Bar */}
                 <div>
                   <div className="text-sm font-semibold text-gray-500 ">
-                    {t("search")}
+                    {common("search")}
                   </div>
                   <div>
                     <Field
-                      dir="ltr"
+                      
                       className="input input-bordered"
                       type="text"
                       name="search"
-                      placeholder="Search..."
+                      placeholder={`${common('search')}...`}
                       onChange={handleChange}
                       value={values.search}
                     ></Field>
@@ -242,7 +244,7 @@ const Applications = () => {
                       onChange={handleChange}
                       value={values.applicationStatus}
                     >
-                      <option value={""}>All</option>
+                      <option value={""}>{common("all")}</option>
 
                       {Object.keys(Status).map((status) => (
                         <option value={status} key={status}>
@@ -267,7 +269,7 @@ const Applications = () => {
                       onChange={handleChange}
                       value={values.schoolType}
                     >
-                      <option value={""}>All</option>
+                      <option value={""}>{common("all")}</option>
 
                       {Object.keys(SchoolType).map((type) => (
                         <option value={type} key={type}>
@@ -292,7 +294,7 @@ const Applications = () => {
                       onChange={handleChange}
                       value={values.university}
                     >
-                      <option value={""}>All</option>
+                      <option value={""}>{common("all")}</option>
                       {universityList?.map((uni) => (
                         <option key={`${uni.id}`} value={`${uni.name}`}>
                           {uni.name}
@@ -316,7 +318,7 @@ const Applications = () => {
                       onChange={handleChange}
                       value={values.program}
                     >
-                      <option value={""}>All</option>
+                      <option value={""}>{common("all")}</option>
                       {programsList?.map((program, index) => (
                         <option key={index} value={`${program.name}`}>
                           {program.name}

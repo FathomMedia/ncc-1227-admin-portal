@@ -103,7 +103,7 @@ export default function SignUpFormComponent() {
                     <Field
                       name="cpr"
                       type="text"
-                      placeholder="CPR"
+                      placeholder=""
                       className={`input input-bordered input-primary `}
                     />
                     <label className="label-text-alt text-error">
@@ -115,7 +115,7 @@ export default function SignUpFormComponent() {
                     <Field
                       name="fullName"
                       type="text"
-                      placeholder="Full Name"
+                      placeholder=""
                       className={`input input-bordered input-primary `}
                     />
                     <label className="label-text-alt text-error">
@@ -127,7 +127,7 @@ export default function SignUpFormComponent() {
                     <Field
                       name="email"
                       type="text"
-                      placeholder="Email address"
+                      placeholder=""
                       className={`input input-bordered input-primary `}
                     />
                     <label className="label-text-alt text-error">

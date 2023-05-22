@@ -26,6 +26,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
         "education",
         "pageTitles",
         "signIn",
+        "common",
       ])),
     },
   };
@@ -35,6 +36,7 @@ const Education = () => {
   const { universityList, addNewUniversity, syncUniList } = useEducation();
   const { push } = useRouter();
   const { t } = useTranslation("education");
+  const { t: common } = useTranslation("common");
 
   // const [searchValue, setSearchValue] = useState("");
   const [resultList, setResultList] = useState<any>([]);
@@ -179,11 +181,11 @@ const Education = () => {
             <div className="flex flex-wrap items-center justify-between w-full gap-4 p-4 my-8 border md:flex-row border-nccGray-100 rounded-xl bg-nccGray-100">
               <div className="grow">
                 <Field
-                  dir="ltr"
+               
                   className="w-full input input-bordered"
                   type="text"
                   name="search"
-                  placeholder="Search..."
+                  placeholder={`${common('search')}...`}
                   onChange={handleChange}
                   value={values.search}
                 ></Field>
@@ -198,9 +200,9 @@ const Education = () => {
                     onChange={handleChange}
                     value={values.activeStatus}
                   >
-                    <option value={""}>All</option>
-                    <option value={"Active"}>Active</option>
-                    <option value={"Inactive"}>Inactive</option>
+                    <option value={""}>{t("all")}</option>
+                    <option value={"Active"}>{t("active")}</option>
+                    <option value={"Inactive"}>{t("inactive")}</option>
                   </Field>
                 </div>
               </div>
@@ -263,7 +265,7 @@ const Education = () => {
 
                   if (uniFound) {
                     toast.error(
-                      "A university already exists with the same name"
+                      "aUniversityAlreadyExistsWithTheSameName"
                     );
                   } else {
                     setIsSubmitted(true);
@@ -277,7 +279,7 @@ const Education = () => {
                         {
                           loading: "Loading...",
                           success: () => {
-                            return `University successfully added`;
+                            return `universitySuccessfullyAdded`;
                           },
                           error: (error) => {
                             return `${error?.message}`;
@@ -312,7 +314,7 @@ const Education = () => {
                       <Field
                         name="universityName"
                         type="text"
-                        placeholder="University Name"
+                        placeholder=""
                         onChange={handleChange}
                         onBlur={handleBlur}
                         className={`input input-bordered input-primary ${
