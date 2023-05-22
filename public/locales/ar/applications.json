@@ -53,5 +53,7 @@
   "applicationArchiveTitle": "أرشيف الطلبات المعتمدة",
   "applicationArchiveSubtitle": "سرد جميع الطلبات المعتمدة",
   "archives": "الأرشيف",
+  "adminsLogs": "سجلات المسؤلين",
+  "studentsLogs": "سجلات الطلاب",
   "exportAllAsCSV": "تصدير الكل CSV"
 }

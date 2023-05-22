@@ -219,11 +219,10 @@ const Applications = () => {
                   </div>
                   <div>
                     <Field
-                      
                       className="input input-bordered"
                       type="text"
                       name="search"
-                      placeholder={`${common('search')}...`}
+                      placeholder={`${common("search")}...`}
                       onChange={handleChange}
                       value={values.search}
                     ></Field>
@@ -537,7 +536,7 @@ const Applications = () => {
                             }}
                           >
                             <HiOutlineClipboardList />
-                            <p>{`${t("admin")} ${t("logs")}`}</p>
+                            <p>{t("adminsLogs")}</p>
                           </div>
                           <div
                             className="flex !flex-nowrap justify-start gap-2 btn btn-ghost btn-xs hover:bg-anzac-100 hover:cursor-pointer hover:text-anzac-500"
@@ -546,7 +545,7 @@ const Applications = () => {
                             }}
                           >
                             <HiOutlineClipboardList />
-                            <p>{`${t("student")} ${t("logs")}`}</p>
+                            <p>{t("studentsLogs")}</p>
                           </div>
                         </div>
                       </div>

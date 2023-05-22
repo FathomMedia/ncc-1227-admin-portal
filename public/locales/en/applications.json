@@ -53,5 +53,7 @@
   "applicationArchiveTitle": "Approved Application Archive",
   "applicationArchiveSubtitle": "List all the approved applications",
   "archives": "Archives",
+  "adminsLogs": "Admins logs",
+  "studentsLogs": "Students logs",
   "exportAllAsCSV": "Export All as CSV"
 }
