@@ -44,10 +44,11 @@ export default function ViewApplication({
   downloadLinks,
   readOnly,
 }: Props) {
-  const [isEditing, setIsEditing] = useState(false);
+  // const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
+
   const { user } = useAuth();
-  const { push } = useRouter();
+  const { push, replace, asPath } = useRouter();
   const { syncApplications } = useStudent();
   const { t } = useTranslation("applicationLog");
   const tA = useTranslation("applications");
@@ -73,20 +74,6 @@ export default function ViewApplication({
     id: application.id,
   };
 
-  // async function sendEmail() {
-  //   await toast.promise(
-  //     fetch("../../api/sendEmail", {
-  //       method: "POST",
-  //       body: JSON.stringify(emailData),
-  //     }),
-  //     {
-  //       loading: "Sending email...",
-  //       success: "Email sent to user!",
-  //       error: "Failed to send email to user",
-  //     }
-  //   );
-  // }
-
   async function sendApprovedEmail() {
     await toast.promise(
       fetch("../../api/sendEmail", {
@@ -99,6 +86,10 @@ export default function ViewApplication({
             version: application._version,
 
             isEmailSent: true,
+          }).then((val) => {
+            if (val) {
+              replace(asPath);
+            }
           });
         }
       }),
@@ -159,7 +150,7 @@ export default function ViewApplication({
                 error: "Failed to update application",
               })
               .then(async (value) => {
-                setIsEditing(false);
+                // setIsEditing(false);
 
                 if (values.applicationStatus === Status.REJECTED) {
                   await toast.promise(
@@ -272,12 +263,12 @@ export default function ViewApplication({
                   <td>{t("status")}</td>
                   <td>
                     <div className="flex items-center gap-8 ">
-                      <div className="text-sm font-semibold ">
+                      {/* <div className="text-sm font-semibold ">
                         {application.status === Status.ELIGIBLE
                           ? tA.t(Status.REVIEW)
                           : tA.t(`${application.status}`)}
-                      </div>
-                      {isEditing && application.status !== Status.WITHDRAWN && (
+                      </div> */}
+                      {!readOnly && application.status !== Status.WITHDRAWN && (
                         <Field
                           className="border rounded-xl"
                           as="select"
@@ -308,17 +299,27 @@ export default function ViewApplication({
                           </option>
                         </Field>
                       )}
-                      {!readOnly && (
+                      {/* {!readOnly && (
                         <PrimaryButton
                           name={!isEditing ? tA.t("edit") : tA.t("close")}
                           buttonClick={function (): void {
                             setIsEditing(!isEditing);
                           }}
                         ></PrimaryButton>
+                      )} */}
+                      {application.status !== values.applicationStatus && (
+                        <div className="flex items-center gap-2 text-sm font-semibold text-gray-400">
+                          <span>{tA.t(`${application.status}`)}</span>
+                          <span>{"->"}</span>
+                          <span className="text-black">
+                            {tA.t(`${values.applicationStatus}`)}
+                          </span>
+                        </div>
                       )}
                     </div>
                   </td>
                 </tr>
+
                 {!readOnly && (
                   <>
                     {/* <tr>
@@ -439,7 +440,7 @@ export default function ViewApplication({
                 </tr>
               </tbody>
             </table>
-            {isEditing && (
+            {application.status !== values.applicationStatus && !readOnly && (
               <div>
                 <div className="form-control">
                   <label className="label">
