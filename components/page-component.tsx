@@ -12,7 +12,9 @@ interface Props {
 }
 
 export const PageComponent: FC<PropsWithChildren<Props>> = (props) => {
-  const { isSignedIn, user } = useAuth();
+  const { isSignedIn, user, isInitializing: init } = useAuth();
+
+  const isInitializing = init ?? true;
 
   return (
     <div>
@@ -36,6 +38,9 @@ export const PageComponent: FC<PropsWithChildren<Props>> = (props) => {
             height={100}
           />
         </div>
+        <div className="flex flex-col items-center justify-center p-3 text-center rounded-lg bg-zinc-100">
+          <p className="text-zinc-500">{user?.getUsername()}</p>
+        </div>
       </div>
       <div className="drawer drawer-mobile min-w-[277px]">
         <input
@@ -46,18 +51,29 @@ export const PageComponent: FC<PropsWithChildren<Props>> = (props) => {
         />
 
         <div className="drawer-content">
-          {!isSignedIn ? (
-            <SignInFormComponent></SignInFormComponent>
-          ) : (
-            user?.challengeName !== "NEW_PASSWORD_REQUIRED" && (
-              <div className="m-4">
-                <div className="container px-6 mx-auto mt-24 md:px-10 lg:px-16 ">
-                  {props.children}
-                </div>
+          {isInitializing ? (
+            <div className="flex items-center justify-center w-full h-full bg-gray-200 animate-pulse">
+              <div className="btn btn-ghost hover:bg-transparent loading">
+                Loading...
               </div>
-            )
+            </div>
+          ) : (
+            <div>
+              {!isSignedIn ? (
+                <SignInFormComponent></SignInFormComponent>
+              ) : (
+                user?.challengeName !== "NEW_PASSWORD_REQUIRED" && (
+                  <div className="m-4">
+                    <div className="container px-6 mx-auto mt-24 md:px-10 lg:px-16 ">
+                      {props.children}
+                    </div>
+                  </div>
+                )
+              )}
+            </div>
           )}
         </div>
+
         {isSignedIn && (
           <div className="drawer-side">
             <label htmlFor="my-drawer-2" className="drawer-overlay"></label>

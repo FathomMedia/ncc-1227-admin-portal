@@ -20,6 +20,7 @@ Auth.configure({ ...config, ssr: true });
 interface IUseAuthContext {
   user: CognitoUser | undefined;
   isSignedIn: boolean;
+  isInitializing: boolean;
   isChangePasswordRequired: boolean;
   signIn: (cpr: string, password: string) => Promise<CognitoUser | undefined>;
   signOut: () => Promise<void>;
@@ -29,6 +30,7 @@ interface IUseAuthContext {
 const defaultState: IUseAuthContext = {
   user: undefined,
   isSignedIn: false,
+  isInitializing: true,
   isChangePasswordRequired: false,
   signIn: async () => undefined,
   signOut: async () => {},
@@ -49,6 +51,9 @@ export const useAuth = () => useContext(AuthContext);
 function useProvideAuth() {
   const [user, setUser] = useState<CognitoUser | undefined>(defaultState.user);
   const [isSignedIn, setIsSignedIn] = useState(defaultState.isSignedIn);
+  const [isInitializing, setIsInitializing] = useState(
+    defaultState.isInitializing
+  );
   const [isChangePasswordRequired, setIsChangePasswordRequired] = useState(
     defaultState.isChangePasswordRequired
   );
@@ -111,9 +116,11 @@ function useProvideAuth() {
           }
         });
       }
+      setIsInitializing(false);
     } catch (error) {
       setIsSignedIn(false);
       setUser(undefined);
+      setIsInitializing(false);
     }
   }
 
@@ -190,6 +197,7 @@ function useProvideAuth() {
     signOut,
     checkIfCprExist,
     isChangePasswordRequired,
+    isInitializing,
   };
 }
 

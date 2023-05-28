@@ -14,12 +14,15 @@ import { useTranslation } from "react-i18next";
 import { LangSwitcher } from "./langSwitcher";
 
 export default function NavbarComponent() {
-  const { signOut, isSignedIn } = useAuth();
+  const { signOut, isSignedIn, user } = useAuth();
   const { t } = useTranslation("pageTitles");
 
   return (
     <div className="flex flex-col justify-between p-4 py-24 bg-nccGray-50">
       <div className="flex flex-col gap-4">
+        <div className="flex flex-col items-center justify-center p-3 text-center rounded-lg bg-zinc-100">
+          <p className="text-zinc-500">{user?.getUsername()}</p>
+        </div>
         <div className=" max-w-[200px] ">
           <Image
             className=""

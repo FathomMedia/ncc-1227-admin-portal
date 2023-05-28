@@ -19,7 +19,6 @@ import {
 import { StudentProvider } from "../context/StudentContext";
 import { AppProvider } from "../context/AppContext";
 import { AuthProvider } from "../hooks/use-auth";
-// import { AdminProvider } from "../context/AdminContext";
 import { EducationProvider } from "../context/EducationContext";
 import NextNProgress from "nextjs-progressbar";
 import { useRouter } from "next/router";
@@ -50,14 +49,12 @@ function App({ Component, pageProps }: AppProps) {
     <div dir={dir} className={locale === "ar" ? "font-IBMArabic" : "font-IBM"}>
       <AuthProvider>
         <AppProvider>
-          {/* <AdminProvider> */}
           <StudentProvider>
             <EducationProvider>
               <NextNProgress color="#E1BA3D" />
               <Component {...pageProps} />
             </EducationProvider>
           </StudentProvider>
-          {/* </AdminProvider> */}
         </AppProvider>
       </AuthProvider>
     </div>
