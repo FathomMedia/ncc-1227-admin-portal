@@ -105,6 +105,7 @@ export const onCreateApplication = /* GraphQL */ `
         householdIncome
         familyIncome
         familyIncomeProofDoc
+        familyIncomeProofDocs
         preferredLanguage
         graduationDate
         address
@@ -178,6 +179,7 @@ export const onUpdateApplication = /* GraphQL */ `
         householdIncome
         familyIncome
         familyIncomeProofDoc
+        familyIncomeProofDocs
         preferredLanguage
         graduationDate
         address
@@ -251,6 +253,7 @@ export const onDeleteApplication = /* GraphQL */ `
         householdIncome
         familyIncome
         familyIncomeProofDoc
+        familyIncomeProofDocs
         preferredLanguage
         graduationDate
         address
@@ -700,6 +703,7 @@ export const onCreateStudentLog = /* GraphQL */ `
         householdIncome
         familyIncome
         familyIncomeProofDoc
+        familyIncomeProofDocs
         preferredLanguage
         graduationDate
         address
@@ -746,6 +750,7 @@ export const onUpdateStudentLog = /* GraphQL */ `
         householdIncome
         familyIncome
         familyIncomeProofDoc
+        familyIncomeProofDocs
         preferredLanguage
         graduationDate
         address
@@ -792,6 +797,7 @@ export const onDeleteStudentLog = /* GraphQL */ `
         householdIncome
         familyIncome
         familyIncomeProofDoc
+        familyIncomeProofDocs
         preferredLanguage
         graduationDate
         address
@@ -958,6 +964,7 @@ export const onCreateStudent = /* GraphQL */ `
       householdIncome
       familyIncome
       familyIncomeProofDoc
+      familyIncomeProofDocs
       preferredLanguage
       graduationDate
       address
@@ -1014,6 +1021,7 @@ export const onUpdateStudent = /* GraphQL */ `
       householdIncome
       familyIncome
       familyIncomeProofDoc
+      familyIncomeProofDocs
       preferredLanguage
       graduationDate
       address
@@ -1070,6 +1078,7 @@ export const onDeleteStudent = /* GraphQL */ `
       householdIncome
       familyIncome
       familyIncomeProofDoc
+      familyIncomeProofDocs
       preferredLanguage
       graduationDate
       address

@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Student } from "../src/API";
+import GetStorageLinkComponent from "./get-storage-link-component";
 
 interface Props {
   student: Student | null | undefined;
@@ -37,7 +38,28 @@ export default function StudentInfoComponent({ student }: Props) {
           </tr>
           <tr>
             <td>{t("address")}</td>
-            <td className=" overflow-x-scroll">{student?.address}</td>
+            <td className="overflow-x-scroll ">{student?.address}</td>
+          </tr>
+          <tr>
+            <td>{t("familyIncome")}</td>
+            <td className="overflow-x-scroll ">{student?.familyIncome}</td>
+          </tr>
+          <tr>
+            <td>{t("familyIncomeProof")}</td>
+            <td>
+              <div className="flex flex-col p-3 rounded-lg bg-zinc-100">
+                <div className="flex flex-wrap items-center gap-2">
+                  {student?.familyIncomeProofDocs?.map((doc, index) => (
+                    <div key={index} className="">
+                      <GetStorageLinkComponent
+                        storageKey={doc}
+                        showName
+                      ></GetStorageLinkComponent>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>

@@ -45,10 +45,10 @@ const ApplicationInfo: FC<Props> = (props) => {
       <PageComponent title={"ApplicationInfo"}>
         <Toaster />
         <div className="">
-          <div className="text-2xl font-semibold ">{t("viewApplications")}</div>
-          <div className="text-base font-medium text-gray-500 ">
+          <div className="text-2xl font-semibold ">{t("application")}</div>
+          {/* <div className="text-base font-medium text-gray-500 ">
             {t("application")} ID: {id}
-          </div>
+          </div> */}
         </div>
 
         <div>
@@ -60,6 +60,17 @@ const ApplicationInfo: FC<Props> = (props) => {
           <StudentInfoComponent
             student={props.application.student}
           ></StudentInfoComponent>
+        </div>
+        <div className="divider"></div>
+        <div className="mb-4">
+          <div className="mt-10">
+            <div className="text-base font-medium text-gray-500 ">
+              {t("parentsInformation")}
+            </div>
+          </div>
+          <ParentsInfoComponent
+            parents={props.application.student?.ParentInfo}
+          ></ParentsInfoComponent>
         </div>
 
         <div className=" divider"></div>
@@ -73,18 +84,6 @@ const ApplicationInfo: FC<Props> = (props) => {
           }}
           readOnly={false}
         ></ViewApplication>
-
-        <div className="divider"></div>
-        <div className="mb-4">
-          <div className="mt-10">
-            <div className="text-base font-medium text-gray-500 ">
-              {t("parentsInformation")}
-            </div>
-          </div>
-          <ParentsInfoComponent
-            parents={props.application.student?.ParentInfo}
-          ></ParentsInfoComponent>
-        </div>
       </PageComponent>
     </div>
   );

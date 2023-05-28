@@ -247,12 +247,16 @@ export async function getApplicationByIdAPI(
         schoolName
         specialization
         studentOrderAmongSiblings
+        familyIncome
+        familyIncomeProofDocs
+        nationality
+        schoolType
       }
       updatedAt
       createdAt
       isEmailSent
     }
-  }
+  }  
   `;
 
   let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;

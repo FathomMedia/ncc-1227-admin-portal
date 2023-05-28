@@ -321,10 +321,10 @@ export default function ViewApplication({
                 </tr>
                 {!readOnly && (
                   <>
-                    <tr>
+                    {/* <tr>
                       <td>{t("householdIncome")}</td>
                       <td>{application.student?.householdIncome}</td>
-                    </tr>
+                    </tr> */}
                     <tr>
                       <td>{t("graduationDate")}</td>
                       <td>{application.student?.graduationDate}</td>
@@ -405,7 +405,7 @@ export default function ViewApplication({
                     }
                   </td>
                 </tr>
-                <tr>
+                {/* <tr>
                   <td>{t("signedContract")}</td>
                   <td>
                     {
@@ -414,7 +414,7 @@ export default function ViewApplication({
                       ></GetStorageLinkComponent>
                     }
                   </td>
-                </tr>
+                </tr> */}
                 <tr>
                   <td>{t("studentLog")}</td>
                   <td>

@@ -20,31 +20,39 @@ export default function ParentsInfoComponent({ parents }: Props) {
         <tbody>
           <tr>
             <td>{t("fatherName")}</td>
-            <td>{parents?.fatherFullName}</td>
+            <td className={`${!parents?.fatherFullName && "text-error"}`}>
+              {parents?.fatherFullName ?? "-"}
+            </td>
           </tr>
           <tr>
             <td>{t("fatherCPR")}</td>
-            <td>{parents?.fatherCPR}</td>
+            <td className={`${!parents?.fatherCPR && "text-error"}`}>
+              {parents?.fatherCPR ?? "-"}
+            </td>
           </tr>
           <tr>
             <td>{t("motherName")}</td>
-            <td>{parents?.motherFullName}</td>
+            <td className={`${!parents?.motherFullName && "text-error"}`}>
+              {parents?.motherFullName ?? "-"}
+            </td>
           </tr>
           <tr>
             <td>{t("motherCPR")}</td>
-            <td>{parents?.motherCPR}</td>
+            <td className={`${!parents?.motherCPR && "text-error"}`}>
+              {parents?.motherCPR ?? "-"}
+            </td>
           </tr>
           <tr>
             <td>{t("guardianName")}</td>
-            <td>{parents?.guardianFullName}</td>
+            <td>{parents?.guardianFullName ?? "-"}</td>
           </tr>
           <tr>
             <td>{t("guardianCPR")}</td>
-            <td>{parents?.guardianCPR}</td>
+            <td>{parents?.guardianCPR ?? "-"}</td>
           </tr>
           <tr>
             <td>{t("guardianRelation")}</td>
-            <td>{parents?.relation}</td>
+            <td>{parents?.relation ?? "-"}</td>
           </tr>
         </tbody>
       </table>
