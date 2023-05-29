@@ -20,6 +20,7 @@ export default function UniversityFormComponent({ university }: Props) {
   const { push, back } = useRouter();
   const { syncUniList } = useEducation();
   const { t } = useTranslation("education");
+  const { t: tErrors } = useTranslation("errors");
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -33,7 +34,7 @@ export default function UniversityFormComponent({ university }: Props) {
       <Formik
         initialValues={initialValues}
         validationSchema={yup.object({
-          universityName: yup.string().required("Invalid university name"),
+          universityName: yup.string().required(`${tErrors("requiredField")}`),
         })}
         onSubmit={async (values, actions) => {
           setIsLoading(true);

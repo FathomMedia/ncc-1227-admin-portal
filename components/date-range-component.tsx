@@ -13,14 +13,15 @@ interface Props {
 export const DateRangeComponent: FC<Props> = ({ dateRange, updateRange }) => {
   let initialValues: IDateRange = dateRange;
   const { t } = useTranslation("applications");
+  const { t: tErrors } = useTranslation("errors");
 
   return (
     <div dir="ltr" className="">
       <Formik
         initialValues={initialValues}
         validationSchema={yup.object({
-          start: yup.date().required(),
-          end: yup.date().required(),
+          start: yup.date().required(`${tErrors("requiredField")}`),
+          end: yup.date().required(`${tErrors("requiredField")}`),
         })}
         onSubmit={async (values, actions) => {
           console.log(values);

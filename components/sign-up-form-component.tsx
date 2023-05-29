@@ -20,6 +20,7 @@ export default function SignUpFormComponent() {
   const { checkIfCprExist } = useAuth();
   const { admins, syncAdmins } = useAppContext();
   const { t } = useTranslation("users");
+  const { t: tErrors } = useTranslation("errors");
 
   const initialValues: ISignUpForm = {
     cpr: "",
@@ -80,9 +81,16 @@ export default function SignUpFormComponent() {
             <Formik
               initialValues={initialValues}
               validationSchema={yup.object({
-                cpr: yup.string().min(9).max(9).required(),
-                email: yup.string().email().required(),
-                fullName: yup.string().required(),
+                cpr: yup
+                  .string()
+                  .min(9)
+                  .max(9)
+                  .required(`${tErrors("requiredField")}`),
+                email: yup
+                  .string()
+                  .email()
+                  .required(`${tErrors("requiredField")}`),
+                fullName: yup.string().required(`${tErrors("requiredField")}`),
               })}
               onSubmit={async (values, actions) => {
                 await toast.promise(createAdminUser(values), {

@@ -5,7 +5,6 @@ import { AdminLog, Application } from "../../../src/API";
 import { getApplicationData } from "../../../src/CustomAPI";
 
 import { GetServerSideProps } from "next";
-import ViewApplication from "../../../components/application-view-component";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "react-i18next";
 
@@ -29,6 +28,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         "pageTitles",
         "signIn",
         "applicationLog",
+        "errors",
       ])),
     },
   };

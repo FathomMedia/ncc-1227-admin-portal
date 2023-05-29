@@ -15,6 +15,7 @@ export default function ChangePasswordFormComponent() {
   const { push } = useRouter();
   const { user } = useAuth();
   const { t } = useTranslation("changePassword");
+  const { t: tErrors } = useTranslation("errors");
 
   const initialValues: IChangePasswordForm = {
     newPassword: "",
@@ -43,7 +44,9 @@ export default function ChangePasswordFormComponent() {
             <Formik
               initialValues={initialValues}
               validationSchema={yup.object({
-                newPassword: yup.string().required("Password is required"),
+                newPassword: yup
+                  .string()
+                  .required(`${tErrors("requiredField")}`),
               })}
               onSubmit={async (values, actions) => {
                 await toast.promise(

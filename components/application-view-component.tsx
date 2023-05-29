@@ -51,6 +51,7 @@ export default function ViewApplication({
   const { push, replace, asPath } = useRouter();
   const { syncApplications } = useStudent();
   const { t } = useTranslation("applicationLog");
+  const { t: tErrors } = useTranslation("errors");
   const tA = useTranslation("applications");
 
   const primaryProgram = application.programs?.items?.sort(
@@ -117,7 +118,7 @@ export default function ViewApplication({
       <Formik
         initialValues={initialValues}
         validationSchema={yup.object({
-          reason: yup.string().required(),
+          reason: yup.string().required(`${tErrors("requiredField")}`),
         })}
         onSubmit={async (values, actions) => {
           setIsLoading(true);

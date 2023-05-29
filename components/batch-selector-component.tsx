@@ -1,4 +1,3 @@
-
 import { Formik, Form, Field } from "formik";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
@@ -18,13 +17,17 @@ export const BatchSelectorComponent: FC<Props> = ({
     batch: passedBatch,
   };
   const { t } = useTranslation("common");
+  const { t: tErrors } = useTranslation("errors");
 
   return (
     <div dir="ltr" className="">
       <Formik
         initialValues={initialValues}
         validationSchema={yup.object({
-          batch: yup.number().integer().required(),
+          batch: yup
+            .number()
+            .integer()
+            .required(`${tErrors("requiredField")}`),
         })}
         onSubmit={async (values, actions) => {
           updateBatch(values.batch);

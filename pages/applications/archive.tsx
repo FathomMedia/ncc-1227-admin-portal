@@ -10,7 +10,7 @@ import { PageComponent } from "../../components/page-component";
 import { StudentsTableHeaders } from "../../constants/table-headers";
 import { useStudent } from "../../context/StudentContext";
 import { Application, ProgramChoice, Status } from "../../src/API";
-import { getStatusOrder, IDateRange } from "../../src/Helpers";
+import { getStatusOrder } from "../../src/Helpers";
 
 interface InitialFilterValues {
   search: string;
@@ -44,6 +44,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         "applications",
         "pageTitles",
         "signIn",
+        "errors",
       ])),
     },
   };

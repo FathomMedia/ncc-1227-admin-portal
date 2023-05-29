@@ -12,6 +12,7 @@ interface ISignInForm {
 export default function SignInFormComponent() {
   const auth = useAuth();
   const { t } = useTranslation("signIn");
+  const { t: tErrors } = useTranslation("errors");
 
   const initialValues: ISignInForm = {
     cpr: "",
@@ -42,8 +43,12 @@ export default function SignInFormComponent() {
             <Formik
               initialValues={initialValues}
               validationSchema={yup.object({
-                cpr: yup.string().min(9).max(9).required(),
-                password: yup.string().required(),
+                cpr: yup
+                  .string()
+                  .min(9)
+                  .max(9)
+                  .required(`${tErrors("requiredField")}`),
+                password: yup.string().required(`${tErrors("requiredField")}`),
               })}
               onSubmit={async (values, actions) => {
                 await auth.signIn(values.cpr, values.password);

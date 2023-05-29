@@ -27,6 +27,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
         "pageTitles",
         "signIn",
         "common",
+        "errors",
       ])),
     },
   };
@@ -37,6 +38,7 @@ const Education = () => {
   const { push } = useRouter();
   const { t } = useTranslation("education");
   const { t: common } = useTranslation("common");
+  const { t: tErrors } = useTranslation("errors");
 
   // const [searchValue, setSearchValue] = useState("");
   const [resultList, setResultList] = useState<any>([]);
@@ -181,11 +183,10 @@ const Education = () => {
             <div className="flex flex-wrap items-center justify-between w-full gap-4 p-4 my-8 border md:flex-row border-nccGray-100 rounded-xl bg-nccGray-100">
               <div className="grow">
                 <Field
-               
                   className="w-full input input-bordered"
                   type="text"
                   name="search"
-                  placeholder={`${common('search')}...`}
+                  placeholder={`${common("search")}...`}
                   onChange={handleChange}
                   value={values.search}
                 ></Field>
@@ -252,7 +253,7 @@ const Education = () => {
                 validationSchema={yup.object({
                   universityName: yup
                     .string()
-                    .required("Invalid university name"),
+                    .required(`${tErrors("requiredField")}`),
                 })}
                 onSubmit={async (values) => {
                   let uniFound = universityList
@@ -264,9 +265,7 @@ const Education = () => {
                     );
 
                   if (uniFound) {
-                    toast.error(
-                      "aUniversityAlreadyExistsWithTheSameName"
-                    );
+                    toast.error("aUniversityAlreadyExistsWithTheSameName");
                   } else {
                     setIsSubmitted(true);
                     toast

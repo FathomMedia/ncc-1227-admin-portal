@@ -20,6 +20,7 @@ interface Props {
 export default function ProgramFormComponent({ program }: Props) {
   const { push, back } = useRouter();
   const { t } = useTranslation("education");
+  const { t: tErrors } = useTranslation("errors");
   const { universityList, addProgramToUni, getProgramsFromUniID, syncUniList } =
     useEducation();
 
@@ -36,14 +37,10 @@ export default function ProgramFormComponent({ program }: Props) {
       <Formik
         initialValues={initialValues}
         validationSchema={yup.object({
-          programName: yup.string().required("Invalid program name"),
-          universityID: yup.string().required("University is required"),
-          availability: yup
-            .number()
-            .required("Number of seats available required"),
-          requirements: yup
-            .string()
-            .required("Program requirements is required"),
+          programName: yup.string().required(`${tErrors("requiredField")}`),
+          universityID: yup.string().required(`${tErrors("requiredField")}`),
+          availability: yup.number().required(`${tErrors("requiredField")}`),
+          requirements: yup.string().required(`${tErrors("requiredField")}`),
         })}
         onSubmit={async (values, actions) => {
           let getPrograms = await getProgramsFromUniID(values.universityID!);

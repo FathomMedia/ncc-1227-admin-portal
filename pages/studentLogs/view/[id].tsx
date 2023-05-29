@@ -2,15 +2,13 @@ import React, { useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
 import { PageComponent } from "../../../components/page-component";
 import { Toaster } from "react-hot-toast";
-import { Application, StudentLog } from "../../../src/API";
+import { StudentLog } from "../../../src/API";
 import { useRouter } from "next/router";
 import PrimaryButton from "../../../components/primary-button";
-import ViewApplication from "../../../components/application-view-component";
 import { getStudentLogsByLogID } from "../../../src/CustomAPI";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "react-i18next";
 import { ApplicationSnapshot } from "../../../src/Helpers";
-import { Attachment } from "../../../src/models";
 
 interface Props {
   studentLog: StudentLog;
@@ -29,6 +27,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         "studentLog",
         "applicationLog",
         "applications",
+        "errors",
       ])),
     },
   };
