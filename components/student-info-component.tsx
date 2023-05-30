@@ -5,10 +5,11 @@ import GetStorageLinkComponent from "./get-storage-link-component";
 
 interface Props {
   student: Student | null | undefined;
+  showAll?: boolean;
 }
 
 //View student info - student name, cpr and email address
-export default function StudentInfoComponent({ student }: Props) {
+export default function StudentInfoComponent({ student, showAll }: Props) {
   const { t } = useTranslation("applications");
   return (
     <div dir="ltr">
@@ -40,6 +41,54 @@ export default function StudentInfoComponent({ student }: Props) {
             <td>{t("address")}</td>
             <td className="overflow-x-scroll ">{student?.address}</td>
           </tr>
+          {showAll && (
+            <>
+              <tr>
+                <td>{t("gender")}</td>
+                <td className="overflow-x-scroll ">{student?.gender}</td>
+              </tr>
+              <tr>
+                <td>{t("graduationDate")}</td>
+                <td className="overflow-x-scroll ">
+                  {student?.graduationDate}
+                </td>
+              </tr>
+              <tr>
+                <td>{t("nationality")}</td>
+                <td className="overflow-x-scroll ">{student?.nationality}</td>
+              </tr>
+              <tr>
+                <td>{t("placeOfBirth")}</td>
+                <td className="overflow-x-scroll ">{student?.placeOfBirth}</td>
+              </tr>
+              <tr>
+                <td>{t("preferredLanguage")}</td>
+                <td className="overflow-x-scroll ">
+                  {student?.preferredLanguage}
+                </td>
+              </tr>
+              <tr>
+                <td>{t("schoolName")}</td>
+                <td className="overflow-x-scroll ">{student?.schoolName}</td>
+              </tr>
+              <tr>
+                <td>{t("schoolType")}</td>
+                <td className="overflow-x-scroll ">{student?.schoolType}</td>
+              </tr>
+              <tr>
+                <td>{t("specialization")}</td>
+                <td className="overflow-x-scroll ">
+                  {student?.specialization}
+                </td>
+              </tr>
+              <tr>
+                <td>{t("studentOrderAmongSiblings")}</td>
+                <td className="overflow-x-scroll ">
+                  {student?.studentOrderAmongSiblings}
+                </td>
+              </tr>
+            </>
+          )}
           <tr>
             <td>{t("familyIncome")}</td>
             <td className="overflow-x-scroll ">{student?.familyIncome}</td>

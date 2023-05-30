@@ -388,7 +388,7 @@ export default function ViewApplication({
                   </td>
                 </tr>
                 <tr>
-                  <td>{t("schoolCertificate")}</td>
+                  <td>{tA.t("schoolCertificate")}</td>
                   <td>
                     {
                       <GetStorageLinkComponent

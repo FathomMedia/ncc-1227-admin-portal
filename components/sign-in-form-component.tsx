@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import * as yup from "yup";
 import { useAuth } from "../hooks/use-auth";
 import Image from "next/image";
+import { LangSwitcher } from "./langSwitcher";
 
 interface ISignInForm {
   cpr: string;
@@ -21,7 +22,7 @@ export default function SignInFormComponent() {
 
   return (
     <div>
-      <div className="flex flex-col items-center justify-center h-screen gap-10 p-8 lg:flex-row bg-amber-50">
+      <div className="flex flex-col items-center justify-center h-screen gap-10 p-8 bg-amber-50">
         <div className="flex flex-col items-center justify-center gap-3 lg:flex-row lg:justify-start">
           <div className="flex flex-col text-center">
             <Image
@@ -31,22 +32,19 @@ export default function SignInFormComponent() {
               width={200}
               height={100}
             />
-            <h1 className="text-xl font-medium text-anzac-900 mt-4">
-              Welcome back
-            </h1>
-            <p className="text-sm text-primary-focus">NCC dashboard</p>
           </div>
         </div>
         <div className="flex flex-col w-full max-w-md p-10 bg-white shadow-2xl rounded-2xl shadow-primary-focus/20">
           <div className="flex flex-col items-center w-full gap-6">
+            <LangSwitcher></LangSwitcher>
             <div className="text-xl font-bold ">{t("signIn")}</div>
             <Formik
               initialValues={initialValues}
               validationSchema={yup.object({
                 cpr: yup
                   .string()
-                  .min(9)
-                  .max(9)
+                  .min(9, `${tErrors("cprShouldBe9")}`)
+                  .max(9, `${tErrors("cprShouldBe9")}`)
                   .required(`${tErrors("requiredField")}`),
                 password: yup.string().required(`${tErrors("requiredField")}`),
               })}

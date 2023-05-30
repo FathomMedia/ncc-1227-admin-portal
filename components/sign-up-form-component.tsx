@@ -83,8 +83,8 @@ export default function SignUpFormComponent() {
               validationSchema={yup.object({
                 cpr: yup
                   .string()
-                  .min(9)
-                  .max(9)
+                  .min(9, `${tErrors("cprShouldBe9")}`)
+                  .max(9, `${tErrors("cprShouldBe9")}`)
                   .required(`${tErrors("requiredField")}`),
                 email: yup
                   .string()

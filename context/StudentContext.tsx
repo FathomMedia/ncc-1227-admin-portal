@@ -7,9 +7,9 @@ import {
   useEffect,
   useState,
 } from "react";
-import { Application } from "../src/API";
+import { Application, Student } from "../src/API";
 import { GraphQLResult } from "@aws-amplify/api-graphql";
-import { Student } from "../src/models";
+
 import { IDateRange } from "../src/Helpers";
 import { getAllApplicationsAPI } from "../src/CustomAPI";
 
@@ -19,6 +19,7 @@ interface IUseStudentContext {
   applications: Application[] | undefined;
   applicationById: Application | undefined;
   getApplicationByID: (id: string) => void;
+  getStudentInfo: (cpr: string) => Promise<Student | undefined>;
   batch: number;
   updateBatch: (batch: number) => void;
   syncApplications: () => Promise<void>;
@@ -35,6 +36,9 @@ const defaultState: IUseStudentContext = {
     throw new Error("Function not implemented.");
   },
   syncApplications: function (): Promise<void> {
+    throw new Error("Function not implemented.");
+  },
+  getStudentInfo: function (cpr: string): Promise<Student | undefined> {
     throw new Error("Function not implemented.");
   },
 };
@@ -141,6 +145,74 @@ function useProviderStudent() {
     await getAllApplications(batch);
   }
 
+  async function getStudentInfo(cpr: string): Promise<Student | undefined> {
+    let query = `
+    query GetStudent {
+      getStudent(cpr: "${cpr}") {
+        cpr
+        _deleted
+        _version
+        email
+        familyIncome
+        familyIncomeProofDocs
+        fullName
+        gender
+        graduationDate
+        nationality
+        phone
+        placeOfBirth
+        preferredLanguage
+        schoolName
+        schoolType
+        specialization
+        studentOrderAmongSiblings
+        address
+        ParentInfo {
+          id
+          _version
+          _deleted
+          address
+          fatherCPR
+          fatherFullName
+          guardianCPR
+          guardianFullName
+          motherCPR
+          motherFullName
+          numberOfFamilyMembers
+          primaryMobile
+          relation
+          secondaryMobile
+        }
+        applications {
+          items {
+            id
+            _deleted
+            status
+            gpa
+            dateTime
+            updatedAt
+            isEmailSent
+          }
+        }
+      }
+    }  
+    `;
+
+    let res = (await API.graphql(
+      graphqlOperation(query)
+    )) as GraphQLResult<any>;
+
+    let tempStudent = res.data;
+
+    if (res.data === null) {
+      throw new Error("Failed to get student");
+    }
+
+    return tempStudent.getStudent
+      ? (tempStudent.getStudent as Student)
+      : undefined;
+  }
+
   // NOTE: return all the values & functions you want to export
   return {
     students,
@@ -150,6 +222,7 @@ function useProviderStudent() {
     batch: batch,
     updateBatch: updateBatch,
     syncApplications,
+    getStudentInfo,
   };
 }
 

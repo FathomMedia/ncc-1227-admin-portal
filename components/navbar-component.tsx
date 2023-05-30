@@ -14,13 +14,14 @@ import { useTranslation } from "react-i18next";
 import { LangSwitcher } from "./langSwitcher";
 
 export default function NavbarComponent() {
-  const { signOut, isSignedIn, user } = useAuth();
+  const { signOut, isSignedIn, user, admin } = useAuth();
   const { t } = useTranslation("pageTitles");
 
   return (
     <div className="flex flex-col justify-between p-4 py-24 bg-nccGray-50">
       <div className="flex flex-col gap-4">
         <div className="flex flex-col items-center justify-center p-3 text-center rounded-lg bg-zinc-100">
+          <p className="text-zinc-500">{admin?.fullName}</p>
           <p className="text-zinc-500">{user?.getUsername()}</p>
         </div>
         <div className=" max-w-[200px] ">
@@ -57,7 +58,14 @@ export default function NavbarComponent() {
           linkTo={"/education"}
         ></NavBarButton>
         <NavBarButton
-          name={t("Users")}
+          name={t("Students")}
+          icon={
+            <HiOutlineUsers className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
+          }
+          linkTo={"/students"}
+        ></NavBarButton>
+        <NavBarButton
+          name={t("Admins")}
           icon={
             <HiOutlineUsers className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
           }

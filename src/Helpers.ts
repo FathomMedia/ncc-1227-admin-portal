@@ -203,3 +203,34 @@ export const daysOfWeekNames = [
   "Friday",
   "Saturday",
 ];
+
+export function formatDate(date: Date): string {
+  const year: number = date.getFullYear();
+  const month: number = date.getMonth() + 1;
+  const day: number = date.getDate();
+
+  const formattedDate: string = `${year.toString().slice(-2)}-${month
+    .toString()
+    .padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
+
+  return formattedDate;
+}
+
+export function formatDateTime(date: Date): string {
+  const year: number = date.getFullYear();
+  const month: number = date.getMonth() + 1;
+  const day: number = date.getDate();
+
+  const hours: number = date.getHours();
+  const minutes: number = date.getMinutes();
+  const ampm: string = hours >= 12 ? "pm" : "am";
+  const formattedHours: number = hours % 12 || 12;
+
+  const formattedDateTime: string = `${year.toString().slice(-2)}-${month
+    .toString()
+    .padStart(2, "0")}-${day.toString().padStart(2, "0")} ${formattedHours
+    .toString()
+    .padStart(2, "0")}:${minutes.toString().padStart(2, "0")} ${ampm}`;
+
+  return formattedDateTime;
+}

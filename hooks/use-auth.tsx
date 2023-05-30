@@ -10,7 +10,7 @@ import { Auth, CognitoUser } from "@aws-amplify/auth";
 import config from "../src/aws-exports";
 import { toast } from "react-hot-toast";
 import { API } from "aws-amplify";
-import { GetAdminQuery, GetAdminQueryVariables } from "../src/API";
+import { Admin, GetAdminQuery, GetAdminQueryVariables } from "../src/API";
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { useRouter } from "next/router";
 import { getAdmin } from "../src/graphql/queries";
@@ -19,6 +19,7 @@ Auth.configure({ ...config, ssr: true });
 
 interface IUseAuthContext {
   user: CognitoUser | undefined;
+  admin: Admin | undefined;
   isSignedIn: boolean;
   isInitializing: boolean;
   isChangePasswordRequired: boolean;
@@ -29,6 +30,7 @@ interface IUseAuthContext {
 
 const defaultState: IUseAuthContext = {
   user: undefined,
+  admin: undefined,
   isSignedIn: false,
   isInitializing: true,
   isChangePasswordRequired: false,
@@ -50,6 +52,7 @@ export const useAuth = () => useContext(AuthContext);
 
 function useProvideAuth() {
   const [user, setUser] = useState<CognitoUser | undefined>(defaultState.user);
+  const [admin, setAdmin] = useState<Admin | undefined>(defaultState.admin);
   const [isSignedIn, setIsSignedIn] = useState(defaultState.isSignedIn);
   const [isInitializing, setIsInitializing] = useState(
     defaultState.isInitializing
@@ -87,6 +90,7 @@ function useProvideAuth() {
       query: getAdmin,
       variables: queryInput,
     })) as GraphQLResult<GetAdminQuery>;
+    setAdmin(res.data ? (res.data.getAdmin as Admin) : undefined);
 
     return res.data?.getAdmin != null;
   }
@@ -192,6 +196,7 @@ function useProvideAuth() {
 
   return {
     user,
+    admin,
     isSignedIn,
     signIn,
     signOut,
