@@ -12,14 +12,22 @@ import Image from "next/image";
 import { useAuth } from "../hooks/use-auth";
 import { useTranslation } from "react-i18next";
 import { LangSwitcher } from "./langSwitcher";
+import { useRouter } from "next/router";
 
 export default function NavbarComponent() {
   const { signOut, isSignedIn, user, admin } = useAuth();
   const { t } = useTranslation("pageTitles");
+  const router = useRouter();
+  function goBack() {
+    router.back();
+  }
 
   return (
     <div className="flex flex-col justify-between p-4 py-24 bg-nccGray-50">
       <div className="flex flex-col gap-4">
+        <button className="btn btn-ghost" onClick={goBack}>
+          {t("Back")}
+        </button>
         <div className="flex flex-col items-center justify-center p-3 text-center rounded-lg bg-zinc-100">
           <p className="text-zinc-500">{admin?.fullName}</p>
           <p className="text-zinc-500">{user?.getUsername()}</p>
