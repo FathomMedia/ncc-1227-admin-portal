@@ -9,7 +9,6 @@ import ViewApplication from "../../components/application-view-component";
 import StudentInfoComponent from "../../components/student-info-component";
 import ParentsInfoComponent from "../../components/parents-info-component";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { t } from "chart.js/dist/chunks/helpers.core";
 import { useTranslation } from "react-i18next";
 
 interface Props {
@@ -37,9 +36,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 };
 
 const ApplicationInfo: FC<Props> = (props) => {
-  const router = useRouter();
   const { t } = useTranslation("applications");
-  const { id } = router.query;
 
   return (
     <div>
@@ -47,9 +44,6 @@ const ApplicationInfo: FC<Props> = (props) => {
         <Toaster />
         <div className="">
           <div className="text-2xl font-semibold ">{t("application")}</div>
-          {/* <div className="text-base font-medium text-gray-500 ">
-            {t("application")} ID: {id}
-          </div> */}
         </div>
 
         <div>
@@ -60,6 +54,7 @@ const ApplicationInfo: FC<Props> = (props) => {
           </div>
           <StudentInfoComponent
             student={props.application.student}
+            showAll
           ></StudentInfoComponent>
         </div>
         <div className="divider"></div>
@@ -78,7 +73,6 @@ const ApplicationInfo: FC<Props> = (props) => {
         <ViewApplication
           application={props.application}
           downloadLinks={{
-            cprDoc: props.application.attachment?.cprDoc,
             schoolCertificate: props.application.attachment?.schoolCertificate,
             transcriptDoc: props.application.attachment?.transcriptDoc,
             signedContractDoc: props.application.attachment?.signedContractDoc,

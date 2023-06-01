@@ -54,7 +54,6 @@ export interface IlistAllAdminsLogsOutput {
 }
 
 export interface DownloadLinks {
-  cprDoc?: string | null;
   schoolCertificate?: string | null;
   transcriptDoc?: string | null;
   signedContractDoc?: string | null;
@@ -783,6 +782,7 @@ export async function getAllApplicationsAPI(
         attachmentID
         gpa
         id
+        isEmailSent
         status
         studentCPR
         programs {

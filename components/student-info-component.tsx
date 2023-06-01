@@ -30,6 +30,15 @@ export default function StudentInfoComponent({ student, showAll }: Props) {
             <td>{student?.cpr}</td>
           </tr>
           <tr>
+            <td>{t("studentCPRdoc")}</td>
+            <td className="overflow-x-scroll ">
+              <GetStorageLinkComponent
+                storageKey={student?.cprDoc}
+                showName
+              ></GetStorageLinkComponent>
+            </td>
+          </tr>
+          <tr>
             <td>{t("emailAddress")}</td>
             <td>{student?.email}</td>
           </tr>

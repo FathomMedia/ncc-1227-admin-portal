@@ -106,6 +106,7 @@ export const getApplication = /* GraphQL */ `
       }
       student {
         cpr
+        cprDoc
         fullName
         email
         phone
@@ -576,6 +577,7 @@ export const getStudentLog = /* GraphQL */ `
       reason
       student {
         cpr
+        cprDoc
         fullName
         email
         phone
@@ -841,6 +843,7 @@ export const getStudent = /* GraphQL */ `
   query GetStudent($cpr: String!) {
     getStudent(cpr: $cpr) {
       cpr
+      cprDoc
       fullName
       email
       phone
@@ -911,6 +914,7 @@ export const listStudents = /* GraphQL */ `
     ) {
       items {
         cpr
+        cprDoc
         fullName
         email
         phone
@@ -955,6 +959,7 @@ export const syncStudents = /* GraphQL */ `
     ) {
       items {
         cpr
+        cprDoc
         fullName
         email
         phone

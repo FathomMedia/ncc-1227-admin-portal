@@ -92,6 +92,7 @@ export const onCreateApplication = /* GraphQL */ `
       }
       student {
         cpr
+        cprDoc
         fullName
         email
         phone
@@ -166,6 +167,7 @@ export const onUpdateApplication = /* GraphQL */ `
       }
       student {
         cpr
+        cprDoc
         fullName
         email
         phone
@@ -240,6 +242,7 @@ export const onDeleteApplication = /* GraphQL */ `
       }
       student {
         cpr
+        cprDoc
         fullName
         email
         phone
@@ -690,6 +693,7 @@ export const onCreateStudentLog = /* GraphQL */ `
       reason
       student {
         cpr
+        cprDoc
         fullName
         email
         phone
@@ -737,6 +741,7 @@ export const onUpdateStudentLog = /* GraphQL */ `
       reason
       student {
         cpr
+        cprDoc
         fullName
         email
         phone
@@ -784,6 +789,7 @@ export const onDeleteStudentLog = /* GraphQL */ `
       reason
       student {
         cpr
+        cprDoc
         fullName
         email
         phone
@@ -951,6 +957,7 @@ export const onCreateStudent = /* GraphQL */ `
   subscription OnCreateStudent($filter: ModelSubscriptionStudentFilterInput) {
     onCreateStudent(filter: $filter) {
       cpr
+      cprDoc
       fullName
       email
       phone
@@ -1008,6 +1015,7 @@ export const onUpdateStudent = /* GraphQL */ `
   subscription OnUpdateStudent($filter: ModelSubscriptionStudentFilterInput) {
     onUpdateStudent(filter: $filter) {
       cpr
+      cprDoc
       fullName
       email
       phone
@@ -1065,6 +1073,7 @@ export const onDeleteStudent = /* GraphQL */ `
   subscription OnDeleteStudent($filter: ModelSubscriptionStudentFilterInput) {
     onDeleteStudent(filter: $filter) {
       cpr
+      cprDoc
       fullName
       email
       phone

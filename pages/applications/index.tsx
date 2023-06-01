@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 import { CSVLink } from "react-csv";
 import { Toaster } from "react-hot-toast";
 import { BsFillEyeFill } from "react-icons/bs";
-import { HiDotsVertical, HiOutlineClipboardList } from "react-icons/hi";
+import { HiOutlineClipboardList } from "react-icons/hi";
 import { PageComponent } from "../../components/page-component";
 import { StudentsTableHeaders } from "../../constants/table-headers";
 import { useEducation } from "../../context/EducationContext";
@@ -363,12 +363,17 @@ const Applications = () => {
                       index === StudentsTableHeaders.length - 1 ? (
                         <th
                           key={index}
-                          className="sticky right-0 bg-nccGray-100"
+                          className={`sticky right-0 bg-nccGray-100 `}
                         >
                           {""}
                         </th>
                       ) : (
-                        <th className=" bg-nccGray-100" key={index}>
+                        <th
+                          className={` bg-nccGray-100 ${
+                            index === 1 && `sticky left-14`
+                          }`}
+                          key={index}
+                        >
                           {t(title)}
                         </th>
                       )
@@ -442,7 +447,7 @@ const Applications = () => {
                         />
                       </label>
                     </th>
-                    <td>
+                    <td className="sticky left-14">
                       <div className="flex flex-col justify-between ">
                         <div className="text-sm font-semibold ">{`${findStudentName(
                           datum.studentCPR
@@ -514,6 +519,18 @@ const Applications = () => {
                         timeStyle: "short",
                         dateStyle: "medium",
                       }).format(new Date(datum.updatedAt))}`}</div>
+                    </td>
+                    <td>
+                      <div
+                        dir={locale === "en" ? "ltr" : "rtl"}
+                        className="flex justify-between "
+                      >
+                        {datum.status === Status.APPROVED
+                          ? datum.isEmailSent
+                            ? t("yes")
+                            : t("no")
+                          : "-"}
+                      </div>
                     </td>
 
                     <td className="sticky right-0 min-w-fit">

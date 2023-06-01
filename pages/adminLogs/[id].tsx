@@ -83,7 +83,6 @@ export default function AdminLogHistoryInfo({ adminLog }: Props) {
                 <ViewApplication
                   application={snapshot}
                   downloadLinks={{
-                    cprDoc: snapshot.attachment?.cprDoc,
                     schoolCertificate: snapshot.attachment?.schoolCertificate,
                     transcriptDoc: snapshot.attachment?.transcriptDoc,
                     signedContractDoc: snapshot.attachment?.signedContractDoc,

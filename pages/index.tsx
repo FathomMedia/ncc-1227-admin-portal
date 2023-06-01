@@ -266,7 +266,7 @@ const Home = () => {
               title={t("gpaSummary")}
               barLabel={"GPA"}
               subBarLabel={"Mean of the applications"}
-              min={70}
+              min={85}
               max={100}
               labels={gpaSummaryGraph.map((perMonth) => perMonth.monthName)}
               data={gpaSummaryGraph.map((perMonth) => perMonth.meanGpa)}

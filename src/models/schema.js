@@ -1127,6 +1127,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "cprDoc": {
+                    "name": "cprDoc",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "fullName": {
                     "name": "fullName",
                     "isArray": false,
@@ -1408,5 +1415,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.2",
-    "version": "2d38265864b6e52880f68e9a1d888ce3"
+    "version": "7aeaadadd1dc7040b2f0292564b93644"
 };

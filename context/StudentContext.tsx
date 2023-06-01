@@ -150,6 +150,7 @@ function useProviderStudent() {
     query GetStudent {
       getStudent(cpr: "${cpr}") {
         cpr
+        cprDoc
         _deleted
         _version
         email
@@ -308,6 +309,7 @@ export async function getApplicationByIdAPI(
         _version
         address
         cpr
+        cprDoc
         fullName
         gender
         createdAt

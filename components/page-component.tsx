@@ -18,7 +18,11 @@ export const PageComponent: FC<PropsWithChildren<Props>> = (props) => {
 
   return (
     <div>
-      <Toaster />
+      <Toaster
+        toastOptions={{
+          className: "ltr",
+        }}
+      />
 
       <div className="fixed top-0 left-0 z-50 shadow-lg navbar lg:hidden bg-nccGray-50 shadow-black/5">
         <div className="flex-none">

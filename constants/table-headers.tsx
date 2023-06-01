@@ -7,6 +7,7 @@ export const StudentsTableHeaders = [
   "tableTitleEducation",
   "tableTitleApplicationDate",
   "tableTitleLastUpdate",
+  "tableTitleEmailSent",
   "",
 ];
 

@@ -88,6 +88,7 @@ export default function NavbarComponent() {
         ></NavBarButton>
         <NavBarButton
           name={t("Support")}
+          disabled
           icon={
             <HiOutlineChatAlt2 className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
           }

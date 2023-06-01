@@ -284,6 +284,7 @@ export type StudentLog = {
 export type Student = {
   __typename: "Student",
   cpr: string,
+  cprDoc?: string | null,
   fullName?: string | null,
   email?: string | null,
   phone?: string | null,
@@ -715,6 +716,7 @@ export type DeleteParentInfoInput = {
 
 export type CreateStudentInput = {
   cpr: string,
+  cprDoc?: string | null,
   fullName?: string | null,
   email?: string | null,
   phone?: string | null,
@@ -737,6 +739,7 @@ export type CreateStudentInput = {
 };
 
 export type ModelStudentConditionInput = {
+  cprDoc?: ModelStringInput | null,
   fullName?: ModelStringInput | null,
   email?: ModelStringInput | null,
   phone?: ModelStringInput | null,
@@ -777,6 +780,7 @@ export type ModelLanguageInput = {
 
 export type UpdateStudentInput = {
   cpr: string,
+  cprDoc?: string | null,
   fullName?: string | null,
   email?: string | null,
   phone?: string | null,
@@ -957,6 +961,7 @@ export type ModelParentInfoConnection = {
 
 export type ModelStudentFilterInput = {
   cpr?: ModelStringInput | null,
+  cprDoc?: ModelStringInput | null,
   fullName?: ModelStringInput | null,
   email?: ModelStringInput | null,
   phone?: ModelStringInput | null,
@@ -1168,6 +1173,7 @@ export type ModelSubscriptionParentInfoFilterInput = {
 
 export type ModelSubscriptionStudentFilterInput = {
   cpr?: ModelSubscriptionStringInput | null,
+  cprDoc?: ModelSubscriptionStringInput | null,
   fullName?: ModelSubscriptionStringInput | null,
   email?: ModelSubscriptionStringInput | null,
   phone?: ModelSubscriptionStringInput | null,
@@ -1297,6 +1303,7 @@ export type CreateApplicationMutation = {
     student?:  {
       __typename: "Student",
       cpr: string,
+      cprDoc?: string | null,
       fullName?: string | null,
       email?: string | null,
       phone?: string | null,
@@ -1379,6 +1386,7 @@ export type UpdateApplicationMutation = {
     student?:  {
       __typename: "Student",
       cpr: string,
+      cprDoc?: string | null,
       fullName?: string | null,
       email?: string | null,
       phone?: string | null,
@@ -1461,6 +1469,7 @@ export type DeleteApplicationMutation = {
     student?:  {
       __typename: "Student",
       cpr: string,
+      cprDoc?: string | null,
       fullName?: string | null,
       email?: string | null,
       phone?: string | null,
@@ -1981,6 +1990,7 @@ export type CreateStudentLogMutation = {
     student?:  {
       __typename: "Student",
       cpr: string,
+      cprDoc?: string | null,
       fullName?: string | null,
       email?: string | null,
       phone?: string | null,
@@ -2032,6 +2042,7 @@ export type UpdateStudentLogMutation = {
     student?:  {
       __typename: "Student",
       cpr: string,
+      cprDoc?: string | null,
       fullName?: string | null,
       email?: string | null,
       phone?: string | null,
@@ -2083,6 +2094,7 @@ export type DeleteStudentLogMutation = {
     student?:  {
       __typename: "Student",
       cpr: string,
+      cprDoc?: string | null,
       fullName?: string | null,
       email?: string | null,
       phone?: string | null,
@@ -2282,6 +2294,7 @@ export type CreateStudentMutation = {
   createStudent?:  {
     __typename: "Student",
     cpr: string,
+    cprDoc?: string | null,
     fullName?: string | null,
     email?: string | null,
     phone?: string | null,
@@ -2347,6 +2360,7 @@ export type UpdateStudentMutation = {
   updateStudent?:  {
     __typename: "Student",
     cpr: string,
+    cprDoc?: string | null,
     fullName?: string | null,
     email?: string | null,
     phone?: string | null,
@@ -2412,6 +2426,7 @@ export type DeleteStudentMutation = {
   deleteStudent?:  {
     __typename: "Student",
     cpr: string,
+    cprDoc?: string | null,
     fullName?: string | null,
     email?: string | null,
     phone?: string | null,
@@ -2586,6 +2601,7 @@ export type GetApplicationQuery = {
     student?:  {
       __typename: "Student",
       cpr: string,
+      cprDoc?: string | null,
       fullName?: string | null,
       email?: string | null,
       phone?: string | null,
@@ -3088,6 +3104,7 @@ export type GetStudentLogQuery = {
     student?:  {
       __typename: "Student",
       cpr: string,
+      cprDoc?: string | null,
       fullName?: string | null,
       email?: string | null,
       phone?: string | null,
@@ -3363,6 +3380,7 @@ export type GetStudentQuery = {
   getStudent?:  {
     __typename: "Student",
     cpr: string,
+    cprDoc?: string | null,
     fullName?: string | null,
     email?: string | null,
     phone?: string | null,
@@ -3433,6 +3451,7 @@ export type ListStudentsQuery = {
     items:  Array< {
       __typename: "Student",
       cpr: string,
+      cprDoc?: string | null,
       fullName?: string | null,
       email?: string | null,
       phone?: string | null,
@@ -3475,6 +3494,7 @@ export type SyncStudentsQuery = {
     items:  Array< {
       __typename: "Student",
       cpr: string,
+      cprDoc?: string | null,
       fullName?: string | null,
       email?: string | null,
       phone?: string | null,
@@ -3715,6 +3735,7 @@ export type OnCreateApplicationSubscription = {
     student?:  {
       __typename: "Student",
       cpr: string,
+      cprDoc?: string | null,
       fullName?: string | null,
       email?: string | null,
       phone?: string | null,
@@ -3796,6 +3817,7 @@ export type OnUpdateApplicationSubscription = {
     student?:  {
       __typename: "Student",
       cpr: string,
+      cprDoc?: string | null,
       fullName?: string | null,
       email?: string | null,
       phone?: string | null,
@@ -3877,6 +3899,7 @@ export type OnDeleteApplicationSubscription = {
     student?:  {
       __typename: "Student",
       cpr: string,
+      cprDoc?: string | null,
       fullName?: string | null,
       email?: string | null,
       phone?: string | null,
@@ -4384,6 +4407,7 @@ export type OnCreateStudentLogSubscription = {
     student?:  {
       __typename: "Student",
       cpr: string,
+      cprDoc?: string | null,
       fullName?: string | null,
       email?: string | null,
       phone?: string | null,
@@ -4434,6 +4458,7 @@ export type OnUpdateStudentLogSubscription = {
     student?:  {
       __typename: "Student",
       cpr: string,
+      cprDoc?: string | null,
       fullName?: string | null,
       email?: string | null,
       phone?: string | null,
@@ -4484,6 +4509,7 @@ export type OnDeleteStudentLogSubscription = {
     student?:  {
       __typename: "Student",
       cpr: string,
+      cprDoc?: string | null,
       fullName?: string | null,
       email?: string | null,
       phone?: string | null,
@@ -4676,6 +4702,7 @@ export type OnCreateStudentSubscription = {
   onCreateStudent?:  {
     __typename: "Student",
     cpr: string,
+    cprDoc?: string | null,
     fullName?: string | null,
     email?: string | null,
     phone?: string | null,
@@ -4740,6 +4767,7 @@ export type OnUpdateStudentSubscription = {
   onUpdateStudent?:  {
     __typename: "Student",
     cpr: string,
+    cprDoc?: string | null,
     fullName?: string | null,
     email?: string | null,
     phone?: string | null,
@@ -4804,6 +4832,7 @@ export type OnDeleteStudentSubscription = {
   onDeleteStudent?:  {
     __typename: "Student",
     cpr: string,
+    cprDoc?: string | null,
     fullName?: string | null,
     email?: string | null,
     phone?: string | null,

@@ -25,7 +25,6 @@ import { useTranslation } from "react-i18next";
 interface Props {
   application: Application;
   downloadLinks: {
-    cprDoc?: string | null;
     schoolCertificate?: string | null;
     transcriptDoc?: string | null;
     signedContractDoc?: string | null;
@@ -277,7 +276,10 @@ export default function ViewApplication({
                           value={values.applicationStatus}
                           onBlur={handleBlur}
                         >
-                          <option disabled value={Status.REVIEW}>
+                          <option
+                            disabled={application.status === Status.REVIEW}
+                            value={Status.REVIEW}
+                          >
                             {tA.t("REVIEW")}
                           </option>
                           <option
@@ -300,14 +302,6 @@ export default function ViewApplication({
                           </option>
                         </Field>
                       )}
-                      {/* {!readOnly && (
-                        <PrimaryButton
-                          name={!isEditing ? tA.t("edit") : tA.t("close")}
-                          buttonClick={function (): void {
-                            setIsEditing(!isEditing);
-                          }}
-                        ></PrimaryButton>
-                      )} */}
                       {application.status !== values.applicationStatus && (
                         <div className="flex items-center gap-2 text-sm font-semibold text-gray-400">
                           <span>{tA.t(`${application.status}`)}</span>
@@ -323,10 +317,6 @@ export default function ViewApplication({
 
                 {!readOnly && (
                   <>
-                    {/* <tr>
-                      <td>{t("householdIncome")}</td>
-                      <td>{application.student?.householdIncome}</td>
-                    </tr> */}
                     <tr>
                       <td>{t("graduationDate")}</td>
                       <td>{application.student?.graduationDate}</td>
@@ -375,16 +365,6 @@ export default function ViewApplication({
                         storageKey={secondaryProgram?.acceptanceLetterDoc}
                       ></GetStorageLinkComponent>
                     </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>{t("cprDocument")}</td>
-                  <td>
-                    {
-                      <GetStorageLinkComponent
-                        storageKey={downloadLinks.cprDoc}
-                      ></GetStorageLinkComponent>
-                    }
                   </td>
                 </tr>
                 <tr>

@@ -96,6 +96,7 @@ export const createApplication = /* GraphQL */ `
       }
       student {
         cpr
+        cprDoc
         fullName
         email
         phone
@@ -171,6 +172,7 @@ export const updateApplication = /* GraphQL */ `
       }
       student {
         cpr
+        cprDoc
         fullName
         email
         phone
@@ -246,6 +248,7 @@ export const deleteApplication = /* GraphQL */ `
       }
       student {
         cpr
+        cprDoc
         fullName
         email
         phone
@@ -721,6 +724,7 @@ export const createStudentLog = /* GraphQL */ `
       reason
       student {
         cpr
+        cprDoc
         fullName
         email
         phone
@@ -769,6 +773,7 @@ export const updateStudentLog = /* GraphQL */ `
       reason
       student {
         cpr
+        cprDoc
         fullName
         email
         phone
@@ -817,6 +822,7 @@ export const deleteStudentLog = /* GraphQL */ `
       reason
       student {
         cpr
+        cprDoc
         fullName
         email
         phone
@@ -999,6 +1005,7 @@ export const createStudent = /* GraphQL */ `
   ) {
     createStudent(input: $input, condition: $condition) {
       cpr
+      cprDoc
       fullName
       email
       phone
@@ -1059,6 +1066,7 @@ export const updateStudent = /* GraphQL */ `
   ) {
     updateStudent(input: $input, condition: $condition) {
       cpr
+      cprDoc
       fullName
       email
       phone
@@ -1119,6 +1127,7 @@ export const deleteStudent = /* GraphQL */ `
   ) {
     deleteStudent(input: $input, condition: $condition) {
       cpr
+      cprDoc
       fullName
       email
       phone
