@@ -221,9 +221,12 @@ export const getProgramChoice = /* GraphQL */ `
         id
         name
         requirements
+        nameAr
+        requirementsAr
         availability
         universityID
         isDeactivated
+        isTrashed
         createdAt
         updatedAt
         _version
@@ -325,12 +328,17 @@ export const getProgram = /* GraphQL */ `
       id
       name
       requirements
+      nameAr
+      requirementsAr
       availability
       universityID
       university {
         id
         name
+        nameAr
+        availability
         isDeactivated
+        isTrashed
         createdAt
         updatedAt
         _version
@@ -342,6 +350,7 @@ export const getProgram = /* GraphQL */ `
         startedAt
       }
       isDeactivated
+      isTrashed
       createdAt
       updatedAt
       _version
@@ -362,9 +371,12 @@ export const listPrograms = /* GraphQL */ `
         id
         name
         requirements
+        nameAr
+        requirementsAr
         availability
         universityID
         isDeactivated
+        isTrashed
         createdAt
         updatedAt
         _version
@@ -394,9 +406,12 @@ export const syncPrograms = /* GraphQL */ `
         id
         name
         requirements
+        nameAr
+        requirementsAr
         availability
         universityID
         isDeactivated
+        isTrashed
         createdAt
         updatedAt
         _version
@@ -414,11 +429,14 @@ export const getUniversity = /* GraphQL */ `
     getUniversity(id: $id) {
       id
       name
+      nameAr
       Programs {
         nextToken
         startedAt
       }
+      availability
       isDeactivated
+      isTrashed
       createdAt
       updatedAt
       _version
@@ -437,7 +455,10 @@ export const listUniversities = /* GraphQL */ `
       items {
         id
         name
+        nameAr
+        availability
         isDeactivated
+        isTrashed
         createdAt
         updatedAt
         _version
@@ -465,7 +486,10 @@ export const syncUniversities = /* GraphQL */ `
       items {
         id
         name
+        nameAr
+        availability
         isDeactivated
+        isTrashed
         createdAt
         updatedAt
         _version
