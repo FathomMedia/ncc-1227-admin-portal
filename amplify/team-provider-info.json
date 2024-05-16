@@ -84,7 +84,7 @@
         },
         "deleteAdmin": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
-          "s3Key": "amplify-builds/deleteAdmin-646d39516c542b333941-build.zip"
+          "s3Key": "amplify-builds/deleteAdmin-7433755153756f4b3472-build.zip"
         }
       }
     }

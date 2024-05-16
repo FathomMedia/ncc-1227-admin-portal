@@ -156,7 +156,8 @@ async function generatePdf(application, program, university, parent, student) {
     doc.text(application.nationalityCategory);
     doc.text("GPA: ", {continued: true});
     doc.text(application.gpa + "%");
-    doc.text("Verified GPA: " + application.verifiedGPA ? application.verifiedGPA : "Awaiting verification");
+    doc.text("Verified GPA: ",  {continued: true});
+    doc.text(application.verifiedGPA ? application.verifiedGPA : "Awaiting verification");
     doc.text("School Name: ", {continued: true});
     doc.text(application.schoolName, {features: ['rtla']});
     doc.text("School Type: ", {continued: true});
