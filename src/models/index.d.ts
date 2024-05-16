@@ -1,6 +1,11 @@
-import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier, CustomIdentifier } from "@aws-amplify/datastore";
+import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier, CustomIdentifier, OptionallyManagedIdentifier } from "@aws-amplify/datastore";
 // @ts-ignore
 import { LazyLoading, LazyLoadingDisabled, AsyncCollection, AsyncItem } from "@aws-amplify/datastore";
+
+export enum AdminRole {
+  ADMIN = "ADMIN",
+  SUPER_ADMIN = "SUPER_ADMIN"
+}
 
 export enum Status {
   APPROVED = "APPROVED",
@@ -26,11 +31,25 @@ export enum SchoolType {
   PUBLIC = "PUBLIC"
 }
 
+export enum Nationality {
+  BAHRAINI = "BAHRAINI",
+  NON_BAHRAINI = "NON_BAHRAINI"
+}
+
 export enum FamilyIncome {
   LESS_THAN_500 = "LESS_THAN_500",
   BETWEEN_500_AND_700 = "BETWEEN_500_AND_700",
   BETWEEN_700_AND_1000 = "BETWEEN_700_AND_1000",
+  LESS_THAN_1500 = "LESS_THAN_1500",
+  MORE_THAN_1500 = "MORE_THAN_1500",
   OVER_1000 = "OVER_1000"
+}
+
+export enum ScholarshipStatus {
+  APPROVED = "APPROVED",
+  PENDING = "PENDING",
+  REJECTED = "REJECTED",
+  WITHDRAWN = "WITHDRAWN"
 }
 
 
@@ -76,22 +95,37 @@ type EagerApplication = {
   };
   readonly id: string;
   readonly gpa?: number | null;
+  readonly verifiedGPA?: number | null;
   readonly status?: Status | keyof typeof Status | null;
   readonly attachmentID?: string | null;
-  readonly studentCPR: string;
   readonly adminLogs?: (AdminLog | null)[] | null;
   readonly studentLogs?: (StudentLog | null)[] | null;
   readonly attachment?: Attachment | null;
   readonly programs?: (ProgramChoice | null)[] | null;
-  readonly student?: Student | null;
   readonly dateTime: string;
   readonly isEmailSent?: boolean | null;
+  readonly nationalityCategory?: Nationality | keyof typeof Nationality | null;
+  readonly familyIncome?: FamilyIncome | keyof typeof FamilyIncome | null;
   readonly schoolName?: string | null;
   readonly schoolType?: SchoolType | keyof typeof SchoolType | null;
+  readonly studentName?: string | null;
+  readonly programID?: string | null;
+  readonly program?: Program | null;
+  readonly universityID?: string | null;
+  readonly university?: University | null;
+  readonly studentCPR: string;
+  readonly student?: Student | null;
   readonly batch?: number | null;
+  readonly score?: number | null;
+  readonly adminPoints?: number | null;
+  readonly processed?: number | null;
+  readonly isFamilyIncomeVerified?: boolean | null;
+  readonly reason?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly applicationAttachmentId?: string | null;
+  readonly programApplicationId?: string | null;
+  readonly universityApplicationsId?: string | null;
 }
 
 type LazyApplication = {
@@ -101,22 +135,37 @@ type LazyApplication = {
   };
   readonly id: string;
   readonly gpa?: number | null;
+  readonly verifiedGPA?: number | null;
   readonly status?: Status | keyof typeof Status | null;
   readonly attachmentID?: string | null;
-  readonly studentCPR: string;
   readonly adminLogs: AsyncCollection<AdminLog>;
   readonly studentLogs: AsyncCollection<StudentLog>;
   readonly attachment: AsyncItem<Attachment | undefined>;
   readonly programs: AsyncCollection<ProgramChoice>;
-  readonly student: AsyncItem<Student | undefined>;
   readonly dateTime: string;
   readonly isEmailSent?: boolean | null;
+  readonly nationalityCategory?: Nationality | keyof typeof Nationality | null;
+  readonly familyIncome?: FamilyIncome | keyof typeof FamilyIncome | null;
   readonly schoolName?: string | null;
   readonly schoolType?: SchoolType | keyof typeof SchoolType | null;
+  readonly studentName?: string | null;
+  readonly programID?: string | null;
+  readonly program: AsyncItem<Program | undefined>;
+  readonly universityID?: string | null;
+  readonly university: AsyncItem<University | undefined>;
+  readonly studentCPR: string;
+  readonly student: AsyncItem<Student | undefined>;
   readonly batch?: number | null;
+  readonly score?: number | null;
+  readonly adminPoints?: number | null;
+  readonly processed?: number | null;
+  readonly isFamilyIncomeVerified?: boolean | null;
+  readonly reason?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly applicationAttachmentId?: string | null;
+  readonly programApplicationId?: string | null;
+  readonly universityApplicationsId?: string | null;
 }
 
 export declare type Application = LazyLoading extends LazyLoadingDisabled ? EagerApplication : LazyApplication
@@ -174,6 +223,7 @@ type EagerProgram = {
   };
   readonly id: string;
   readonly name?: string | null;
+  readonly minimumGPA?: number | null;
   readonly requirements?: string | null;
   readonly nameAr?: string | null;
   readonly requirementsAr?: string | null;
@@ -183,6 +233,7 @@ type EagerProgram = {
   readonly applications?: (ProgramChoice | null)[] | null;
   readonly isDeactivated?: boolean | null;
   readonly isTrashed?: boolean | null;
+  readonly application?: (Application | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly universityProgramsId?: string | null;
@@ -195,6 +246,7 @@ type LazyProgram = {
   };
   readonly id: string;
   readonly name?: string | null;
+  readonly minimumGPA?: number | null;
   readonly requirements?: string | null;
   readonly nameAr?: string | null;
   readonly requirementsAr?: string | null;
@@ -204,6 +256,7 @@ type LazyProgram = {
   readonly applications: AsyncCollection<ProgramChoice>;
   readonly isDeactivated?: boolean | null;
   readonly isTrashed?: boolean | null;
+  readonly application: AsyncCollection<Application>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly universityProgramsId?: string | null;
@@ -226,7 +279,11 @@ type EagerUniversity = {
   readonly Programs?: (Program | null)[] | null;
   readonly availability?: number | null;
   readonly isDeactivated?: boolean | null;
+  readonly isExtended?: number | null;
+  readonly extensionDuration?: number | null;
+  readonly isException?: number | null;
   readonly isTrashed?: boolean | null;
+  readonly applications?: (Application | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -242,7 +299,11 @@ type LazyUniversity = {
   readonly Programs: AsyncCollection<Program>;
   readonly availability?: number | null;
   readonly isDeactivated?: boolean | null;
+  readonly isExtended?: number | null;
+  readonly extensionDuration?: number | null;
+  readonly isException?: number | null;
   readonly isTrashed?: boolean | null;
+  readonly applications: AsyncCollection<Application>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -346,6 +407,8 @@ type EagerAdmin = {
   readonly fullName?: string | null;
   readonly email?: string | null;
   readonly AdminLogs?: (AdminLog | null)[] | null;
+  readonly role?: AdminRole | keyof typeof AdminRole | null;
+  readonly isDeactivated?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -359,6 +422,8 @@ type LazyAdmin = {
   readonly fullName?: string | null;
   readonly email?: string | null;
   readonly AdminLogs: AsyncCollection<AdminLog>;
+  readonly role?: AdminRole | keyof typeof AdminRole | null;
+  readonly isDeactivated?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -425,16 +490,17 @@ type EagerStudent = {
   readonly cpr: string;
   readonly cprDoc?: string | null;
   readonly fullName?: string | null;
+  readonly batch?: number | null;
   readonly email?: string | null;
   readonly phone?: string | null;
   readonly gender?: Gender | keyof typeof Gender | null;
+  readonly nationalityCategory?: Nationality | keyof typeof Nationality | null;
   readonly nationality?: string | null;
   readonly schoolName?: string | null;
   readonly schoolType?: SchoolType | keyof typeof SchoolType | null;
   readonly specialization?: string | null;
   readonly placeOfBirth?: string | null;
   readonly studentOrderAmongSiblings?: number | null;
-  readonly householdIncome?: number | null;
   readonly familyIncome?: FamilyIncome | keyof typeof FamilyIncome | null;
   readonly familyIncomeProofDoc?: string | null;
   readonly familyIncomeProofDocs?: (string | null)[] | null;
@@ -457,16 +523,17 @@ type LazyStudent = {
   readonly cpr: string;
   readonly cprDoc?: string | null;
   readonly fullName?: string | null;
+  readonly batch?: number | null;
   readonly email?: string | null;
   readonly phone?: string | null;
   readonly gender?: Gender | keyof typeof Gender | null;
+  readonly nationalityCategory?: Nationality | keyof typeof Nationality | null;
   readonly nationality?: string | null;
   readonly schoolName?: string | null;
   readonly schoolType?: SchoolType | keyof typeof SchoolType | null;
   readonly specialization?: string | null;
   readonly placeOfBirth?: string | null;
   readonly studentOrderAmongSiblings?: number | null;
-  readonly householdIncome?: number | null;
   readonly familyIncome?: FamilyIncome | keyof typeof FamilyIncome | null;
   readonly familyIncomeProofDoc?: string | null;
   readonly familyIncomeProofDocs?: (string | null)[] | null;
@@ -485,4 +552,132 @@ export declare type Student = LazyLoading extends LazyLoadingDisabled ? EagerStu
 
 export declare const Student: (new (init: ModelInit<Student>) => Student) & {
   copyOf(source: Student, mutator: (draft: MutableModel<Student>) => MutableModel<Student> | void): Student;
+}
+
+type EagerBatch = {
+  readonly [__modelMeta__]: {
+    identifier: CustomIdentifier<Batch, 'batch'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly batch: number;
+  readonly createApplicationStartDate?: string | null;
+  readonly createApplicationEndDate?: string | null;
+  readonly updateApplicationEndDate?: string | null;
+  readonly signUpStartDate?: string | null;
+  readonly signUpEndDate?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyBatch = {
+  readonly [__modelMeta__]: {
+    identifier: CustomIdentifier<Batch, 'batch'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly batch: number;
+  readonly createApplicationStartDate?: string | null;
+  readonly createApplicationEndDate?: string | null;
+  readonly updateApplicationEndDate?: string | null;
+  readonly signUpStartDate?: string | null;
+  readonly signUpEndDate?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Batch = LazyLoading extends LazyLoadingDisabled ? EagerBatch : LazyBatch
+
+export declare const Batch: (new (init: ModelInit<Batch>) => Batch) & {
+  copyOf(source: Batch, mutator: (draft: MutableModel<Batch>) => MutableModel<Batch> | void): Batch;
+}
+
+type EagerScholarship = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Scholarship, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly status?: ScholarshipStatus | keyof typeof ScholarshipStatus | null;
+  readonly applicationID: string;
+  readonly batch?: number | null;
+  readonly isConfirmed?: boolean | null;
+  readonly application?: Application | null;
+  readonly studentCPR?: string | null;
+  readonly unsignedContractDoc?: string | null;
+  readonly signedContractDoc?: string | null;
+  readonly studentSignature?: string | null;
+  readonly guardianSignature?: string | null;
+  readonly bankName?: string | null;
+  readonly IBAN?: string | null;
+  readonly IBANLetterDoc?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyScholarship = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Scholarship, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly status?: ScholarshipStatus | keyof typeof ScholarshipStatus | null;
+  readonly applicationID: string;
+  readonly batch?: number | null;
+  readonly isConfirmed?: boolean | null;
+  readonly application: AsyncItem<Application | undefined>;
+  readonly studentCPR?: string | null;
+  readonly unsignedContractDoc?: string | null;
+  readonly signedContractDoc?: string | null;
+  readonly studentSignature?: string | null;
+  readonly guardianSignature?: string | null;
+  readonly bankName?: string | null;
+  readonly IBAN?: string | null;
+  readonly IBANLetterDoc?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Scholarship = LazyLoading extends LazyLoadingDisabled ? EagerScholarship : LazyScholarship
+
+export declare const Scholarship: (new (init: ModelInit<Scholarship>) => Scholarship) & {
+  copyOf(source: Scholarship, mutator: (draft: MutableModel<Scholarship>) => MutableModel<Scholarship> | void): Scholarship;
+}
+
+type EagerStatistics = {
+  readonly [__modelMeta__]: {
+    identifier: OptionallyManagedIdentifier<Statistics, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: number;
+  readonly batch: number;
+  readonly totalApplications?: number | null;
+  readonly totalApplicationsPerStatus?: string | null;
+  readonly scoreHistogram?: string | null;
+  readonly gpaHistogram?: string | null;
+  readonly totalApplicationsPerUniversity?: string | null;
+  readonly topUniversities?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyStatistics = {
+  readonly [__modelMeta__]: {
+    identifier: OptionallyManagedIdentifier<Statistics, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: number;
+  readonly batch: number;
+  readonly totalApplications?: number | null;
+  readonly totalApplicationsPerStatus?: string | null;
+  readonly scoreHistogram?: string | null;
+  readonly gpaHistogram?: string | null;
+  readonly totalApplicationsPerUniversity?: string | null;
+  readonly topUniversities?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Statistics = LazyLoading extends LazyLoadingDisabled ? EagerStatistics : LazyStatistics
+
+export declare const Statistics: (new (init: ModelInit<Statistics>) => Statistics) & {
+  copyOf(source: Statistics, mutator: (draft: MutableModel<Statistics>) => MutableModel<Statistics> | void): Statistics;
 }

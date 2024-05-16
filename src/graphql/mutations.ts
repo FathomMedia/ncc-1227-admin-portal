@@ -67,9 +67,9 @@ export const createApplication = /* GraphQL */ `
     createApplication(input: $input, condition: $condition) {
       id
       gpa
+      verifiedGPA
       status
       attachmentID
-      studentCPR
       adminLogs {
         nextToken
         startedAt
@@ -94,20 +94,65 @@ export const createApplication = /* GraphQL */ `
         nextToken
         startedAt
       }
+      dateTime
+      isEmailSent
+      nationalityCategory
+      familyIncome
+      schoolName
+      schoolType
+      studentName
+      programID
+      program {
+        id
+        name
+        minimumGPA
+        requirements
+        nameAr
+        requirementsAr
+        availability
+        universityID
+        isDeactivated
+        isTrashed
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        universityProgramsId
+      }
+      universityID
+      university {
+        id
+        name
+        nameAr
+        availability
+        isDeactivated
+        isExtended
+        extensionDuration
+        isException
+        isTrashed
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      studentCPR
       student {
         cpr
         cprDoc
         fullName
+        batch
         email
         phone
         gender
+        nationalityCategory
         nationality
         schoolName
         schoolType
         specialization
         placeOfBirth
         studentOrderAmongSiblings
-        householdIncome
         familyIncome
         familyIncomeProofDoc
         familyIncomeProofDocs
@@ -121,16 +166,19 @@ export const createApplication = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
-      dateTime
-      isEmailSent
-      schoolName
-      schoolType
       batch
+      score
+      adminPoints
+      processed
+      isFamilyIncomeVerified
+      reason
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
+      universityApplicationsId
       applicationAttachmentId
     }
   }
@@ -143,9 +191,9 @@ export const updateApplication = /* GraphQL */ `
     updateApplication(input: $input, condition: $condition) {
       id
       gpa
+      verifiedGPA
       status
       attachmentID
-      studentCPR
       adminLogs {
         nextToken
         startedAt
@@ -170,20 +218,65 @@ export const updateApplication = /* GraphQL */ `
         nextToken
         startedAt
       }
+      dateTime
+      isEmailSent
+      nationalityCategory
+      familyIncome
+      schoolName
+      schoolType
+      studentName
+      programID
+      program {
+        id
+        name
+        minimumGPA
+        requirements
+        nameAr
+        requirementsAr
+        availability
+        universityID
+        isDeactivated
+        isTrashed
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        universityProgramsId
+      }
+      universityID
+      university {
+        id
+        name
+        nameAr
+        availability
+        isDeactivated
+        isExtended
+        extensionDuration
+        isException
+        isTrashed
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      studentCPR
       student {
         cpr
         cprDoc
         fullName
+        batch
         email
         phone
         gender
+        nationalityCategory
         nationality
         schoolName
         schoolType
         specialization
         placeOfBirth
         studentOrderAmongSiblings
-        householdIncome
         familyIncome
         familyIncomeProofDoc
         familyIncomeProofDocs
@@ -197,16 +290,19 @@ export const updateApplication = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
-      dateTime
-      isEmailSent
-      schoolName
-      schoolType
       batch
+      score
+      adminPoints
+      processed
+      isFamilyIncomeVerified
+      reason
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
+      universityApplicationsId
       applicationAttachmentId
     }
   }
@@ -219,9 +315,9 @@ export const deleteApplication = /* GraphQL */ `
     deleteApplication(input: $input, condition: $condition) {
       id
       gpa
+      verifiedGPA
       status
       attachmentID
-      studentCPR
       adminLogs {
         nextToken
         startedAt
@@ -246,20 +342,65 @@ export const deleteApplication = /* GraphQL */ `
         nextToken
         startedAt
       }
+      dateTime
+      isEmailSent
+      nationalityCategory
+      familyIncome
+      schoolName
+      schoolType
+      studentName
+      programID
+      program {
+        id
+        name
+        minimumGPA
+        requirements
+        nameAr
+        requirementsAr
+        availability
+        universityID
+        isDeactivated
+        isTrashed
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        universityProgramsId
+      }
+      universityID
+      university {
+        id
+        name
+        nameAr
+        availability
+        isDeactivated
+        isExtended
+        extensionDuration
+        isException
+        isTrashed
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      studentCPR
       student {
         cpr
         cprDoc
         fullName
+        batch
         email
         phone
         gender
+        nationalityCategory
         nationality
         schoolName
         schoolType
         specialization
         placeOfBirth
         studentOrderAmongSiblings
-        householdIncome
         familyIncome
         familyIncomeProofDoc
         familyIncomeProofDocs
@@ -273,16 +414,19 @@ export const deleteApplication = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
-      dateTime
-      isEmailSent
-      schoolName
-      schoolType
       batch
+      score
+      adminPoints
+      processed
+      isFamilyIncomeVerified
+      reason
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
+      universityApplicationsId
       applicationAttachmentId
     }
   }
@@ -299,6 +443,7 @@ export const createProgramChoice = /* GraphQL */ `
       program {
         id
         name
+        minimumGPA
         requirements
         nameAr
         requirementsAr
@@ -316,19 +461,32 @@ export const createProgramChoice = /* GraphQL */ `
       application {
         id
         gpa
+        verifiedGPA
         status
         attachmentID
-        studentCPR
         dateTime
         isEmailSent
+        nationalityCategory
+        familyIncome
         schoolName
         schoolType
+        studentName
+        programID
+        universityID
+        studentCPR
         batch
+        score
+        adminPoints
+        processed
+        isFamilyIncomeVerified
+        reason
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        programApplicationId
+        universityApplicationsId
         applicationAttachmentId
       }
       choiceOrder
@@ -355,6 +513,7 @@ export const updateProgramChoice = /* GraphQL */ `
       program {
         id
         name
+        minimumGPA
         requirements
         nameAr
         requirementsAr
@@ -372,19 +531,32 @@ export const updateProgramChoice = /* GraphQL */ `
       application {
         id
         gpa
+        verifiedGPA
         status
         attachmentID
-        studentCPR
         dateTime
         isEmailSent
+        nationalityCategory
+        familyIncome
         schoolName
         schoolType
+        studentName
+        programID
+        universityID
+        studentCPR
         batch
+        score
+        adminPoints
+        processed
+        isFamilyIncomeVerified
+        reason
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        programApplicationId
+        universityApplicationsId
         applicationAttachmentId
       }
       choiceOrder
@@ -411,6 +583,7 @@ export const deleteProgramChoice = /* GraphQL */ `
       program {
         id
         name
+        minimumGPA
         requirements
         nameAr
         requirementsAr
@@ -428,19 +601,32 @@ export const deleteProgramChoice = /* GraphQL */ `
       application {
         id
         gpa
+        verifiedGPA
         status
         attachmentID
-        studentCPR
         dateTime
         isEmailSent
+        nationalityCategory
+        familyIncome
         schoolName
         schoolType
+        studentName
+        programID
+        universityID
+        studentCPR
         batch
+        score
+        adminPoints
+        processed
+        isFamilyIncomeVerified
+        reason
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        programApplicationId
+        universityApplicationsId
         applicationAttachmentId
       }
       choiceOrder
@@ -463,6 +649,7 @@ export const createProgram = /* GraphQL */ `
     createProgram(input: $input, condition: $condition) {
       id
       name
+      minimumGPA
       requirements
       nameAr
       requirementsAr
@@ -474,6 +661,9 @@ export const createProgram = /* GraphQL */ `
         nameAr
         availability
         isDeactivated
+        isExtended
+        extensionDuration
+        isException
         isTrashed
         createdAt
         updatedAt
@@ -487,6 +677,10 @@ export const createProgram = /* GraphQL */ `
       }
       isDeactivated
       isTrashed
+      application {
+        nextToken
+        startedAt
+      }
       createdAt
       updatedAt
       _version
@@ -504,6 +698,7 @@ export const updateProgram = /* GraphQL */ `
     updateProgram(input: $input, condition: $condition) {
       id
       name
+      minimumGPA
       requirements
       nameAr
       requirementsAr
@@ -515,6 +710,9 @@ export const updateProgram = /* GraphQL */ `
         nameAr
         availability
         isDeactivated
+        isExtended
+        extensionDuration
+        isException
         isTrashed
         createdAt
         updatedAt
@@ -528,6 +726,10 @@ export const updateProgram = /* GraphQL */ `
       }
       isDeactivated
       isTrashed
+      application {
+        nextToken
+        startedAt
+      }
       createdAt
       updatedAt
       _version
@@ -545,6 +747,7 @@ export const deleteProgram = /* GraphQL */ `
     deleteProgram(input: $input, condition: $condition) {
       id
       name
+      minimumGPA
       requirements
       nameAr
       requirementsAr
@@ -556,6 +759,9 @@ export const deleteProgram = /* GraphQL */ `
         nameAr
         availability
         isDeactivated
+        isExtended
+        extensionDuration
+        isException
         isTrashed
         createdAt
         updatedAt
@@ -569,6 +775,10 @@ export const deleteProgram = /* GraphQL */ `
       }
       isDeactivated
       isTrashed
+      application {
+        nextToken
+        startedAt
+      }
       createdAt
       updatedAt
       _version
@@ -593,7 +803,14 @@ export const createUniversity = /* GraphQL */ `
       }
       availability
       isDeactivated
+      isExtended
+      extensionDuration
+      isException
       isTrashed
+      applications {
+        nextToken
+        startedAt
+      }
       createdAt
       updatedAt
       _version
@@ -617,7 +834,14 @@ export const updateUniversity = /* GraphQL */ `
       }
       availability
       isDeactivated
+      isExtended
+      extensionDuration
+      isException
       isTrashed
+      applications {
+        nextToken
+        startedAt
+      }
       createdAt
       updatedAt
       _version
@@ -641,7 +865,14 @@ export const deleteUniversity = /* GraphQL */ `
       }
       availability
       isDeactivated
+      isExtended
+      extensionDuration
+      isException
       isTrashed
+      applications {
+        nextToken
+        startedAt
+      }
       createdAt
       updatedAt
       _version
@@ -666,6 +897,8 @@ export const createAdminLog = /* GraphQL */ `
         cpr
         fullName
         email
+        role
+        isDeactivated
         createdAt
         updatedAt
         _version
@@ -698,6 +931,8 @@ export const updateAdminLog = /* GraphQL */ `
         cpr
         fullName
         email
+        role
+        isDeactivated
         createdAt
         updatedAt
         _version
@@ -730,6 +965,8 @@ export const deleteAdminLog = /* GraphQL */ `
         cpr
         fullName
         email
+        role
+        isDeactivated
         createdAt
         updatedAt
         _version
@@ -762,16 +999,17 @@ export const createStudentLog = /* GraphQL */ `
         cpr
         cprDoc
         fullName
+        batch
         email
         phone
         gender
+        nationalityCategory
         nationality
         schoolName
         schoolType
         specialization
         placeOfBirth
         studentOrderAmongSiblings
-        householdIncome
         familyIncome
         familyIncomeProofDoc
         familyIncomeProofDocs
@@ -811,16 +1049,17 @@ export const updateStudentLog = /* GraphQL */ `
         cpr
         cprDoc
         fullName
+        batch
         email
         phone
         gender
+        nationalityCategory
         nationality
         schoolName
         schoolType
         specialization
         placeOfBirth
         studentOrderAmongSiblings
-        householdIncome
         familyIncome
         familyIncomeProofDoc
         familyIncomeProofDocs
@@ -860,16 +1099,17 @@ export const deleteStudentLog = /* GraphQL */ `
         cpr
         cprDoc
         fullName
+        batch
         email
         phone
         gender
+        nationalityCategory
         nationality
         schoolName
         schoolType
         specialization
         placeOfBirth
         studentOrderAmongSiblings
-        householdIncome
         familyIncome
         familyIncomeProofDoc
         familyIncomeProofDocs
@@ -906,6 +1146,8 @@ export const createAdmin = /* GraphQL */ `
         nextToken
         startedAt
       }
+      role
+      isDeactivated
       createdAt
       updatedAt
       _version
@@ -927,6 +1169,8 @@ export const updateAdmin = /* GraphQL */ `
         nextToken
         startedAt
       }
+      role
+      isDeactivated
       createdAt
       updatedAt
       _version
@@ -948,6 +1192,8 @@ export const deleteAdmin = /* GraphQL */ `
         nextToken
         startedAt
       }
+      role
+      isDeactivated
       createdAt
       updatedAt
       _version
@@ -1043,16 +1289,17 @@ export const createStudent = /* GraphQL */ `
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
+      nationalityCategory
       nationality
       schoolName
       schoolType
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -1104,16 +1351,17 @@ export const updateStudent = /* GraphQL */ `
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
+      nationalityCategory
       nationality
       schoolName
       schoolType
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -1165,16 +1413,17 @@ export const deleteStudent = /* GraphQL */ `
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
+      nationalityCategory
       nationality
       schoolName
       schoolType
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -1209,6 +1458,306 @@ export const deleteStudent = /* GraphQL */ `
         nextToken
         startedAt
       }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const createBatch = /* GraphQL */ `
+  mutation CreateBatch(
+    $input: CreateBatchInput!
+    $condition: ModelBatchConditionInput
+  ) {
+    createBatch(input: $input, condition: $condition) {
+      batch
+      createApplicationStartDate
+      createApplicationEndDate
+      updateApplicationEndDate
+      signUpStartDate
+      signUpEndDate
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateBatch = /* GraphQL */ `
+  mutation UpdateBatch(
+    $input: UpdateBatchInput!
+    $condition: ModelBatchConditionInput
+  ) {
+    updateBatch(input: $input, condition: $condition) {
+      batch
+      createApplicationStartDate
+      createApplicationEndDate
+      updateApplicationEndDate
+      signUpStartDate
+      signUpEndDate
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const deleteBatch = /* GraphQL */ `
+  mutation DeleteBatch(
+    $input: DeleteBatchInput!
+    $condition: ModelBatchConditionInput
+  ) {
+    deleteBatch(input: $input, condition: $condition) {
+      batch
+      createApplicationStartDate
+      createApplicationEndDate
+      updateApplicationEndDate
+      signUpStartDate
+      signUpEndDate
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const createScholarship = /* GraphQL */ `
+  mutation CreateScholarship(
+    $input: CreateScholarshipInput!
+    $condition: ModelScholarshipConditionInput
+  ) {
+    createScholarship(input: $input, condition: $condition) {
+      id
+      status
+      applicationID
+      batch
+      isConfirmed
+      application {
+        id
+        gpa
+        verifiedGPA
+        status
+        attachmentID
+        dateTime
+        isEmailSent
+        nationalityCategory
+        familyIncome
+        schoolName
+        schoolType
+        studentName
+        programID
+        universityID
+        studentCPR
+        batch
+        score
+        adminPoints
+        processed
+        isFamilyIncomeVerified
+        reason
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        programApplicationId
+        universityApplicationsId
+        applicationAttachmentId
+      }
+      studentCPR
+      unsignedContractDoc
+      signedContractDoc
+      studentSignature
+      guardianSignature
+      bankName
+      IBAN
+      IBANLetterDoc
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateScholarship = /* GraphQL */ `
+  mutation UpdateScholarship(
+    $input: UpdateScholarshipInput!
+    $condition: ModelScholarshipConditionInput
+  ) {
+    updateScholarship(input: $input, condition: $condition) {
+      id
+      status
+      applicationID
+      batch
+      isConfirmed
+      application {
+        id
+        gpa
+        verifiedGPA
+        status
+        attachmentID
+        dateTime
+        isEmailSent
+        nationalityCategory
+        familyIncome
+        schoolName
+        schoolType
+        studentName
+        programID
+        universityID
+        studentCPR
+        batch
+        score
+        adminPoints
+        processed
+        isFamilyIncomeVerified
+        reason
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        programApplicationId
+        universityApplicationsId
+        applicationAttachmentId
+      }
+      studentCPR
+      unsignedContractDoc
+      signedContractDoc
+      studentSignature
+      guardianSignature
+      bankName
+      IBAN
+      IBANLetterDoc
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const deleteScholarship = /* GraphQL */ `
+  mutation DeleteScholarship(
+    $input: DeleteScholarshipInput!
+    $condition: ModelScholarshipConditionInput
+  ) {
+    deleteScholarship(input: $input, condition: $condition) {
+      id
+      status
+      applicationID
+      batch
+      isConfirmed
+      application {
+        id
+        gpa
+        verifiedGPA
+        status
+        attachmentID
+        dateTime
+        isEmailSent
+        nationalityCategory
+        familyIncome
+        schoolName
+        schoolType
+        studentName
+        programID
+        universityID
+        studentCPR
+        batch
+        score
+        adminPoints
+        processed
+        isFamilyIncomeVerified
+        reason
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        programApplicationId
+        universityApplicationsId
+        applicationAttachmentId
+      }
+      studentCPR
+      unsignedContractDoc
+      signedContractDoc
+      studentSignature
+      guardianSignature
+      bankName
+      IBAN
+      IBANLetterDoc
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const createStatistics = /* GraphQL */ `
+  mutation CreateStatistics(
+    $input: CreateStatisticsInput!
+    $condition: ModelStatisticsConditionInput
+  ) {
+    createStatistics(input: $input, condition: $condition) {
+      id
+      batch
+      totalApplications
+      totalApplicationsPerStatus
+      scoreHistogram
+      gpaHistogram
+      totalApplicationsPerUniversity
+      topUniversities
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateStatistics = /* GraphQL */ `
+  mutation UpdateStatistics(
+    $input: UpdateStatisticsInput!
+    $condition: ModelStatisticsConditionInput
+  ) {
+    updateStatistics(input: $input, condition: $condition) {
+      id
+      batch
+      totalApplications
+      totalApplicationsPerStatus
+      scoreHistogram
+      gpaHistogram
+      totalApplicationsPerUniversity
+      topUniversities
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const deleteStatistics = /* GraphQL */ `
+  mutation DeleteStatistics(
+    $input: DeleteStatisticsInput!
+    $condition: ModelStatisticsConditionInput
+  ) {
+    deleteStatistics(input: $input, condition: $condition) {
+      id
+      batch
+      totalApplications
+      totalApplicationsPerStatus
+      scoreHistogram
+      gpaHistogram
+      totalApplicationsPerUniversity
+      topUniversities
       createdAt
       updatedAt
       _version

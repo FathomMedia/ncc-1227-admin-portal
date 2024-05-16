@@ -63,9 +63,9 @@ export const onCreateApplication = /* GraphQL */ `
     onCreateApplication(filter: $filter) {
       id
       gpa
+      verifiedGPA
       status
       attachmentID
-      studentCPR
       adminLogs {
         nextToken
         startedAt
@@ -90,20 +90,65 @@ export const onCreateApplication = /* GraphQL */ `
         nextToken
         startedAt
       }
+      dateTime
+      isEmailSent
+      nationalityCategory
+      familyIncome
+      schoolName
+      schoolType
+      studentName
+      programID
+      program {
+        id
+        name
+        minimumGPA
+        requirements
+        nameAr
+        requirementsAr
+        availability
+        universityID
+        isDeactivated
+        isTrashed
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        universityProgramsId
+      }
+      universityID
+      university {
+        id
+        name
+        nameAr
+        availability
+        isDeactivated
+        isExtended
+        extensionDuration
+        isException
+        isTrashed
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      studentCPR
       student {
         cpr
         cprDoc
         fullName
+        batch
         email
         phone
         gender
+        nationalityCategory
         nationality
         schoolName
         schoolType
         specialization
         placeOfBirth
         studentOrderAmongSiblings
-        householdIncome
         familyIncome
         familyIncomeProofDoc
         familyIncomeProofDocs
@@ -117,16 +162,19 @@ export const onCreateApplication = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
-      dateTime
-      isEmailSent
-      schoolName
-      schoolType
       batch
+      score
+      adminPoints
+      processed
+      isFamilyIncomeVerified
+      reason
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
+      universityApplicationsId
       applicationAttachmentId
     }
   }
@@ -138,9 +186,9 @@ export const onUpdateApplication = /* GraphQL */ `
     onUpdateApplication(filter: $filter) {
       id
       gpa
+      verifiedGPA
       status
       attachmentID
-      studentCPR
       adminLogs {
         nextToken
         startedAt
@@ -165,20 +213,65 @@ export const onUpdateApplication = /* GraphQL */ `
         nextToken
         startedAt
       }
+      dateTime
+      isEmailSent
+      nationalityCategory
+      familyIncome
+      schoolName
+      schoolType
+      studentName
+      programID
+      program {
+        id
+        name
+        minimumGPA
+        requirements
+        nameAr
+        requirementsAr
+        availability
+        universityID
+        isDeactivated
+        isTrashed
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        universityProgramsId
+      }
+      universityID
+      university {
+        id
+        name
+        nameAr
+        availability
+        isDeactivated
+        isExtended
+        extensionDuration
+        isException
+        isTrashed
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      studentCPR
       student {
         cpr
         cprDoc
         fullName
+        batch
         email
         phone
         gender
+        nationalityCategory
         nationality
         schoolName
         schoolType
         specialization
         placeOfBirth
         studentOrderAmongSiblings
-        householdIncome
         familyIncome
         familyIncomeProofDoc
         familyIncomeProofDocs
@@ -192,16 +285,19 @@ export const onUpdateApplication = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
-      dateTime
-      isEmailSent
-      schoolName
-      schoolType
       batch
+      score
+      adminPoints
+      processed
+      isFamilyIncomeVerified
+      reason
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
+      universityApplicationsId
       applicationAttachmentId
     }
   }
@@ -213,9 +309,9 @@ export const onDeleteApplication = /* GraphQL */ `
     onDeleteApplication(filter: $filter) {
       id
       gpa
+      verifiedGPA
       status
       attachmentID
-      studentCPR
       adminLogs {
         nextToken
         startedAt
@@ -240,20 +336,65 @@ export const onDeleteApplication = /* GraphQL */ `
         nextToken
         startedAt
       }
+      dateTime
+      isEmailSent
+      nationalityCategory
+      familyIncome
+      schoolName
+      schoolType
+      studentName
+      programID
+      program {
+        id
+        name
+        minimumGPA
+        requirements
+        nameAr
+        requirementsAr
+        availability
+        universityID
+        isDeactivated
+        isTrashed
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        universityProgramsId
+      }
+      universityID
+      university {
+        id
+        name
+        nameAr
+        availability
+        isDeactivated
+        isExtended
+        extensionDuration
+        isException
+        isTrashed
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+      }
+      studentCPR
       student {
         cpr
         cprDoc
         fullName
+        batch
         email
         phone
         gender
+        nationalityCategory
         nationality
         schoolName
         schoolType
         specialization
         placeOfBirth
         studentOrderAmongSiblings
-        householdIncome
         familyIncome
         familyIncomeProofDoc
         familyIncomeProofDocs
@@ -267,16 +408,19 @@ export const onDeleteApplication = /* GraphQL */ `
         _deleted
         _lastChangedAt
       }
-      dateTime
-      isEmailSent
-      schoolName
-      schoolType
       batch
+      score
+      adminPoints
+      processed
+      isFamilyIncomeVerified
+      reason
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
+      universityApplicationsId
       applicationAttachmentId
     }
   }
@@ -292,6 +436,7 @@ export const onCreateProgramChoice = /* GraphQL */ `
       program {
         id
         name
+        minimumGPA
         requirements
         nameAr
         requirementsAr
@@ -309,19 +454,32 @@ export const onCreateProgramChoice = /* GraphQL */ `
       application {
         id
         gpa
+        verifiedGPA
         status
         attachmentID
-        studentCPR
         dateTime
         isEmailSent
+        nationalityCategory
+        familyIncome
         schoolName
         schoolType
+        studentName
+        programID
+        universityID
+        studentCPR
         batch
+        score
+        adminPoints
+        processed
+        isFamilyIncomeVerified
+        reason
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        programApplicationId
+        universityApplicationsId
         applicationAttachmentId
       }
       choiceOrder
@@ -347,6 +505,7 @@ export const onUpdateProgramChoice = /* GraphQL */ `
       program {
         id
         name
+        minimumGPA
         requirements
         nameAr
         requirementsAr
@@ -364,19 +523,32 @@ export const onUpdateProgramChoice = /* GraphQL */ `
       application {
         id
         gpa
+        verifiedGPA
         status
         attachmentID
-        studentCPR
         dateTime
         isEmailSent
+        nationalityCategory
+        familyIncome
         schoolName
         schoolType
+        studentName
+        programID
+        universityID
+        studentCPR
         batch
+        score
+        adminPoints
+        processed
+        isFamilyIncomeVerified
+        reason
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        programApplicationId
+        universityApplicationsId
         applicationAttachmentId
       }
       choiceOrder
@@ -402,6 +574,7 @@ export const onDeleteProgramChoice = /* GraphQL */ `
       program {
         id
         name
+        minimumGPA
         requirements
         nameAr
         requirementsAr
@@ -419,19 +592,32 @@ export const onDeleteProgramChoice = /* GraphQL */ `
       application {
         id
         gpa
+        verifiedGPA
         status
         attachmentID
-        studentCPR
         dateTime
         isEmailSent
+        nationalityCategory
+        familyIncome
         schoolName
         schoolType
+        studentName
+        programID
+        universityID
+        studentCPR
         batch
+        score
+        adminPoints
+        processed
+        isFamilyIncomeVerified
+        reason
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        programApplicationId
+        universityApplicationsId
         applicationAttachmentId
       }
       choiceOrder
@@ -451,6 +637,7 @@ export const onCreateProgram = /* GraphQL */ `
     onCreateProgram(filter: $filter) {
       id
       name
+      minimumGPA
       requirements
       nameAr
       requirementsAr
@@ -462,6 +649,9 @@ export const onCreateProgram = /* GraphQL */ `
         nameAr
         availability
         isDeactivated
+        isExtended
+        extensionDuration
+        isException
         isTrashed
         createdAt
         updatedAt
@@ -475,6 +665,10 @@ export const onCreateProgram = /* GraphQL */ `
       }
       isDeactivated
       isTrashed
+      application {
+        nextToken
+        startedAt
+      }
       createdAt
       updatedAt
       _version
@@ -489,6 +683,7 @@ export const onUpdateProgram = /* GraphQL */ `
     onUpdateProgram(filter: $filter) {
       id
       name
+      minimumGPA
       requirements
       nameAr
       requirementsAr
@@ -500,6 +695,9 @@ export const onUpdateProgram = /* GraphQL */ `
         nameAr
         availability
         isDeactivated
+        isExtended
+        extensionDuration
+        isException
         isTrashed
         createdAt
         updatedAt
@@ -513,6 +711,10 @@ export const onUpdateProgram = /* GraphQL */ `
       }
       isDeactivated
       isTrashed
+      application {
+        nextToken
+        startedAt
+      }
       createdAt
       updatedAt
       _version
@@ -527,6 +729,7 @@ export const onDeleteProgram = /* GraphQL */ `
     onDeleteProgram(filter: $filter) {
       id
       name
+      minimumGPA
       requirements
       nameAr
       requirementsAr
@@ -538,6 +741,9 @@ export const onDeleteProgram = /* GraphQL */ `
         nameAr
         availability
         isDeactivated
+        isExtended
+        extensionDuration
+        isException
         isTrashed
         createdAt
         updatedAt
@@ -551,6 +757,10 @@ export const onDeleteProgram = /* GraphQL */ `
       }
       isDeactivated
       isTrashed
+      application {
+        nextToken
+        startedAt
+      }
       createdAt
       updatedAt
       _version
@@ -574,7 +784,14 @@ export const onCreateUniversity = /* GraphQL */ `
       }
       availability
       isDeactivated
+      isExtended
+      extensionDuration
+      isException
       isTrashed
+      applications {
+        nextToken
+        startedAt
+      }
       createdAt
       updatedAt
       _version
@@ -597,7 +814,14 @@ export const onUpdateUniversity = /* GraphQL */ `
       }
       availability
       isDeactivated
+      isExtended
+      extensionDuration
+      isException
       isTrashed
+      applications {
+        nextToken
+        startedAt
+      }
       createdAt
       updatedAt
       _version
@@ -620,7 +844,14 @@ export const onDeleteUniversity = /* GraphQL */ `
       }
       availability
       isDeactivated
+      isExtended
+      extensionDuration
+      isException
       isTrashed
+      applications {
+        nextToken
+        startedAt
+      }
       createdAt
       updatedAt
       _version
@@ -642,6 +873,8 @@ export const onCreateAdminLog = /* GraphQL */ `
         cpr
         fullName
         email
+        role
+        isDeactivated
         createdAt
         updatedAt
         _version
@@ -671,6 +904,8 @@ export const onUpdateAdminLog = /* GraphQL */ `
         cpr
         fullName
         email
+        role
+        isDeactivated
         createdAt
         updatedAt
         _version
@@ -700,6 +935,8 @@ export const onDeleteAdminLog = /* GraphQL */ `
         cpr
         fullName
         email
+        role
+        isDeactivated
         createdAt
         updatedAt
         _version
@@ -731,16 +968,17 @@ export const onCreateStudentLog = /* GraphQL */ `
         cpr
         cprDoc
         fullName
+        batch
         email
         phone
         gender
+        nationalityCategory
         nationality
         schoolName
         schoolType
         specialization
         placeOfBirth
         studentOrderAmongSiblings
-        householdIncome
         familyIncome
         familyIncomeProofDoc
         familyIncomeProofDocs
@@ -779,16 +1017,17 @@ export const onUpdateStudentLog = /* GraphQL */ `
         cpr
         cprDoc
         fullName
+        batch
         email
         phone
         gender
+        nationalityCategory
         nationality
         schoolName
         schoolType
         specialization
         placeOfBirth
         studentOrderAmongSiblings
-        householdIncome
         familyIncome
         familyIncomeProofDoc
         familyIncomeProofDocs
@@ -827,16 +1066,17 @@ export const onDeleteStudentLog = /* GraphQL */ `
         cpr
         cprDoc
         fullName
+        batch
         email
         phone
         gender
+        nationalityCategory
         nationality
         schoolName
         schoolType
         specialization
         placeOfBirth
         studentOrderAmongSiblings
-        householdIncome
         familyIncome
         familyIncomeProofDoc
         familyIncomeProofDocs
@@ -870,6 +1110,8 @@ export const onCreateAdmin = /* GraphQL */ `
         nextToken
         startedAt
       }
+      role
+      isDeactivated
       createdAt
       updatedAt
       _version
@@ -888,6 +1130,8 @@ export const onUpdateAdmin = /* GraphQL */ `
         nextToken
         startedAt
       }
+      role
+      isDeactivated
       createdAt
       updatedAt
       _version
@@ -906,6 +1150,8 @@ export const onDeleteAdmin = /* GraphQL */ `
         nextToken
         startedAt
       }
+      role
+      isDeactivated
       createdAt
       updatedAt
       _version
@@ -995,16 +1241,17 @@ export const onCreateStudent = /* GraphQL */ `
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
+      nationalityCategory
       nationality
       schoolName
       schoolType
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -1053,16 +1300,17 @@ export const onUpdateStudent = /* GraphQL */ `
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
+      nationalityCategory
       nationality
       schoolName
       schoolType
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -1111,16 +1359,17 @@ export const onDeleteStudent = /* GraphQL */ `
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
+      nationalityCategory
       nationality
       schoolName
       schoolType
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -1155,6 +1404,291 @@ export const onDeleteStudent = /* GraphQL */ `
         nextToken
         startedAt
       }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onCreateBatch = /* GraphQL */ `
+  subscription OnCreateBatch($filter: ModelSubscriptionBatchFilterInput) {
+    onCreateBatch(filter: $filter) {
+      batch
+      createApplicationStartDate
+      createApplicationEndDate
+      updateApplicationEndDate
+      signUpStartDate
+      signUpEndDate
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onUpdateBatch = /* GraphQL */ `
+  subscription OnUpdateBatch($filter: ModelSubscriptionBatchFilterInput) {
+    onUpdateBatch(filter: $filter) {
+      batch
+      createApplicationStartDate
+      createApplicationEndDate
+      updateApplicationEndDate
+      signUpStartDate
+      signUpEndDate
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onDeleteBatch = /* GraphQL */ `
+  subscription OnDeleteBatch($filter: ModelSubscriptionBatchFilterInput) {
+    onDeleteBatch(filter: $filter) {
+      batch
+      createApplicationStartDate
+      createApplicationEndDate
+      updateApplicationEndDate
+      signUpStartDate
+      signUpEndDate
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onCreateScholarship = /* GraphQL */ `
+  subscription OnCreateScholarship(
+    $filter: ModelSubscriptionScholarshipFilterInput
+  ) {
+    onCreateScholarship(filter: $filter) {
+      id
+      status
+      applicationID
+      batch
+      isConfirmed
+      application {
+        id
+        gpa
+        verifiedGPA
+        status
+        attachmentID
+        dateTime
+        isEmailSent
+        nationalityCategory
+        familyIncome
+        schoolName
+        schoolType
+        studentName
+        programID
+        universityID
+        studentCPR
+        batch
+        score
+        adminPoints
+        processed
+        isFamilyIncomeVerified
+        reason
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        programApplicationId
+        universityApplicationsId
+        applicationAttachmentId
+      }
+      studentCPR
+      unsignedContractDoc
+      signedContractDoc
+      studentSignature
+      guardianSignature
+      bankName
+      IBAN
+      IBANLetterDoc
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onUpdateScholarship = /* GraphQL */ `
+  subscription OnUpdateScholarship(
+    $filter: ModelSubscriptionScholarshipFilterInput
+  ) {
+    onUpdateScholarship(filter: $filter) {
+      id
+      status
+      applicationID
+      batch
+      isConfirmed
+      application {
+        id
+        gpa
+        verifiedGPA
+        status
+        attachmentID
+        dateTime
+        isEmailSent
+        nationalityCategory
+        familyIncome
+        schoolName
+        schoolType
+        studentName
+        programID
+        universityID
+        studentCPR
+        batch
+        score
+        adminPoints
+        processed
+        isFamilyIncomeVerified
+        reason
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        programApplicationId
+        universityApplicationsId
+        applicationAttachmentId
+      }
+      studentCPR
+      unsignedContractDoc
+      signedContractDoc
+      studentSignature
+      guardianSignature
+      bankName
+      IBAN
+      IBANLetterDoc
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onDeleteScholarship = /* GraphQL */ `
+  subscription OnDeleteScholarship(
+    $filter: ModelSubscriptionScholarshipFilterInput
+  ) {
+    onDeleteScholarship(filter: $filter) {
+      id
+      status
+      applicationID
+      batch
+      isConfirmed
+      application {
+        id
+        gpa
+        verifiedGPA
+        status
+        attachmentID
+        dateTime
+        isEmailSent
+        nationalityCategory
+        familyIncome
+        schoolName
+        schoolType
+        studentName
+        programID
+        universityID
+        studentCPR
+        batch
+        score
+        adminPoints
+        processed
+        isFamilyIncomeVerified
+        reason
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        programApplicationId
+        universityApplicationsId
+        applicationAttachmentId
+      }
+      studentCPR
+      unsignedContractDoc
+      signedContractDoc
+      studentSignature
+      guardianSignature
+      bankName
+      IBAN
+      IBANLetterDoc
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onCreateStatistics = /* GraphQL */ `
+  subscription OnCreateStatistics(
+    $filter: ModelSubscriptionStatisticsFilterInput
+  ) {
+    onCreateStatistics(filter: $filter) {
+      id
+      batch
+      totalApplications
+      totalApplicationsPerStatus
+      scoreHistogram
+      gpaHistogram
+      totalApplicationsPerUniversity
+      topUniversities
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onUpdateStatistics = /* GraphQL */ `
+  subscription OnUpdateStatistics(
+    $filter: ModelSubscriptionStatisticsFilterInput
+  ) {
+    onUpdateStatistics(filter: $filter) {
+      id
+      batch
+      totalApplications
+      totalApplicationsPerStatus
+      scoreHistogram
+      gpaHistogram
+      totalApplicationsPerUniversity
+      topUniversities
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onDeleteStatistics = /* GraphQL */ `
+  subscription OnDeleteStatistics(
+    $filter: ModelSubscriptionStatisticsFilterInput
+  ) {
+    onDeleteStatistics(filter: $filter) {
+      id
+      batch
+      totalApplications
+      totalApplicationsPerStatus
+      scoreHistogram
+      gpaHistogram
+      totalApplicationsPerUniversity
+      topUniversities
       createdAt
       updatedAt
       _version
